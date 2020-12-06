@@ -1,6 +1,6 @@
 package org.myslayers.entity;
 
-import org.myslayers.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -16,6 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@TableName("m_post")//表名
 public class Post extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

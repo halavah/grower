@@ -1,10 +1,11 @@
 package org.myslayers.entity;
 
-import java.time.LocalDateTime;
-import org.myslayers.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -17,6 +18,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@TableName("m_user")//表名
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

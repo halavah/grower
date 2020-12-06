@@ -3,11 +3,12 @@
         <ul class="layui-clear">
 
             <#--首页-->
-            <li class="${(0 == currentCategoryId)? string('layui-hide-xs layui-this', '')}><a href="/">首页</a></li>
+            <li class="${(0 == currentCategoryId)?string('layui-hide-xs layui-this', '')}"><a href="/">首页</a></li>
             <#--提问、分享、讨论、建议-->
-            <#list categories as item>
-                <li class="${(item.id == currentCategoryId)? string('layui-hide-xs layui-this', '')}"><a href="/category/${item.id}">${item.name}</a></li>
+            <#list categorys as item>
+                <li class="${(item.id == currentCategoryId)?string('layui-hide-xs layui-this', '')}"><a href="/category/${item.id}">${item.name}</a></li>
             </#list>
+
 
             <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
 

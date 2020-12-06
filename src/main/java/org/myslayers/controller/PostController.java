@@ -11,7 +11,6 @@ public class PostController extends BaseController{
     public String category(@PathVariable(name = "id") long id) {
 
 
-
         //根据category表中当前页的id -> 渲染heder-panel.ftl（(item.id == currentCategoryId)? string('layui-hide-xs layui-this', '')）
         req.setAttribute("currentCategoryId", id);
         return "post/category";
