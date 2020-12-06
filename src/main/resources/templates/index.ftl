@@ -8,9 +8,9 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md8">
                 <div class="fly-panel" style="margin-bottom: 0;">
-                    <div class="fly-list">
+                    <ul class="fly-list">
                         <#--pageData.records：获取Ipage接口中的records方法-->
-                        <#--<#list pageData.records as post>
+                        <#list pageData.records as post>
                             <li>
                                 <div>
                                     <a href="/user/${post.authorId}" class="fly-avatar">
@@ -34,8 +34,8 @@
                                     </span>
                                 </div>
                             </li>
-                        </#list>-->
-                    </div>
+                        </#list>
+                    </ul>
                 </div>
             </div>
 

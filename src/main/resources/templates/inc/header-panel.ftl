@@ -1,12 +1,13 @@
 <div class="fly-panel fly-column">
     <div class="layui-container">
         <ul class="layui-clear">
-<#--            <li class="${(0 == currentCategoryId)? string('layui-hide-xs layui-this', '')}><a href="/">首页</a></li>-->
 
-<#--            &lt;#&ndash;提问、分享、讨论、建议&ndash;&gt;-->
-<#--            <#list categories as item>-->
-<#--                <li class="${(item.id == currentCategoryId)? string('layui-hide-xs layui-this', '')}"><a href="/category/${item.id}">${item.name}</a></li>-->
-<#--            </#list>-->
+            <#--首页-->
+            <li class="${(0 == currentCategoryId)? string('layui-hide-xs layui-this', '')}><a href="/">首页</a></li>
+            <#--提问、分享、讨论、建议-->
+            <#list categories as item>
+                <li class="${(item.id == currentCategoryId)? string('layui-hide-xs layui-this', '')}"><a href="/category/${item.id}">${item.name}</a></li>
+            </#list>
 
             <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
 
@@ -26,3 +27,7 @@
         </div>
     </div>
 </div>
+
+
+
+
