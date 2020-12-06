@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/xblog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 4023615
+  freemarker:
+    settings:
+      classic_compatible: true
+      datetime_format: yyyy-MM-dd HH:mm
+      number_format: 0.##
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+
