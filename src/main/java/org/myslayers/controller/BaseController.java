@@ -17,7 +17,9 @@ public class BaseController {
     PostService postService;
 
     public Page getPage() {
+        // pn代表页码
         int pn = ServletRequestUtils.getIntParameter(req, "pn", 1);
+        // size代表页面大小
         int size = ServletRequestUtils.getIntParameter(req, "size", 2);
         return new Page(pn, size);
     }

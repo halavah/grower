@@ -1,4 +1,7 @@
+<#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
+<#--宏common.ftl（分页）-->
+<#include "/inc/common.ftl"/>
 
 <@layout "首页">
 
@@ -8,7 +11,8 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md8">
                 <div class="fly-panel" style="margin-bottom: 0;">
-                    <ul class="fly-list">
+                    <#--1.消息列表-->
+                    <div class="fly-list">
                         <#--pageData.records：获取Ipage接口中的records方法-->
                         <#list pageData.records as post>
                             <li>
@@ -29,13 +33,14 @@
                                         ${post.created?string('yyyy-MM-dd')}
                                     </span>
                                     <span class="fly-list-nums">
-                                        <i class="iconfont icon-pinglun1" title="回答"></i>
-                                        ${post.commentCount}
+                                        <i class="iconfont icon-pinglun1" title="回答"></i>${post.commentCount}
                                     </span>
                                 </div>
                             </li>
                         </#list>
-                    </ul>
+                    </div>
+                    <#--2.分页条-->
+                    <@paging pageData></@paging>
                 </div>
             </div>
 
@@ -44,4 +49,6 @@
     </div>
 
 </@layout>
+
+
 

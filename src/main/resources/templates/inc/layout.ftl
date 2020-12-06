@@ -1,4 +1,4 @@
-<#--1.macro定义脚本，名为layout，参数为title-->
+<#--宏：1.macro定义脚本，名为layout，参数为title-->
 <#macro layout title>
     <!DOCTYPE html>
     <html>
@@ -13,13 +13,16 @@
     </head>
     <body>
 
+    <#--导航栏-->
     <#include "/inc/header.ftl"/>
 
     <#--2.所有引用该“带有宏的标签layout.ftl”都会执行该操作：<@layout "首页"></@layout>中的数据 -> 填充到<#nested/>标签中-->
     <#nested>
 
+    <#--页脚-->
     <#include "/inc/footer.ftl"/>
 
     </body>
     </html>
 </#macro>
+

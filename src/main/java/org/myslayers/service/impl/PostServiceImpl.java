@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author myslayers
@@ -27,13 +27,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public IPage<PostVo> paging(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order) {
 
-        if(level == null) level = -1;
+        if (level == null) level = -1;
 
+        //使用Wrapper自定义SQL
         QueryWrapper wrapper = new QueryWrapper<Post>()
-                .eq(categoryId != null,  "category_id", categoryId)
-                .eq(userId != null,  "user_id", userId)
-                .eq(level == 0,  "level", 0)
-                .gt(level > 0,  "level", 0)
+                .eq(categoryId != null, "category_id", categoryId)
+                .eq(userId != null, "user_id", userId)
+                .eq(level == 0, "level", 0)
+                .gt(level > 0, "level", 0)
                 .orderByDesc(order != null, order);
 
         return postMapper.selectPosts(page, wrapper);
