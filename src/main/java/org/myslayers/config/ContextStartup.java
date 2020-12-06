@@ -13,7 +13,7 @@ import javax.servlet.ServletContext;
 import java.util.List;
 
 /**
- * 实现ApplicationRunner中的run方法, ServletContextAware的setServletContext方法
+ * Context配置类
  */
 @Component
 public class ContextStartup implements ApplicationRunner, ServletContextAware {

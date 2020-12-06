@@ -30,7 +30,7 @@
                                         <cite>${post.authorName}</cite>
                                     </a>
                                     <span>
-                                        ${post.created?string('yyyy-MM-dd')}
+                                        ${timeAgo(post.created)}
                                     </span>
                                     <span class="fly-list-nums">
                                         <i class="iconfont icon-pinglun1" title="回答"></i>${post.commentCount}

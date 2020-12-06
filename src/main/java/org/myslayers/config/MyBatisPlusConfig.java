@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * MP配置类
+ */
 @Configuration
 @EnableTransactionManagement
 @MapperScan("org.myslayers.mapper")
