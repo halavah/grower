@@ -1,6 +1,7 @@
 package org.myslayers.config;
 
 
+import org.myslayers.template.PostsTemplate;
 import org.myslayers.template.TimeAgoMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +20,17 @@ public class FreemarkerConfig {
     @Autowired
     TimeAgoMethod timeAgoMethod;
 
+    @Autowired
+    PostsTemplate postsTemplate;
+
     /**
      * 注册为“timeAgo”函数：快速实现日期转换
+     * 注册为“posts”函数：快速实现分页
      */
     @PostConstruct
     public void setUp() {
         configuration.setSharedVariable("timeAgo", timeAgoMethod);
+        configuration.setSharedVariable("posts", postsTemplate);
     }
 }
 
