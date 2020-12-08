@@ -30,7 +30,7 @@ public class FreemarkerConfig {
     @PostConstruct
     public void setUp() {
         configuration.setSharedVariable("timeAgo", timeAgoMethod);
-        configuration.setSharedVariable("posts", postsTemplate);
+        configuration.setSharedVariable("details", postsTemplate);
     }
 }
 

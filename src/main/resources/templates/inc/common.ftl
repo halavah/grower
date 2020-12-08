@@ -18,7 +18,7 @@
                     , curr: ${pageData.current}
                     , limit: ${pageData.size}
                     , jump: function (obj, first) {
-                        //首次不执行
+                        //首次不执行，之后【跳转curr页面】
                         if (!first) {
                             location.href = "?pn=" + obj.curr;
                         }
@@ -29,7 +29,7 @@
     </div>
 </#macro>
 
-<#--宏：posting-->
+<#--宏：一条数据posting-->
 <#macro plisting post>
     <li>
         <div>
@@ -39,7 +39,7 @@
         </div>
         <div>
             <div class="layui-badge">${post.categoryName}</div>
-            <a href="jie/detail.html">${post.title}</a>
+            <a href="/detail/${post.id}">${post.title}</a>
         </div>
         <div class="fly-list-info">
             <a href="/user/${post.authorId}">
@@ -49,6 +49,10 @@
             <span class="fly-list-nums">
                 <i class="iconfont icon-pinglun1" title="回答"></i>${post.commentCount}
             </span>
+        </div>
+        <div class="fly-list-badge">
+            <#if post.level gt 0><span class="layui-badge layui-bg-black">置顶</span></#if>
+            <#if post.recommend><span class="layui-badge layui-bg-red">精帖</span></#if>
         </div>
     </li>
 </#macro>

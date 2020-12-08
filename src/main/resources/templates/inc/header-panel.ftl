@@ -1,4 +1,4 @@
-<#--导航栏-panel-->
+<#--【二、分类】-->
 <div class="fly-panel fly-column">
     <div class="layui-container">
         <ul class="layui-clear">
@@ -10,9 +10,7 @@
                 <li class="${(item.id == currentCategoryId)?string('layui-hide-xs layui-this', '')}"><a href="/category/${item.id}">${item.name}</a></li>
             </#list>
 
-
             <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
-
             <!-- 用户登入后显示 -->
             <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="user/index.html">我发表的贴</a></li>
             <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="user/index.html#collection">我收藏的贴</a>
@@ -29,7 +27,3 @@
         </div>
     </div>
 </div>
-
-
-
-

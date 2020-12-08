@@ -3,6 +3,9 @@ package org.myslayers.vo;
 import lombok.Data;
 import org.myslayers.entity.Post;
 
+/**
+ * post（内容） + vo（用户信息_分类信息）
+ */
 @Data
 public class PostVo extends Post {
 

@@ -1,7 +1,10 @@
 package org.myslayers.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.myslayers.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.myslayers.vo.CommentVo;
 
 /**
  * <p>
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-12-06
  */
 public interface CommentService extends IService<Comment> {
+
+    IPage<CommentVo> selectComments(Page page, Long postId, Long userId, String order) ;
 
 }

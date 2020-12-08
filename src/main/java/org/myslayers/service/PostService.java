@@ -1,9 +1,11 @@
 package org.myslayers.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.myslayers.entity.Post;
+import org.myslayers.vo.PostVo;
 
 /**
  * <p>
@@ -15,6 +17,7 @@ import org.myslayers.entity.Post;
  */
 public interface PostService extends IService<Post> {
 
-    IPage paging(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order);
+    IPage<PostVo> selectPosts(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order);
 
+    PostVo selectOnePost(QueryWrapper<Post> warapper);
 }

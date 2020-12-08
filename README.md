@@ -4,24 +4,18 @@
 前后端不分离的博客
 
 #### 软件架构
-软件架构说明
-
+1. MyBatis-Plus【核心功能】：代码生成器、CURD接口、条件构造器中使用 Wrapper 自定义SQL、分页插件
+2. MyBatis-Plus【扩展】：执行 SQL 分析打印
+3. mblog【开发标签】：timeAgo、details
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. xxxx
+2. xxxx
+3. xxxx
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+1. xxxx
+2. xxxx
+3. xxxx
