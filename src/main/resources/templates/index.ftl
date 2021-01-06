@@ -24,7 +24,7 @@
                     </div>
                     <#--1.1.2 消息列表-->
                     <ul class="fly-list">
-                        <@details size=5 level=1>
+                        <@details size=2 level=1>
                             <#--1.1.2.1 消息列表-->
                             <#list results.records as post>
                                 <@plisting post></@plisting>
@@ -67,4 +67,3 @@
     </div>
 
 </@layout>
-

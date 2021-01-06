@@ -29,7 +29,7 @@ public class BaseController {
         // pn代表起始页码
         int pn = ServletRequestUtils.getIntParameter(req, "pn", 1);
         // size代表页面大小
-        int size = ServletRequestUtils.getIntParameter(req, "size", 8);
+        int size = ServletRequestUtils.getIntParameter(req, "size", 10);
         return new Page(pn, size);
     }
 }
