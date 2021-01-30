@@ -10,7 +10,13 @@ spring:
       classic_compatible: true
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
+  redis:
+    host: 127.0.0.1
+    post: 6379
+    password: myslayers
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
+
+
 

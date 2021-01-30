@@ -9,6 +9,9 @@ import org.myslayers.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * 文章具体详情
+ */
 @Component
 public class PostsTemplate extends TemplateDirective {
 
@@ -17,7 +20,7 @@ public class PostsTemplate extends TemplateDirective {
 
     @Override
     public String getName() {
-        return "detail";
+        return "details";
     }
 
     /**
@@ -40,7 +43,7 @@ public class PostsTemplate extends TemplateDirective {
          *   2.注册为“posts”函数：默认调用该函数时，自动查询 -> 分页集合results
          */
         IPage<PostVo> page = postService.selectPosts(new Page(pn, size), categoryId, null, level, null, "created");
-        handler.put("results", page).render();
+        handler.put(RESULTS, page).render();
     }
 }
 

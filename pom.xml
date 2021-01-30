@@ -12,7 +12,7 @@
     <artifactId>blog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>blog</name>
-    <description>Demo project for Spring Boot</description>
+    <description>前后的不分离博客</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -72,20 +72,18 @@
             <version>3.9</version>
         </dependency>
 
-<!--        &lt;!&ndash;Redis&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-<!--        </dependency>-->
+        <!--Redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
-
-
-<!--        &lt;!&ndash;hutool&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>cn.hutool</groupId>-->
-<!--            <artifactId>hutool-all</artifactId>-->
-<!--            <version>4.1.17</version>-->
-<!--        </dependency>-->
+        <!--hutool：工具包，例如DateUtils工具类...-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.1.17</version>
+        </dependency>
 
 <!--        &lt;!&ndash;验证码&ndash;&gt;-->
 <!--        <dependency>-->

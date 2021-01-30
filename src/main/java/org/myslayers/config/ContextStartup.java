@@ -3,6 +3,7 @@ package org.myslayers.config;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.myslayers.entity.Category;
 import org.myslayers.service.CategoryService;
+import org.myslayers.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,8 +24,14 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
 
     ServletContext servletContext;
 
+    @Autowired
+    PostService postService;
+
     /**
-     * 项目启动时，会同时调用该run方法：提前加载导航栏中的“提问、分享、讨论、建议”，并将其list放入servletContext上下文对象
+     * 项目启动时，会同时调用该run方法：
+     *
+     * 加载导航栏中的“提问、分享、讨论、建议”，并将其list放入servletContext上下文对象
+     * 加载本周热议
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -32,6 +39,8 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
                 .eq("status", 0)
         );
         servletContext.setAttribute("categorys", categories);
+
+        postService.initWeekRank();
     }
 
     /**
@@ -41,5 +50,4 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
-
 }

@@ -1,5 +1,8 @@
 package org.myslayers.service.impl;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -7,9 +10,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.myslayers.entity.Post;
 import org.myslayers.mapper.PostMapper;
 import org.myslayers.service.PostService;
+import org.myslayers.utils.RedisUtil;
 import org.myslayers.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -23,6 +31,9 @@ import org.springframework.stereotype.Service;
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
     @Autowired
     PostMapper postMapper;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @Override
     public IPage<PostVo> selectPosts(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order) {
@@ -40,6 +51,51 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public PostVo selectOnePost(QueryWrapper<Post> warapper) {
         return postMapper.selectOnePost(warapper);
     }
+
+    /**
+     * 项目启动前，初始化本周热议（近7天全部文章评论量的排行榜）
+     */
+    @Override
+    public void initWeekRank() {
+        //1.获取【近7天文章】
+        List<Post> posts = this.list(new QueryWrapper<Post>()
+                .gt("created", DateUtil.offsetDay(new Date(), -7))  //根据created时间，对最近7天内的文章进行筛选
+                .select("id, title, user_id, comment_count, view_count, created") //对文章的属性进行筛选，加快查询速率
+        );
+
+        //2.初始化【近7天文章】的总评论量（先使用SortedSet集合对【排行榜7天内全部文章】进行zadd操作，并设置它们expire为7天；再使用Hash哈希表对【排行榜7天内全部文章】进行hexists判断，再hset缓存操作）
+        for (Post post : posts) {
+            //1.添加add——将【近7天文章】创建日期时间作为key值，每篇文章对应的id作为它的value值，每篇文章对应的评论comment作为它的score值，并使用redis的工具类（RedisUtil），对文章的具体属性进行zSet()缓存操作
+            String zKey = "day:rank:" + DateUtil.format(post.getCreated(), DatePattern.PURE_DATE_FORMAT);
+            redisUtil.zSet(zKey, post.getId(), post.getCommentCount());//阅读redisUtil工具类，可知zSet等同于zadd
+
+            //2.过期expire——让【近7天文章】的key过期： 7-（当前时间-创建时间）= 过期时间
+            long expireTime = (7 - DateUtil.between(new Date(), post.getCreated(), DateUnit.DAY)) * 24 * 60 * 60;
+            redisUtil.expire(zKey, expireTime);
+
+            //3.缓存——缓存【近7天文章】的一些基本信息，例如文章id，标题title，评论数量，作者信息...方便访问【近7天文章】时，直接redis，而非MySQL
+            //3.1先对文章进行EXISTS判断其缓存是否存在
+            String hKey = "day:rank:post:" + post.getId();
+            if (!redisUtil.hasKey(hKey)) {
+                //3.2如果false不存在，则再hset缓存操作
+                redisUtil.hset(hKey, "post-id", post.getId(), expireTime);
+                redisUtil.hset(hKey, "post-title", post.getTitle(), expireTime);
+                redisUtil.hset(hKey, "post-commentCount", post.getCommentCount(), expireTime);
+                redisUtil.hset(hKey, "post-viewCount", post.getViewCount(), expireTime);
+            }
+        }
+
+        //3.对【近7天文章】做并集运算（zUnionAndStore）， 并使用根据评论量的数量从大到小进行展示（zrevrange）
+        String currentKey = "day:rank:" + DateUtil.format(new Date(), DatePattern.PURE_DATE_FORMAT);
+        List<String> otherKeys = new ArrayList<>();
+        for (int i = -6; i < 0; i++) {
+            String temp = "day:rank:" + DateUtil.format(DateUtil.offsetDay(new Date(), i), DatePattern.PURE_DATE_FORMAT);
+            otherKeys.add(temp);
+        }
+        String destKey = "week:rank";
+        redisUtil.zUnionAndStore(currentKey, otherKeys, destKey);
+    }
 }
+
 
 
