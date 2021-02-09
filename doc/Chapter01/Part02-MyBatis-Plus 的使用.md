@@ -1,11 +1,33 @@
 ## 2. MyBatis-Plus 的使用
 ### 2.1 代码生成器
 - 项目依赖：mybatis-plus-boot-starter、mysql-connector-java、mybatis-plus-generator、druid-spring-boot-starter、spring-boot-starter-freemarker
+```java
+// 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
+public class CodeGenerator {
+
+    /**
+     * <p>
+     * 读取控制台内容
+     * </p>
+     */
+    public static String scanner(String tip) {
+        Scanner scanner = new Scanner(System.in);
+        StringBuilder help = new StringBuilder();
+        help.append("请输入" + tip + "：");
+        System.out.println(help.toString());
+        if (scanner.hasNext()) {
+            String ipt = scanner.next();
+            if (StringUtils.isNotEmpty(ipt)) {
+                return ipt;
+            }
+        }
+        throw new MybatisPlusException("请输入正确的" + tip + "！");
+    }
+}
+```
 
 ### 2.2 分页插件
-
-- 配置类，SpringBoot的使用方式
-
+- 配置类，SpringBoot 的使用方式
 ```java
 @Configuration
 @EnableTransactionManagement
@@ -24,9 +46,7 @@ public class MyBatisPlusConfig {
 ```
 
 ### 2.3 执行 SQL 分析打印
-
-- 该功能依赖 p6spy 组件，其中 datasource 、freemarker、mybatis-plus的配置如下：
-
+- 该功能依赖 p6spy 组件，其中 datasource、freemarker、mybatis-plus 的配置如下：
 ```yaml
 spring:
   datasource:
@@ -71,9 +91,7 @@ outagedetectioninterval=2
 ```
 
 ### 2.4 条件构造器
-
 - AbstractWrapper、QueryWrapper、UpdateWrapper
-
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {

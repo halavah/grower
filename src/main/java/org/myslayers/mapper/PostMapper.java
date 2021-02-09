@@ -19,7 +19,7 @@ import org.myslayers.vo.PostVo;
  */
 public interface PostMapper extends BaseMapper<Post> {
 
-    IPage<PostVo> selectPosts(Page page, @Param(Constants.WRAPPER) QueryWrapper wrapper);
+    IPage<PostVo> selectPosts(Page page, @Param(Constants.WRAPPER) QueryWrapper<Post> wrapper);
 
     PostVo selectOnePost(@Param(Constants.WRAPPER) QueryWrapper<Post> warapper);
 }

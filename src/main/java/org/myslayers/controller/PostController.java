@@ -53,6 +53,11 @@ public class PostController extends BaseController {
         //req：CommentVo分页集合
         req.setAttribute("commentVoDatas", results);
 
+        /**
+         * 文章阅读【缓存实现访问量】：减少访问数据库的次数，存在一个BUG，只与点击链接的次数相关，没有与用户的id进行绑定
+         */
+        postService.putViewCount(postVo);
+
         return "post/detail";
     }
 }

@@ -35,7 +35,7 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
 ```
 
 ### 5.2 使用
-```ftl]
+```injectedfreemarker
 <#--【二、分类】-->
 <div class="fly-panel fly-column">
     <div class="layui-container">

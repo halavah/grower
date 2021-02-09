@@ -8,7 +8,6 @@
                 <dd>
                     <a href="/detail/${post.id}">${post.title}</a>
                     <span><i class="iconfont icon-pinglun1"></i> ${post.commentCount}</span>
-                    <span><i class="iconfont icon-pinglun1"></i> ${post.viewCount}</span>
                 </dd>
             </#list>
         </@hots>

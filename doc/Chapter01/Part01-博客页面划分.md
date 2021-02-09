@@ -13,8 +13,8 @@
 
 ### 1.5 宏（common.ftl）
 - 分页：`<@paging XXX></@paging>`
-- 一条数据posting：`<@plisting XXX></@plisting>`
+- 一条数据 posting：`<@plisting XXX></@plisting>`
 
 ### 1.6 布局（layout.ftl）
-- 宏：macro定义脚本，名为layout，参数为title
+- 宏：macro 定义脚本，名为 layout，参数为 title
 - 划分：header.ftl、<#nested/>、footer.ftl
