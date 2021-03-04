@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * RedisUtil 工具类
+ */
 @Component
 public class RedisUtil {
 

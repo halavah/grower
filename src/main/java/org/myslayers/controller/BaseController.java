@@ -3,6 +3,7 @@ package org.myslayers.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.myslayers.service.CommentService;
 import org.myslayers.service.PostService;
+import org.myslayers.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -13,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 public class BaseController {
     @Autowired
     HttpServletRequest req;
+
+    @Autowired
+    UserService userService;
 
     // 内容（一条 + 多条）（post实体类、PostVo实体类）
     @Autowired
