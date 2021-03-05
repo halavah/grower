@@ -1,6 +1,7 @@
 package org.myslayers.config;
 
 
+import com.jagregory.shiro.freemarker.ShiroTags;
 import org.myslayers.template.HotsTemplate;
 import org.myslayers.template.PostsTemplate;
 import org.myslayers.template.TimeAgoMethod;
@@ -36,6 +37,7 @@ public class FreemarkerConfig {
         configuration.setSharedVariable("timeAgo", timeAgoMethod);
         configuration.setSharedVariable("details", postsTemplate);
         configuration.setSharedVariable("hots", hotsTemplate);
+        configuration.setSharedVariable("shiro", new ShiroTags()); //shiro-freemarker-tags标签 -> 声明为shiro标签
     }
 }
 

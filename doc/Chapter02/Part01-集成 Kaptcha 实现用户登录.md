@@ -381,7 +381,7 @@ public class AuthController extends BaseController {
         }
 
         // 校验【验证码是否正确】：从session中获取KAPTCHA_SESSION_KEY，即正确的验证码【text】
-        String kaptcha_session_key = (String) req.getSession().getAttribute("KAPTCHA_SESSION_KEY");
+        String kaptcha_session_key = (String) req.getSession().getAttribute(KAPTCHA_SESSION_KEY);
         System.out.println(kaptcha_session_key);
         if(vercode == null || !vercode.equalsIgnoreCase(kaptcha_session_key)) {
             return Result.fail("验证码输入不正确");

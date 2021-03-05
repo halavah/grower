@@ -1,12 +1,16 @@
 package org.myslayers.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.myslayers.common.lang.Result;
 import org.myslayers.entity.User;
 import org.myslayers.mapper.UserMapper;
 import org.myslayers.service.UserService;
+import org.myslayers.shiro.AccountProfile;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -56,7 +60,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         this.save(temp);
         return Result.success();
     }
+
+    @Override
+    public AccountProfile login(String email, String password) {
+        /**
+         * 查询【用户名或邮箱】是否正确：通过【数据库中获取的username、password】与【token中获取的username、password】进行对比
+         */
+        User user = this.getOne(new QueryWrapper<User>().eq("email", email));
+        //用户名不存在，抛出异常
+        if(user == null) {
+            throw new UnknownAccountException();
+        }
+        //用户密码不正确，抛出异常
+        if(!user.getPassword().equals(password)){
+            throw new IncorrectCredentialsException();
+        }
+        //更新用户最后登录时间，并updateById将user写入到数据库
+        user.setLasted(new Date());
+        this.updateById(user);
+
+        /**
+         * 将查询后的user结果，复制一份给AccountProfile
+         *
+         * copyProperties(Object source, Object target) ：将source复制给target目标对象
+         */
+        AccountProfile profile = new AccountProfile();
+        BeanUtil.copyProperties(user, profile);
+        return profile;
+    }
 }
-
-
-

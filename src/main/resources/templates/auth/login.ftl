@@ -33,7 +33,7 @@
                                 <div class="layui-form-item">
                                     <label for="L_pass" class="layui-form-label">密码</label>
                                     <div class="layui-input-inline">
-                                        <input type="password" id="L_pass" name="pass" required lay-verify="required"
+                                        <input type="password" id="L_pass" name="password" required lay-verify="required"
                                                autocomplete="off" class="layui-input"
                                                value="123456">
                                     </div>
