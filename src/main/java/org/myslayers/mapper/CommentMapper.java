@@ -20,4 +20,5 @@ import org.myslayers.vo.CommentVo;
 public interface CommentMapper extends BaseMapper<Comment> {
 
     IPage<CommentVo> selectComments(Page page, @Param(Constants.WRAPPER) QueryWrapper<Comment> orderByDesc);
+
 }

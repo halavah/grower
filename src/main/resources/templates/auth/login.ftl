@@ -25,7 +25,7 @@
                                     <div class="layui-input-inline">
                                         <input type="text" id="L_email" name="email" required lay-verify="required"
                                                autocomplete="off" class="layui-input"
-                                               value="halavah@126.com">
+                                               value="11111@qq.com">
                                     </div>
                                 </div>
 

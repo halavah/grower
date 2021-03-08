@@ -1,9 +1,12 @@
 package org.myslayers.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.shiro.SecurityUtils;
 import org.myslayers.service.CommentService;
 import org.myslayers.service.PostService;
+import org.myslayers.service.UserMessageService;
 import org.myslayers.service.UserService;
+import org.myslayers.shiro.AccountProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -26,6 +29,9 @@ public class BaseController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    UserMessageService messageService;
+
     /**
      * 首页 -> 默认分页的基本信息
      */
@@ -36,6 +42,21 @@ public class BaseController {
         int size = ServletRequestUtils.getIntParameter(req, "size", 10);
         return new Page(pn, size);
     }
+
+    /**
+     * 个人用户中心 -> 获取当前用户的基本信息
+     */
+    public AccountProfile getProfile() {
+        return ((AccountProfile) SecurityUtils.getSubject().getPrincipal());
+    }
+
+    /**
+     * 个人用户中心 -> 获取当前用户的基本信息-获取id
+     */
+    public Long getProfileId() {
+        return getProfile().getId();
+    }
+
 }
 
 

@@ -9,7 +9,6 @@
         <artifactId>shiro-spring</artifactId>
         <version>1.4.0</version>
     </dependency>
-    
     <!--shiro-freemarker-tags标签-->
     <dependency>
         <groupId>net.mingsoft</groupId>
@@ -26,12 +25,11 @@
 @Slf4j
 @Configuration
 public class ShiroConfig {
-
     /**
      * 安全管理器
      */
     @Bean
-    public SecurityManager securityManager(AccountRealm accountRealm){
+    public SecurityManager securityManager(AccountRealm accountRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(accountRealm);
         log.info("------------------>securityManager注入成功");
@@ -67,7 +65,7 @@ public class ShiroConfig {
 ```
 
 ### 2.2 个人用户的【登录】：使用 Shiro 进行 `/login` 操作
-- `AuthController` 控制层
+- `AuthController` 控制层：登录
 ```java
 @Controller
 public class AuthController extends BaseController {
@@ -80,7 +78,7 @@ public class AuthController extends BaseController {
         /**
          * 使用hutool的StrUtil工具类，【isEmpty】字符串是否为空、【isBlank】字符串是否为空白
          */
-        if(StrUtil.isEmpty(email) || StrUtil.isBlank(password)) {
+        if (StrUtil.isEmpty(email) || StrUtil.isBlank(password)) {
             return Result.fail("邮箱或密码不能为空");
         }
 
@@ -130,7 +128,7 @@ public class AccountProfile implements Serializable {
     private String gender;
     private Date created;
 }
-```  
+```
 - `AccountRealm` 重写父类 AuthorizingRealm 方法
 ```java
 /**
@@ -171,11 +169,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
          */
         User user = this.getOne(new QueryWrapper<User>().eq("email", email));
         //用户名不存在，抛出异常
-        if(user == null) {
+        if (user == null) {
             throw new UnknownAccountException();
         }
         //用户密码不正确，抛出异常
-        if(!user.getPassword().equals(password)){
+        if (!user.getPassword().equals(password)) {
             throw new IncorrectCredentialsException();
         }
         //更新用户最后登录时间，并updateById将user写入到数据库
@@ -233,16 +231,16 @@ public class FreemarkerConfig {
 <#--【一、导航栏】-->
 <div class="fly-header layui-bg-black">
     <div class="layui-container">
-        <#--1.图标-->
+    <#--1.图标-->
         <a class="fly-logo" href="/">
             <img src="/res/images/logo.png" alt="layui">
         </a>
 
-        <#--2.登录/注册-->
+    <#--2.登录/注册-->
         <ul class="layui-nav fly-nav-user">
 
-            <#--未登录的状态-->
-            <#--【shiro.guest】：验证当前用户是否为 “访客”，即未认证（包含未记住）的用户-->
+        <#--未登录的状态-->
+        <#--【shiro.guest】：验证当前用户是否为 “访客”，即未认证（包含未记住）的用户-->
             <@shiro.guest>
                 <li class="layui-nav-item">
                     <a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>
@@ -255,41 +253,41 @@ public class FreemarkerConfig {
                 </li>
             </@shiro.guest>
 
-            <#--登录后的状态-->
-            <#--【shiro.user】：认证通过或已记住的用户-->
+        <#--登录后的状态-->
+        <#--【shiro.user】：认证通过或已记住的用户-->
             <@shiro.user>
                 <li class="layui-nav-item">
                     <a class="fly-nav-avatar" href="javascript:;">
-                        <#--当前用户【username】-->
+                    <#--当前用户【username】-->
                         <cite class="layui-hide-xs">
                             <@shiro.principal property="username"/>
                         </cite>
                         <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
                         <i class="layui-badge fly-badge-vip layui-hide-xs">SVIP</i>
-                        <#--当前用户【avatar】-->
+                    <#--当前用户【avatar】-->
                         <img src="<@shiro.principal property="avatar" />">
                     </a>
                     <dl class="layui-nav-child">
-                        <#--基本设置-->
+                    <#--基本设置-->
                         <dd>
                             <a href="user/set.html">
                                 <i class="layui-icon">&#xe620;</i>基本设置
                             </a>
                         </dd>
-                        <#--我的消息-->
+                    <#--我的消息-->
                         <dd>
                             <a href="user/message.html">
                                 <i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息
                             </a>
                         </dd>
-                        <#--我的主页-->
+                    <#--我的主页-->
                         <dd>
                             <a href="user/home.html">
                                 <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
                             </a>
                         </dd>
                         <hr style="margin: 5px 0;">
-                        <#--退出登录-->
+                    <#--退出登录-->
                         <dd>
                             <a href="/user/logout/" style="text-align: center;">
                                 退出
@@ -305,7 +303,7 @@ public class FreemarkerConfig {
 ```
 
 ### 2.4 个人用户的【登录】：使用 Shiro 进行 `/user/logout` 操作
-- `AuthController` 控制层
+- `AuthController` 控制层：登出
 ```java
 @Controller
 public class AuthController extends BaseController {

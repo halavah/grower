@@ -1,4 +1,4 @@
-## 1. 集成 Kaptcha 实现用户登录
+## 1. 集成 Kaptcha 实现用户注册
 ### 1.1 集成 Kaptcha 环境
 - 图片验证码：Hutool-captcha、Google Kaptcha（本次选用）
 ```xml

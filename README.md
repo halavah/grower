@@ -8,14 +8,6 @@
 2. MyBatis-Plus【扩展】：执行 SQL 分析打印
 3. mblog【开发标签】：timeAgo、details
 
-#### 安装教程
-
-1. xxxx
-2. xxxx
-3. xxxx
-
 #### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
+1. 测试账户：11111@qq.com  
+2. 测试密码：123456

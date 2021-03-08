@@ -40,19 +40,19 @@
                     <dl class="layui-nav-child">
                         <#--基本设置-->
                         <dd>
-                            <a href="user/set.html">
+                            <a href="/user/set">
                                 <i class="layui-icon">&#xe620;</i>基本设置
                             </a>
                         </dd>
                         <#--我的消息-->
                         <dd>
-                            <a href="user/message.html">
+                            <a href="/user/mess">
                                 <i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息
                             </a>
                         </dd>
                         <#--我的主页-->
                         <dd>
-                            <a href="user/home.html">
+                            <a href="/user/home">
                                 <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
                             </a>
                         </dd>

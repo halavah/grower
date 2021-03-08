@@ -47,9 +47,13 @@ public class ShiroConfig {
         // 配置未授权跳转页面
         filterFactoryBean.setUnauthorizedUrl("/error/403");
 
-        // 配置过滤链定义图
+        // 配置过滤链定义图：未登录的情况下，访问/login、/user/home页面，自动跳转登录页面进行认证
         Map<String, String> hashMap = new LinkedHashMap<>();
         hashMap.put("/login", "anon");
+        hashMap.put("/user/home", "authc");
+        hashMap.put("/user/mess", "authc");
+        hashMap.put("/user/set", "authc");
+        hashMap.put("/user/upload", "authc");
         filterFactoryBean.setFilterChainDefinitionMap(hashMap);
 
         return filterFactoryBean;
