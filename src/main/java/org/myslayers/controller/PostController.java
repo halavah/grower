@@ -7,16 +7,17 @@ import org.myslayers.vo.CommentVo;
 import org.myslayers.vo.PostVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class PostController extends BaseController {
 
+    /*--------------------------------------分类category------------------------------------>*/
     /**
      * 分类category
      */
-    @RequestMapping("/category/{id:\\d*}")
+    @GetMapping("/category/{id:\\d*}")
     public String category(@PathVariable(name = "id") long id) {
         /**
          * 分类（传入id）-> 渲染分类
@@ -30,10 +31,11 @@ public class PostController extends BaseController {
         return "post/category";
     }
 
+    /*--------------------------------------详情detail------------------------------------>*/
     /**
      * 详情detail
      */
-    @RequestMapping("/detail/{id:\\d*}")
+    @GetMapping("/detail/{id:\\d*}")
     public String detail(@PathVariable(name = "id") long id) {
         /**
          * 一条（post实体类、PostVo实体类）

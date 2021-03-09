@@ -1,13 +1,57 @@
+## 4. 集成 Shiro 实现个人账户-用户中心
+### 4.1 个人账户：用户中心
+- `UserController` 控制层
+```java
+@Controller
+public class UserController extends BaseController {
+    /**
+     * 用户中心
+     */
+    @GetMapping("/user/index")
+    public String index() {
+        return "/user/index";
+    }
+
+    /**
+     * 用户中心：发布的贴
+     */
+    @ResponseBody
+    @GetMapping("/user/publish")
+    public Result userPublic() {
+        IPage page = postService.page(getPage(), new QueryWrapper<Post>()
+                .eq("user_id", getProfileId())
+                .orderByDesc("created"));
+        long total = page.getTotal();
+        req.setAttribute("publishCount", total);
+        return Result.success(page);
+    }
+
+    /**
+     * 用户中心：收藏的贴
+     */
+    @ResponseBody
+    @GetMapping("/user/collection")
+    public Result userCollection() {
+        IPage page = postService.page(getPage(), new QueryWrapper<Post>()
+                .inSql("id", "SELECT post_id FROM m_user_collection where user_id = " + getProfileId())
+        );
+        req.setAttribute("collectionCount", page.getTotal());
+        return Result.success(page);
+    }
+}
+```
+- 使用：freemarker 模板，参考【layui 社区中的 flow 流加载、laytpl 模板引擎、util 工具文档】
+```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
-<#--宏common.ftl（个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息））-->
+<#--宏common.ftl（用户中心-左侧链接（我的主页、用户中心、基本设置、我的消息））-->
 <#include "/inc/common.ftl"/>
 
 <#--【三、填充（导航栏 + 页脚）】-->
 <@layout "用户中心">
 
     <div class="layui-container fly-marginTop fly-user-main">
-        <#--用户中心-左侧链接（我的主页、用户中心、基本设置、我的消息）-->
+    <#--用户中心-左侧链接（我的主页、用户中心、基本设置、我的消息）-->
         <@centerLeft level=1></@centerLeft>
 
         <div class="site-tree-mobile layui-hide">
@@ -30,10 +74,10 @@
                 <div class="layui-tab-content" style="padding: 20px 0;">
                     <div class="layui-tab-item layui-show">
 
-                        <#-----------------------1.发布的贴----------------------->
-                        <#--第二步：建立视图，用于呈现渲染结果-->
+                    <#-----------------------1.发布的贴----------------------->
+                    <#--第二步：建立视图，用于呈现渲染结果-->
                         <ul class="mine-view jie-row" id="publish">
-                            <#--第一步，编写模版（laytpl），使用一个script标签存放模板：https://www.layui.com/doc/modules/laytpl.html-->
+                        <#--第一步，编写模版（laytpl），使用一个script标签存放模板：https://www.layui.com/doc/modules/laytpl.html-->
                             <script id="tpl-publish" type="text/html">
                                 <li>
                                     <a class="jie-title" href="/detail/{{d.id}}" target="_blank">
@@ -55,10 +99,10 @@
 
                     <div class="layui-tab-item">
 
-                        <#-----------------------2.收藏的贴----------------------->
-                        <#--第二步：建立视图，用于呈现渲染结果-->
+                    <#-----------------------2.收藏的贴----------------------->
+                    <#--第二步：建立视图，用于呈现渲染结果-->
                         <ul class="mine-view jie-row" id="collection">
-                            <#--第一步，编写模版（laytpl），使用一个script标签存放模板：https://www.layui.com/doc/modules/laytpl.html-->
+                        <#--第一步，编写模版（laytpl），使用一个script标签存放模板：https://www.layui.com/doc/modules/laytpl.html-->
                             <script id="tpl-collection" type="text/html">
                                 <li>
 
@@ -97,7 +141,7 @@
                         //假设你的列表返回在data集合中
                         layui.each(res.data.records, function (index, item) {
 
-                            <#--第三步：渲染模版-->
+                        <#--第三步：渲染模版-->
                             var tpl = $("#tpl-publish").html();                //获取html内容：选择tpl-publish【第一步中的模版】
                             laytpl(tpl).render(item, function (html) {         //使用render进行渲染：使用【集合item】对【模板tpl】渲染为html
                                 $("#publish .layui-flow-more").before(html);
@@ -120,7 +164,7 @@
                     $.get('/user/collection?pn='+page, function(res){
                         layui.each(res.data.records, function(index, item){
 
-                            <#--第三步：渲染模版-->
+                        <#--第三步：渲染模版-->
                             var tpl = $("#tpl-collection").html();          //获取html内容：选择tpl-collection【第一步中的模版】
                             laytpl(tpl).render(item, function (html) {      //使用render进行渲染：使用【集合item】对【模板tpl】渲染为html
                                 $("#collection .layui-flow-more").before(html);
@@ -136,3 +180,37 @@
     </script>
 
 </@layout>
+```
+
+### 4.2 宏：个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息）
+```injectedfreemarker
+<#--宏：个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息）-->
+<#macro centerLeft level>
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item <#if level == 0> layui-this</#if>">
+            <a href="/user/home">
+                <i class="layui-icon">&#xe609;</i>
+                我的主页
+            </a>
+        </li>
+        <li class="layui-nav-item <#if level == 1> layui-this</#if>">
+            <a href="/user/index">
+                <i class="layui-icon">&#xe612;</i>
+                用户中心
+            </a>
+        </li>
+        <li class="layui-nav-item <#if level == 2> layui-this</#if>">
+            <a href="/user/set">
+                <i class="layui-icon">&#xe620;</i>
+                基本设置
+            </a>
+        </li>
+        <li class="layui-nav-item <#if level == 3> layui-this</#if>">
+            <a href="/user/mess">
+                <i class="layui-icon">&#xe611;</i>
+                我的消息
+            </a>
+        </li>
+    </ul>
+</#macro>
+```

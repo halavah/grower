@@ -38,6 +38,18 @@
                         <img src="<@shiro.principal property="avatar" />">
                     </a>
                     <dl class="layui-nav-child">
+                        <#--我的主页-->
+                        <dd>
+                            <a href="/user/home">
+                                <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
+                            </a>
+                        </dd>
+                        <#--用户中心-->
+                        <dd>
+                            <a href="/user/index">
+                                <i class="layui-icon">&#xe770;</i>用户中心
+                            </a>
+                        </dd>
                         <#--基本设置-->
                         <dd>
                             <a href="/user/set">
@@ -48,12 +60,6 @@
                         <dd>
                             <a href="/user/mess">
                                 <i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息
-                            </a>
-                        </dd>
-                        <#--我的主页-->
-                        <dd>
-                            <a href="/user/home">
-                                <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
                             </a>
                         </dd>
                         <hr style="margin: 5px 0;">

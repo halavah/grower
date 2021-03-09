@@ -4,6 +4,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.shiro.SecurityUtils;
 import org.myslayers.common.lang.Result;
 import org.myslayers.entity.Post;
@@ -34,6 +35,8 @@ public class UserController extends BaseController {
     @Autowired
     UploadUtil uploadUtil;
 
+    /*--------------------------------------1.我的主页------------------------------------>*/
+
     /**
      * 我的主页
      */
@@ -52,6 +55,8 @@ public class UserController extends BaseController {
 
         return "/user/home";
     }
+
+    /*--------------------------------------2.基本设置------------------------------------>*/
 
     /**
      * 基本设置
@@ -156,7 +161,7 @@ public class UserController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/message/nums/")
+    @PostMapping("/message/nums/")
     public Map msgNums() {
         int count = messageService.count(new QueryWrapper<UserMessage>()
                 .eq("to_user_id", getProfileId())
@@ -164,4 +169,52 @@ public class UserController extends BaseController {
         );
         return MapUtil.builder("status", 0).put("count", count).build();
     }
+
+    /*--------------------------------------3.用户中心------------------------------------>*/
+
+    /**
+     * 用户中心
+     */
+    @GetMapping("/user/index")
+    public String index() {
+        return "/user/index";
+    }
+
+    /**
+     * 用户中心：发布的贴
+     */
+    @ResponseBody
+    @GetMapping("/user/publish")
+    public Result userPublic() {
+        IPage page = postService.page(getPage(), new QueryWrapper<Post>()
+                .eq("user_id", getProfileId())
+                .orderByDesc("created"));
+        long total = page.getTotal();
+        req.setAttribute("publishCount", total);
+        return Result.success(page);
+    }
+
+    /**
+     * 用户中心：收藏的贴
+     */
+    @ResponseBody
+    @GetMapping("/user/collection")
+    public Result userCollection() {
+        IPage page = postService.page(getPage(), new QueryWrapper<Post>()
+                .inSql("id", "SELECT post_id FROM m_user_collection where user_id = " + getProfileId())
+        );
+        req.setAttribute("collectionCount", page.getTotal());
+        return Result.success(page);
+    }
+
+    /*--------------------------------------4.我的消息------------------------------------>*/
+
+    /**
+     * 我的消息
+     */
+    @GetMapping("/user/mess")
+    public String mess() {
+        return "/user/mess";
+    }
+
 }

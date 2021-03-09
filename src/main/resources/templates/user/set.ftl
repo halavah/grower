@@ -1,36 +1,14 @@
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
+<#--宏common.ftl（个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息））-->
+<#include "/inc/common.ftl"/>
 
 <#--【三、填充（导航栏 + 页脚）】-->
 <@layout "基本设置">
 
     <div class="layui-container fly-marginTop fly-user-main">
-        <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-            <li class="layui-nav-item">
-                <a href="home.ftl">
-                    <i class="layui-icon">&#xe609;</i>
-                    我的主页
-                </a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="index.ftl">
-                    <i class="layui-icon">&#xe612;</i>
-                    用户中心
-                </a>
-            </li>
-            <li class="layui-nav-item layui-this">
-                <a href="set.ftl">
-                    <i class="layui-icon">&#xe620;</i>
-                    基本设置
-                </a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="message.ftl">
-                    <i class="layui-icon">&#xe611;</i>
-                    我的消息
-                </a>
-            </li>
-        </ul>
+        <#--用户中心-左侧链接（我的主页、用户中心、基本设置、我的消息）-->
+        <@centerLeft level=2></@centerLeft>
 
         <div class="site-tree-mobile layui-hide">
             <i class="layui-icon">&#xe602;</i>

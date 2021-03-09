@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
@@ -137,7 +136,7 @@ public class AuthController extends BaseController {
     /**
      * 登出：Shiro校验
      */
-    @RequestMapping("/user/logout")
+    @GetMapping("/user/logout")
     public String logout() {
         // Shiro将【当前用户】登出
         SecurityUtils.getSubject().logout();

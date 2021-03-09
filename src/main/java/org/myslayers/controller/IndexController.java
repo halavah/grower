@@ -3,7 +3,7 @@ package org.myslayers.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.myslayers.vo.PostVo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class IndexController extends BaseController {
@@ -11,7 +11,7 @@ public class IndexController extends BaseController {
     /**
      * 首页index
      */
-    @RequestMapping({"", "/", "/index","/index.html"})
+    @GetMapping({"", "/", "/index","/index.html"})
     public String index() {
         /**
          * 多条（post实体类、PostVo实体类）：分页集合results

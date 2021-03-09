@@ -1,5 +1,5 @@
-## 3. 集成 Shiro 实现用户中心
-### 3.1 个人用户的【用户中心】：我的主页
+## 3. 集成 Shiro 实现个人账户-我的主页、基本设置
+### 3.1 个人账户：我的主页
 - `UserController` 控制层
 ```java
 @Controller
@@ -106,7 +106,7 @@ public class UserController extends BaseController {
 </@layout>
 ```
 
-### 3.2 个人用户的【用户中心】：基本设置-更新资料
+### 3.2 个人账户：基本设置-更新资料
 - `/res/mods/index.js` 源码可知：【lay-submit】此处默认【表单跳转】reload="true"，则会【重新加载当前页面】
 ```javascript
 //表单提交
@@ -237,7 +237,7 @@ public class UserController extends BaseController {
 </div>
 ```
 
-### 3.2 个人用户的【用户中心】：基本设置-更新头像（上传图片）
+### 3.2 个人账户：基本设置-更新头像（上传图片）
 - application.yml：自定义上传路径
 ```yaml
 file:
@@ -370,7 +370,7 @@ public class UserController extends BaseController {
 }
 ```
 
-### 3.3 个人用户的【用户中心】：基本设置-更新头像（更新图片）
+### 3.3 个人账户：基本设置-更新头像（更新图片）
 - `/res/mods/user.js` 源码可知：修改默认 `Post请求` 更新图片路径，从 `/user/set` 更换为 `/user/setAvatar`
 ```javascript
 //上传图片
@@ -450,7 +450,7 @@ public class UserController extends BaseController {
 </div>
 ```
 
-### 3.3 个人用户的【用户中心】：基本设置-更新密码
+### 3.4 个人账户：基本设置-更新密码
 - `UserController` 控制层：更新密码
 ```java
 @Controller
@@ -473,7 +473,7 @@ public class UserController extends BaseController {
             return Result.fail("密码不正确");
         }
 
-        //如果nowpass正确，则更新密码
+        //如果nowpass正确，则更新密码 
         user.setPassword(SecureUtil.md5(pass));
         userService.updateById(user);
 
@@ -522,7 +522,7 @@ public class UserController extends BaseController {
 </div>
 ```
 
-### 3.4 个人用户的【用户中心】：基本设置-其他
+### 3.5 个人账户：基本设置-其他
 - `UserController` 控制层：调试 `set.ftl` 页面时，发现 `/message/nums/` 出现 404 错误，因此补充该数据接口
 ```java
 @Controller
