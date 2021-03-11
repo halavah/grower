@@ -27,13 +27,55 @@
     <#include "/inc/footer.ftl"/>
 
     <script>
+        <#-----------------方式一：利用shiro来实现【登录状态】---------------------->
+        <#--未登录的状态-->
+        <#--【shiro.guest】：验证当前用户是否为 “访客”，即未认证（包含未记住）的用户
+        <@shiro.guest>
+            // layui.cache.page = '';
+            layui.cache.user = {
+                username: '游客'
+                , uid: -1
+                , avatar: '/res/images/avatar/00.jpg'
+                , experience: 83
+                , sex: '男'
+            };
+            layui.config({
+                version: "3.0.0"
+                ,base: '/res/mods/' //这里实际使用时，建议改成绝对路径
+            }).extend({
+                fly: 'index'
+            }).use('fly');
+        </@shiro.guest>
+        -->
+
+        <#--登录后的状态-->
+        <#--【shiro.user】：认证通过或已记住的用户
+        <@shiro.user>
+            // layui.cache.page = '';
+            layui.cache.user = {
+                username: <@shiro.principal property="username"/>
+                , uid: <@shiro.principal property="id"/>
+                , avatar: <@shiro.principal property="avatar"/>
+                , experience: 83
+                , sex: <@shiro.principal property="gender"/>
+            };
+            layui.config({
+                version: "3.0.0"
+                , base: '/res/mods/' //这里实际使用时，建议改成绝对路径
+            }).extend({
+                fly: 'index'
+            }).use('fly');
+        </@shiro.user>
+        -->
+
+        <#-----------------方式二：利用session来实现【登录状态】---------------------->
         // layui.cache.page = '';
         layui.cache.user = {
             username: '${profile.username!"游客"}'
             , uid: ${profile.id!"-1"}
             , avatar: '${profile.avatar!"/res/images/avatar/00.jpg"}'
             , experience: 83
-            , sex: '${profile.sex!"男"}'
+            , sex: '${profile.gender!"男"}'
         };
 
         layui.config({

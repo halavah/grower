@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author myslayers
@@ -73,5 +73,9 @@ public class Post extends BaseEntity {
      */
     private Integer level;
 
+    /**
+     * 状态
+     */
+    private Integer status;
 
 }

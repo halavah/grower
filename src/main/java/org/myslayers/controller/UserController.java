@@ -12,9 +12,13 @@ import org.myslayers.entity.User;
 import org.myslayers.entity.UserMessage;
 import org.myslayers.shiro.AccountProfile;
 import org.myslayers.utils.UploadUtil;
+import org.myslayers.vo.UserMessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -101,6 +105,9 @@ public class UserController extends BaseController {
         profile.setUsername(temp.getUsername());
         profile.setSign(temp.getSign());
 
+        //方式二：利用session来实现【登录状态】，修改【更新资料/更新头像】后，需要【手动更新shiro/session数据】
+        SecurityUtils.getSubject().getSession().setAttribute("profile", profile);
+
         return Result.success().action("/user/set#info");
     }
 
@@ -128,6 +135,8 @@ public class UserController extends BaseController {
             //更新显示【Shiro】：更新 “AccountRealm类中，返回的AccountProfile对象” -> 【header.ftl】
             AccountProfile profile = getProfile();
             profile.setAvatar(user.getAvatar());
+
+            //方式二：利用session来实现【登录状态】，修改【更新资料/更新头像】后，需要【手动更新shiro/session数据】
             SecurityUtils.getSubject().getSession().setAttribute("profile", profile);
 
             return Result.success().action("/user/set#avatar");
@@ -158,16 +167,6 @@ public class UserController extends BaseController {
         userService.updateById(user);
 
         return Result.success().action("/user/set#pass");
-    }
-
-    @ResponseBody
-    @PostMapping("/message/nums/")
-    public Map msgNums() {
-        int count = messageService.count(new QueryWrapper<UserMessage>()
-                .eq("to_user_id", getProfileId())
-                .eq("status", "0")
-        );
-        return MapUtil.builder("status", 0).put("count", count).build();
     }
 
     /*--------------------------------------3.用户中心------------------------------------>*/
@@ -210,11 +209,41 @@ public class UserController extends BaseController {
     /*--------------------------------------4.我的消息------------------------------------>*/
 
     /**
-     * 我的消息
+     * 我的消息：查询消息
      */
     @GetMapping("/user/mess")
     public String mess() {
+        IPage<UserMessageVo> page = messageService.paging(getPage(), new QueryWrapper<UserMessage>()
+                .eq("to_user_id", getProfileId())
+                .orderByDesc("created")
+        );
+        req.setAttribute("pageData", page);
         return "/user/mess";
     }
 
+    /**
+     * 我的消息：删除单个消息 或 删除全部消息（前端参数包含“all=true”，如果为ture时，使用【.eq(!all, "id", id))】 删除全部消息）
+     */
+    @ResponseBody
+    @PostMapping("/message/remove/")
+    public Result msgRemove(Long id, @RequestParam(defaultValue = "false") Boolean all) {
+        boolean remove = messageService.remove(new QueryWrapper<UserMessage>()
+                .eq("to_user_id", getProfileId())
+                .eq(!all, "id", id));
+        return remove ? Result.success(null) : Result.fail("删除失败");
+    }
+
+    /**
+     * 我的消息：使用layout.ftl中 利用session来实现【登录状态】 后，发现【接口异常】，
+     *         查看后发现，【/res/mods/index.js】源码，【新消息通知 -> layui.cache.user.uid !== -1】 -> 因此补充 status、count 数据接口
+     */
+    @ResponseBody
+    @PostMapping("/message/nums/")
+    public Map msgNums() {
+        int count = messageService.count(new QueryWrapper<UserMessage>()
+                .eq("to_user_id", getProfileId())//全部数量的消息
+                .eq("status", "0")           //未读的消息  未读0 已读1
+        );
+        return MapUtil.builder("status", 0).put("count", count).build();
+    }
 }

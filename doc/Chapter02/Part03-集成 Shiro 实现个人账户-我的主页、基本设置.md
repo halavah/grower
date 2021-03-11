@@ -424,7 +424,6 @@ public class UserController extends BaseController {
             //更新显示【Shiro】：更新 “AccountRealm类中，返回的AccountProfile对象” -> 【header.ftl】
             AccountProfile profile = getProfile();
             profile.setAvatar(user.getAvatar());
-            SecurityUtils.getSubject().getSession().setAttribute("profile", profile);
 
             return Result.success().action("/user/set#avatar");
         }
@@ -520,21 +519,4 @@ public class UserController extends BaseController {
         </div>
     </form>
 </div>
-```
-
-### 3.5 个人账户：基本设置-其他
-- `UserController` 控制层：调试 `set.ftl` 页面时，发现 `/message/nums/` 出现 404 错误，因此补充该数据接口
-```java
-@Controller
-public class UserController extends BaseController {
-    @ResponseBody
-    @RequestMapping("/message/nums/")
-    public Map msgNums() {
-        int count = messageService.count(new QueryWrapper<UserMessage>()
-                .eq("to_user_id", getProfileId())
-                .eq("status", "0")
-        );
-        return MapUtil.builder("status", 0).put("count", count).build();
-    }
-}
 ```

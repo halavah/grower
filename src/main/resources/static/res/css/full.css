@@ -10,7 +10,7 @@ html .fly-full{margin-top: 0;}
 /* 头部 */
 .header{width:136px; height:100%;}
 .header .main{position: static; width:auto;}
-.logo{top:20px; left:50%; width:86px; height:74px; margin-left:-43px; background:url(../images/logo-1.png);}
+.logo{top:20px; left:50%; width:86px; height:74px; margin-left:-43px; background:url(../images/logo.png);}
 .nav{position:relative; left:0; top:110px; border-top:1px solid #282C35;}
 .nav a{display:block; height:50px; line-height:50px; padding:0; text-align:center;}
 .nav a:first-child{border-top:1px solid #424857;}

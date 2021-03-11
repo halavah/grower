@@ -50,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         temp.setUsername(user.getUsername());
         temp.setPassword(SecureUtil.md5(user.getPassword()));//SecureUtil使用md5对password加密
         temp.setEmail(user.getEmail());
-        temp.setAvatar("/res/images/avatar/default.png");
+        temp.setAvatar("/res/images/avatar/default.jpg");
         temp.setCreated(new Date());
         temp.setPoint(0);
         temp.setVipLevel(0);

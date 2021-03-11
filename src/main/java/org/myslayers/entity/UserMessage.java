@@ -41,12 +41,13 @@ public class UserMessage extends BaseEntity {
      */
     private Long commentId;
 
-    private String content;
-
     /**
-     * 消息类型
+     * 消息类型：0代表系统消息、1代表评论的文章、2代表回复的评论
      */
     private Integer type;
 
-
+    /**
+     * 状态：0代表未读、1代表已读
+     */
+    private Integer status;
 }

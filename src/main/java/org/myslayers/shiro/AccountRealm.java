@@ -29,9 +29,11 @@ public class AccountRealm extends AuthorizingRealm {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
         // 2.根据token获取username、password，并进行login登录，返回AccountProfile账户信息
         AccountProfile profile = userService.login(usernamePasswordToken.getUsername(), String.valueOf(usernamePasswordToken.getPassword()));
-        SecurityUtils.getSubject().getSession().setAttribute("profile", profile);
         // 3.通过profile、token.getCredentials()、getName()，获取AuthenticationInfo子接口对象（SimpleAuthenticationInfo）
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(profile, token.getCredentials(), getName());
+
+        // 方式二：利用session来实现【登录状态】，修改【更新资料/更新头像】后，需要【手动更新shiro/session数据】
+        SecurityUtils.getSubject().getSession().setAttribute("profile", profile);
         return info;
     }
 }

@@ -13,7 +13,7 @@
             <#--【shiro.guest】：验证当前用户是否为 “访客”，即未认证（包含未记住）的用户-->
             <@shiro.guest>
                 <li class="layui-nav-item">
-                    <a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>
+                    <a class="iconfont icon-touxiang layui-hide-xs" href="/login"></a>
                 </li>
                 <li class="layui-nav-item">
                     <a href="/login">登入</a>

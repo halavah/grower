@@ -28,6 +28,16 @@ public class AuthController extends BaseController {
     @Autowired
     Producer producer;
 
+    /*--------------------------------------1.用户注册------------------------------------>*/
+
+    /**
+     * 注册
+     */
+    @GetMapping("/register")
+    public String register() {
+        return "/auth/reg";
+    }
+
     /**
      * 图片验证码
      */
@@ -45,22 +55,6 @@ public class AuthController extends BaseController {
         // 4.通过ImageIO输出image
         ServletOutputStream outputStream = resp.getOutputStream();
         ImageIO.write(image, "jpg", outputStream);
-    }
-
-    /**
-     * 登录
-     */
-    @GetMapping("/login")
-    public String login() {
-        return "/auth/login";
-    }
-
-    /**
-     * 注册
-     */
-    @GetMapping("/register")
-    public String register() {
-        return "/auth/reg";
     }
 
     /**
@@ -91,6 +85,16 @@ public class AuthController extends BaseController {
         Result result = userService.register(user);
         // 如果校验成功，则完成注册，跳转/login页面
         return result.action("/login");
+    }
+
+    /*--------------------------------------2.用户登录------------------------------------>*/
+
+    /**
+     * 登录
+     */
+    @GetMapping("/login")
+    public String login() {
+        return "/auth/login";
     }
 
     /**
@@ -132,6 +136,8 @@ public class AuthController extends BaseController {
          */
         return Result.success().action("/");
     }
+
+    /*--------------------------------------3.用户登出------------------------------------>*/
 
     /**
      * 登出：Shiro校验
