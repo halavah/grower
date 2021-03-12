@@ -1,7 +1,5 @@
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
-<#--宏common.ftl（个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息））-->
-<#include "/inc/common.ftl"/>
 
 <#--【三、填充（导航栏 + 页脚）】-->
 <@layout "基本设置">

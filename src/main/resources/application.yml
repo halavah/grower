@@ -10,11 +10,11 @@ spring:
       classic_compatible: true
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
+    cache: false  # 清除缓存实现热部署
   redis:
     host: 127.0.0.1
     post: 6379
     password: myslayers
-
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
 

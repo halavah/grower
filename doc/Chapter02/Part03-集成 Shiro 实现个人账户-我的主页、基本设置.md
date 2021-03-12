@@ -71,7 +71,7 @@ public class UserController extends BaseController {
                                 <#if post.recommend>
                                     <span class="fly-jing">精</span>
                                 </#if>
-                                <a href="/detail/${post.id}" class="jie-title">
+                                <a href="/post/${post.id}" class="jie-title">
                                     ${post.title}
                                 </a>
                                 <i>${timeAgo(post.created)}</i>

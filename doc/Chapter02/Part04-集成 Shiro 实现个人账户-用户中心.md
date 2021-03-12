@@ -80,13 +80,13 @@ public class UserController extends BaseController {
                         <#--第一步，编写模版（laytpl），使用一个script标签存放模板：https://www.layui.com/doc/modules/laytpl.html-->
                             <script id="tpl-publish" type="text/html">
                                 <li>
-                                    <a class="jie-title" href="/detail/{{d.id}}" target="_blank">
+                                    <a class="jie-title" href="/post/{{d.id}}" target="_blank">
                                         {{d.title}}
                                     </a>
                                     <i>
                                         {{layui.util.toDateString(d.created, 'yyyy-MM-dd HH:mm:ss')}}
                                     </i>
-                                    <a class="mine-edit" href="/detail/edit?id={{d.id}}">编辑</a>
+                                    <a class="mine-edit" href="/post/edit?id={{d.id}}">编辑</a>
                                     <em>
                                         {{d.viewCount }}阅/{{d.commentCount}}答
                                     </em>
@@ -106,7 +106,7 @@ public class UserController extends BaseController {
                             <script id="tpl-collection" type="text/html">
                                 <li>
 
-                                    <a class="jie-title" href="/detail/{{d.id}}" target="_blank">{{d.title}}</a>
+                                    <a class="jie-title" href="/post/{{d.id}}" target="_blank">{{d.title}}</a>
                                     <i>收藏于{{layui.util.timeAgo(d.created, true)}}</i>
                                 </li>
                             </script>

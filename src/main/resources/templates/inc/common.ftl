@@ -39,7 +39,7 @@
         </div>
         <div>
             <div class="layui-badge">${post.categoryName}</div>
-            <a href="/detail/${post.id}">${post.title}</a>
+            <a href="/post/${post.id}">${post.title}</a>
         </div>
         <div class="fly-list-info">
             <a href="/user/${post.authorId}">

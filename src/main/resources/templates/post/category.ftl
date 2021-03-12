@@ -1,7 +1,5 @@
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
-<#--宏common.ftl（分页、一条数据posting）-->
-<#include "/inc/common.ftl"/>
 
 <#--【三、填充（导航栏 + 页脚）】-->
 <@layout "博客分类">
@@ -50,6 +48,9 @@
         </div>
     </div>
 
+    <script>
+        layui.cache.page = 'jie';
+    </script>
 </@layout>
 
 

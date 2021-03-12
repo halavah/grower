@@ -221,7 +221,7 @@ newmsg: function () {
 }
 ```
 
-### 5.4 登录状态：`layout.ftl` 中 `script` 设置用户登录状态
+### 5.4 其他：`layout.ftl` 中 `script` 设置用户登录状态
 - 方式一：利用 shiro 来实现【登录状态】
 ```injectedfreemarker
 <#--宏：1.macro定义脚本，名为layout，参数为title-->

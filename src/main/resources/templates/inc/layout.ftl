@@ -17,6 +17,9 @@
     </head>
     <body>
 
+    <#--宏common.ftl：分页、一条数据posting、个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息）-->
+    <#include "/inc/common.ftl" /><#--经过测试，发现common公共包，必须在header.ftl等之前进行“include导入”-->
+
     <#--【一、导航栏】-->
     <#include "/inc/header.ftl"/>
 

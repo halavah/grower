@@ -1,7 +1,5 @@
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
-<#--宏common.ftl（分页、一条数据posting）-->
-<#include "/inc/common.ftl"/>
 
 <#--【三、填充（导航栏 + 页脚）】-->
 <@layout "首页">
@@ -25,7 +23,7 @@
                     <#--1.1.2 消息列表-->
                     <ul class="fly-list">
                         <@details size=2 level=1>
-                            <#--1.1.2.1 消息列表-->
+                        <#--1.1.2.1 消息列表-->
                             <#list results.records as post>
                                 <@plisting post></@plisting>
                             </#list>
@@ -65,5 +63,4 @@
             <#include "/inc/right.ftl"/>
         </div>
     </div>
-
 </@layout>

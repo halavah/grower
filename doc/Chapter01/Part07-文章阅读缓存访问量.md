@@ -7,7 +7,7 @@ public class PostController extends BaseController {
     /**
      * 详情detail
      */
-    @RequestMapping("/detail/{id:\\d*}")
+    @RequestMapping("/post/{id:\\d*}")
     public String detail(@PathVariable(name = "id") long id) {
         /**
          * 一条（post实体类、PostVo实体类）

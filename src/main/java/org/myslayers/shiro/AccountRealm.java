@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * AccountRealm：重写父类AuthorizingRealm方法
+ * Shiro过滤器：授权 / 认证
  */
 @Component
 public class AccountRealm extends AuthorizingRealm {
@@ -18,11 +18,22 @@ public class AccountRealm extends AuthorizingRealm {
     @Autowired
     UserService userService;
 
+    /**
+     * doGetAuthorizationInfo（授权）：
+     *
+     * 需要判断是否有访问某个资源的权限
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         return null;
     }
 
+    /**
+     * doGetAuthenticationInfo（认证）
+     *
+     * 执行以下语句的时候，用于生成token验证信息，在doCredentialsMatch之前执行：SecurityUtils.getSubject().login(token);
+     * 即，本次项目在AuthController.java中，/login数据接口，会使用token进行登录（SecurityUtils.getSubject().login(token);）
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         // 1.获取Token

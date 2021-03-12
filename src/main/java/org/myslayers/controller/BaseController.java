@@ -2,10 +2,7 @@ package org.myslayers.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.SecurityUtils;
-import org.myslayers.service.CommentService;
-import org.myslayers.service.PostService;
-import org.myslayers.service.UserMessageService;
-import org.myslayers.service.UserService;
+import org.myslayers.service.*;
 import org.myslayers.shiro.AccountProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +28,9 @@ public class BaseController {
 
     @Autowired
     UserMessageService messageService;
+
+    @Autowired
+    UserCollectionService collectionService;
 
     /**
      * 首页 -> 默认分页的基本信息
@@ -58,5 +58,3 @@ public class BaseController {
     }
 
 }
-
-
