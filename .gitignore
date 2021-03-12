@@ -31,7 +31,6 @@ log/
 
 # others
 *.jar
-*.zip
 *.war
 *.tar
 *.tar.gz
