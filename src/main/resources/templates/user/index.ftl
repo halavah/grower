@@ -40,6 +40,7 @@
                   <i>
                     {{layui.util.toDateString(d.created, 'yyyy-MM-dd HH:mm:ss')}}
                   </i>
+                  <a class="mine-edit" href="/post/{{d.id}}">查看</a>
                   <a class="mine-edit" href="/post/edit?id={{d.id}}">编辑</a>
                   <em>
                     {{d.viewCount }}阅/{{d.commentCount}}答

@@ -39,9 +39,9 @@
           <ul class="jie-row">
               <#list posts as post>
                 <li>
-                    <#if post.recommend>
-                      <span class="fly-jing">精</span>
-                    </#if>
+                  <#if post.recommend>
+                    <span class="fly-jing">精</span>
+                  </#if>
                   <a href="/post/${post.id}" class="jie-title">
                       ${post.title}
                   </a>

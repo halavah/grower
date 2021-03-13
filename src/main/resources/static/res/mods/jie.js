@@ -38,7 +38,7 @@ layui.define('fly', function (exports) {
   });
 
   //提交回答
-  fly.form['/jie/reply/'] = function (data, required) {
+  fly.form['/post/reply/'] = function (data, required) {
     var tpl = '<li>\
       <div class="detail-about detail-about-reply">\
         <a class="fly-avatar" href="/u/{{ layui.cache.user.uid }}" target="_blank">\
@@ -76,11 +76,11 @@ layui.define('fly', function (exports) {
     del: function (div) {
       layer.confirm('确认删除该文章吗？', function (index) {
         layer.close(index);
-        fly.json('/api/jie-delete/', {
+        fly.json('/post/delete/', {
           id: div.data('id')
         }, function (res) {
           if (res.status === 0) {
-            location.href = '/jie/';
+            location.href = '/user/index/';
           } else {
             layer.msg(res.msg);
           }
@@ -91,7 +91,7 @@ layui.define('fly', function (exports) {
     //设置置顶、状态
     , set: function (div) {
       var othis = $(this);
-      fly.json('/api/jie-set/', {
+      fly.json('/admin/jie-set/', {
         id: div.data('id')
         , rank: othis.attr('rank')
         , field: othis.attr('field')

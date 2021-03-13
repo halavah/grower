@@ -26,9 +26,19 @@
             <#if post.recommend><span class="layui-badge layui-bg-red">精帖</span></#if>
 
             <div class="fly-admin-box" data-id="${post.id}">
-              <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
-              <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>
-              <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>
+                <#--发布者删除-->
+                <#if post.userId == profile.id>
+                  <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
+                </#if>
+
+                <#--管理员操作-->
+                <@shiro.hasRole name="admin">
+                  <span class="layui-btn layui-btn-xs jie-admin" type="set" field="delete" rank="1">删除</span>
+                    <#if post.level == 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span></#if>
+                    <#if post.level gt 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span></#if>
+                    <#if !post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span></#if>
+                    <#if post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span></#if>
+                </@shiro.hasRole>
             </div>
 
             <span class="fly-list-nums">
@@ -129,11 +139,25 @@
           </div>
         </div>
       </div>
-        <#include "/inc/right.ftl" />
+
+      <#--2.右侧md4-->
+      <#include "/inc/right.ftl"/>
     </div>
   </div>
   <script>
     layui.cache.page = 'jie';
+
+    //如果你是采用模版自带的编辑器，你需要开启以下语句来解析
+    $(function () {
+      layui.use(['fly', 'face'], function() {
+        var fly = layui.fly;
+        $('.detail-body').each(function(){
+          var othis = $(this), html = othis.html();
+          othis.html(fly.content(html));
+        });
+      });
+    });
+
   </script>
 
 </@layout>

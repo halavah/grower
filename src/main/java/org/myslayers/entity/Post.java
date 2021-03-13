@@ -1,6 +1,8 @@
 package org.myslayers.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -16,11 +18,13 @@ public class Post extends BaseEntity {
     /**
      * 标题
      */
+    @NotBlank(message = "标题不能为空")
     private String title;
 
     /**
      * 内容
      */
+    @NotBlank(message = "内容不能为空")
     private String content;
 
     /**
@@ -28,6 +32,7 @@ public class Post extends BaseEntity {
      */
     private String editMode;
 
+    @NotNull(message = "分类不能为空")
     private Long categoryId;
 
     /**

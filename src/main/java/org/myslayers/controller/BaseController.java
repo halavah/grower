@@ -3,6 +3,7 @@ package org.myslayers.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
+import org.myslayers.service.CategoryService;
 import org.myslayers.service.CommentService;
 import org.myslayers.service.PostService;
 import org.myslayers.service.UserCollectionService;
@@ -35,6 +36,9 @@ public class BaseController {
 
     @Autowired
     UserCollectionService collectionService;
+
+    @Autowired
+    CategoryService categoryService;
 
     /**
      * 首页 -> 默认分页的基本信息
