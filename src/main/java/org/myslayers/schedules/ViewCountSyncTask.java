@@ -1,6 +1,9 @@
 package org.myslayers.schedules;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import org.myslayers.entity.Post;
 import org.myslayers.service.PostService;
 import org.myslayers.utils.RedisUtil;
@@ -8,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 定时器定时更新
@@ -51,7 +50,8 @@ public class ViewCountSyncTask {
             //3.2 如果[存在需要更新阅读量的文章】，则先【根据ids查询全部的文章】，再【从缓存中获取该postId对应的访问量】，然后【给Post重新赋值viewCount】
             List<Post> posts = postService.list(new QueryWrapper<Post>().in("id", ids));
             for (Post post : posts) {
-                Integer viewCount = (Integer) redisUtil.hget("day:rank:post:" + post.getId(), "post-viewCount");
+                Integer viewCount = (Integer) redisUtil
+                    .hget("day:rank:post:" + post.getId(), "post-viewCount");
                 post.setViewCount(viewCount);
             }
 

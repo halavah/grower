@@ -7,14 +7,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.myslayers.entity.Post;
 import org.myslayers.vo.PostVo;
 
-/**
- * <p>
- *  服务类
- * </p>
- *
- * @author myslayers
- * @since 2020-12-06
- */
 public interface PostService extends IService<Post> {
 
     IPage<PostVo> selectPosts(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order);

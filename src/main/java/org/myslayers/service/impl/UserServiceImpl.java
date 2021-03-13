@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.Date;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.myslayers.common.lang.Result;
@@ -13,16 +14,6 @@ import org.myslayers.service.UserService;
 import org.myslayers.shiro.AccountProfile;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
-/**
- * <p>
- * 服务实现类
- * </p>
- *
- * @author myslayers
- * @since 2020-12-06
- */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
@@ -32,9 +23,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
          * 查询【用户名或邮箱】是否被占用
          */
         int count = this.count(new QueryWrapper<User>()
-                .eq("email", user.getEmail())
-                .or()
-                .eq("username", user.getUsername())
+            .eq("email", user.getEmail())
+            .or()
+            .eq("username", user.getUsername())
         );
         if (count > 0) {
             return Result.fail("用户名或邮箱已被占用");
@@ -68,11 +59,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
          */
         User user = this.getOne(new QueryWrapper<User>().eq("email", email));
         //用户名不存在，抛出异常
-        if(user == null) {
+        if (user == null) {
             throw new UnknownAccountException();
         }
         //用户密码不正确，抛出异常
-        if(!user.getPassword().equals(password)){
+        if (!user.getPassword().equals(password)) {
             throw new IncorrectCredentialsException();
         }
         //更新用户最后登录时间，并updateById将user写入到数据库

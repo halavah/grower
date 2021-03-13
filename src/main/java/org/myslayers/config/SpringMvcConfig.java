@@ -21,6 +21,6 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/upload/avatar/**")
-                .addResourceLocations("file:///" + consts.getUploadDir() + "/avatar/");
+            .addResourceLocations("file:///" + consts.getUploadDir() + "/avatar/");
     }
 }

@@ -1,19 +1,23 @@
 package org.myslayers.common.templates;
 
 import freemarker.core.Environment;
-import freemarker.template.*;
-import org.springframework.util.Assert;
-
+import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateMethodModelEx;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.springframework.util.Assert;
 
 /**
  * mblog：开发标签
  */
 public class DirectiveHandler {
+
     private Environment env;
     private Map<String, TemplateModel> parameters;
     private TemplateModel[] loopVars;
@@ -23,13 +27,15 @@ public class DirectiveHandler {
     /**
      * 构建 DirectiveHandler
      *
-     * @param env 系统环境变量，通常用它来输出相关内容，如Writer out = env.getOut()。
+     * @param env        系统环境变量，通常用它来输出相关内容，如Writer out = env.getOut()。
      * @param parameters 自定义标签传过来的对象
-     * @param loopVars 循环替代变量
-     * @param body 用于处理自定义标签中的内容，如<@myDirective>将要被处理的内容</@myDirective>；当标签是<@myDirective />格式时，body=null。
+     * @param loopVars   循环替代变量
+     * @param body       用于处理自定义标签中的内容，如<@myDirective>将要被处理的内容</@myDirective>；当标签是<@myDirective
+     *                   />格式时，body=null。
      */
-    public DirectiveHandler(Environment env, Map<String, TemplateModel> parameters, TemplateModel[] loopVars,
-                            TemplateDirectiveBody body) {
+    public DirectiveHandler(Environment env, Map<String, TemplateModel> parameters,
+        TemplateModel[] loopVars,
+        TemplateDirectiveBody body) {
         this.env = env;
         this.loopVars = loopVars;
         this.parameters = parameters;
@@ -104,7 +110,7 @@ public class DirectiveHandler {
     public String getContextPath() {
         String ret = null;
         try {
-            ret =  TemplateModelUtils.converString(getEnvModel("base"));
+            ret = TemplateModelUtils.converString(getEnvModel("base"));
         } catch (TemplateModelException e) {
         }
         return ret;
@@ -134,19 +140,23 @@ public class DirectiveHandler {
 
     public abstract static class BaseMethod implements TemplateMethodModelEx {
 
-        public String getString(List<TemplateModel> arguments, int index) throws TemplateModelException {
+        public String getString(List<TemplateModel> arguments, int index)
+            throws TemplateModelException {
             return TemplateModelUtils.converString(getModel(arguments, index));
         }
 
-        public Integer getInteger(List<TemplateModel> arguments, int index) throws TemplateModelException {
+        public Integer getInteger(List<TemplateModel> arguments, int index)
+            throws TemplateModelException {
             return TemplateModelUtils.converInteger(getModel(arguments, index));
         }
 
-        public Long getLong(List<TemplateModel> arguments, int index) throws TemplateModelException {
+        public Long getLong(List<TemplateModel> arguments, int index)
+            throws TemplateModelException {
             return TemplateModelUtils.converLong(getModel(arguments, index));
         }
 
-        public Date getDate(List<TemplateModel> arguments, int index) throws TemplateModelException {
+        public Date getDate(List<TemplateModel> arguments, int index)
+            throws TemplateModelException {
             return TemplateModelUtils.converDate(getModel(arguments, index));
         }
 

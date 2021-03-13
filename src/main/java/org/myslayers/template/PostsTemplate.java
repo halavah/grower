@@ -29,7 +29,7 @@ public class PostsTemplate extends TemplateDirective {
     @Override
     public void execute(DirectiveHandler handler) throws Exception {
         // 置顶等级level
-        Integer level = handler.getInteger("level",1);
+        Integer level = handler.getInteger("level", 1);
         // 起始页码pn
         Integer pn = handler.getInteger("pn", 1);
         // 页面大小size
@@ -42,7 +42,8 @@ public class PostsTemplate extends TemplateDirective {
          *   1.封装level、pn、size、categoryId
          *   2.注册为“posts”函数：默认调用该函数时，自动查询 -> 分页集合results
          */
-        IPage<PostVo> page = postService.selectPosts(new Page(pn, size), categoryId, null, level, null, "created");
+        IPage<PostVo> page = postService
+            .selectPosts(new Page(pn, size), categoryId, null, level, null, "created");
         handler.put(RESULTS, page).render();
     }
 }

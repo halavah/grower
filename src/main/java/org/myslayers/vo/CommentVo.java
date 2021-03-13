@@ -8,6 +8,7 @@ import org.myslayers.entity.Comment;
  */
 @Data
 public class CommentVo extends Comment {
+
     private Long authorId;
 
     private String authorName;

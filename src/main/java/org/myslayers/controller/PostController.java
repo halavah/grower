@@ -3,6 +3,7 @@ package org.myslayers.controller;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import java.util.Date;
 import org.myslayers.common.lang.Result;
 import org.myslayers.entity.Post;
 import org.myslayers.entity.UserCollection;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Date;
 
 @Controller
 public class PostController extends BaseController {
@@ -61,7 +60,8 @@ public class PostController extends BaseController {
          * 评论（comment实体类）
          */
         //评论：page(分页信息、文章id、用户id、排序)
-        IPage<CommentVo> results = commentService.selectComments(getPage(), postVo.getId(), null, "created");
+        IPage<CommentVo> results = commentService
+            .selectComments(getPage(), postVo.getId(), null, "created");
         //req：CommentVo分页集合
         req.setAttribute("pageData", results);
 
@@ -82,8 +82,8 @@ public class PostController extends BaseController {
     @PostMapping("/collection/find/")
     public Result collectionFind(Long pid) {
         int count = collectionService.count(new QueryWrapper<UserCollection>()
-                .eq("user_id", getProfileId())
-                .eq("post_id", pid)
+            .eq("user_id", getProfileId())
+            .eq("post_id", pid)
         );
         //【/res/mods/jie.js】源码可知，异步渲染（layui.cache.user.uid != -1时，会调用/collection/find/接口）
         //【/res/mods/jie.js】源码可知，异步渲染（res.data.collection ? '取消收藏' : '收藏'），count > 0 为true时，则res.data.collection也为true
@@ -105,8 +105,8 @@ public class PostController extends BaseController {
 
         //文章是否被收藏
         int count = collectionService.count(new QueryWrapper<UserCollection>()
-                .eq("user_id", getProfileId())
-                .eq("post_id", pid)
+            .eq("user_id", getProfileId())
+            .eq("post_id", pid)
         );
         if (count > 0) {
             return Result.fail("你已经收藏");
@@ -137,12 +137,11 @@ public class PostController extends BaseController {
 
         //将该文章进行删除
         collectionService.remove(new QueryWrapper<UserCollection>()
-                .eq("user_id", getProfileId())
-                .eq("post_id", pid));
+            .eq("user_id", getProfileId())
+            .eq("post_id", pid));
 
         return Result.success();
     }
-
 
 
 }

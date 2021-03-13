@@ -1,14 +1,14 @@
 package org.myslayers.template;
 
 import freemarker.template.TemplateModelException;
+import java.util.Date;
+import java.util.List;
 import org.myslayers.common.templates.DirectiveHandler;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.List;
-
 @Component
 public class TimeAgoMethod extends DirectiveHandler.BaseMethod {
+
     private static final long ONE_MINUTE = 60000L;
     private static final long ONE_HOUR = 3600000L;
     private static final long ONE_DAY = 86400000L;

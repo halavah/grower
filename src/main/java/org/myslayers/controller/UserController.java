@@ -5,6 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import org.apache.shiro.SecurityUtils;
 import org.myslayers.common.lang.Result;
 import org.myslayers.entity.Post;
@@ -21,18 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-/**
- * <p>
- * 前端控制器
- * </p>
- *
- * @author myslayers
- * @since 2020-12-06
- */
 @Controller
 public class UserController extends BaseController {
 
@@ -52,8 +43,8 @@ public class UserController extends BaseController {
 
         //文章：用户近期【30天】的文章
         List<Post> posts = postService.list(new QueryWrapper<Post>()
-                .eq("user_id", getProfileId())
-                .orderByDesc("created")
+            .eq("user_id", getProfileId())
+            .orderByDesc("created")
         );
         req.setAttribute("posts", posts);
 
@@ -87,8 +78,8 @@ public class UserController extends BaseController {
 
         //校验：从数据库中查询【username是否存在】、【id并非当前用户】，如果count > 0，则代表“该昵称已被占用”
         int count = userService.count(new QueryWrapper<User>()
-                .eq("username", getProfile().getUsername())
-                .ne("id", getProfileId()));
+            .eq("username", getProfile().getUsername())
+            .ne("id", getProfileId()));
         if (count > 0) {
             return Result.fail("该昵称已被占用");
         }
@@ -116,7 +107,8 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @PostMapping("/user/upload")
-    public Result uploadAvatar(@RequestParam(value = "file") MultipartFile file) throws IOException {
+    public Result uploadAvatar(@RequestParam(value = "file") MultipartFile file)
+        throws IOException {
         return uploadUtil.upload(UploadUtil.type_avatar, file);
     }
 
@@ -186,8 +178,8 @@ public class UserController extends BaseController {
     @GetMapping("/user/publish")
     public Result userPublic() {
         IPage page = postService.page(getPage(), new QueryWrapper<Post>()
-                .eq("user_id", getProfileId())
-                .orderByDesc("created"));
+            .eq("user_id", getProfileId())
+            .orderByDesc("created"));
         long total = page.getTotal();
         req.setAttribute("publishCount", total);
         return Result.success(page);
@@ -200,7 +192,7 @@ public class UserController extends BaseController {
     @GetMapping("/user/collection")
     public Result userCollection() {
         IPage page = postService.page(getPage(), new QueryWrapper<Post>()
-                .inSql("id", "SELECT post_id FROM m_user_collection where user_id = " + getProfileId())
+            .inSql("id", "SELECT post_id FROM m_user_collection where user_id = " + getProfileId())
         );
         req.setAttribute("collectionCount", page.getTotal());
         return Result.success(page);
@@ -214,8 +206,8 @@ public class UserController extends BaseController {
     @GetMapping("/user/mess")
     public String mess() {
         IPage<UserMessageVo> page = messageService.paging(getPage(), new QueryWrapper<UserMessage>()
-                .eq("to_user_id", getProfileId())
-                .orderByDesc("created")
+            .eq("to_user_id", getProfileId())
+            .orderByDesc("created")
         );
         req.setAttribute("pageData", page);
         return "/user/mess";
@@ -228,21 +220,21 @@ public class UserController extends BaseController {
     @PostMapping("/message/remove/")
     public Result msgRemove(Long id, @RequestParam(defaultValue = "false") Boolean all) {
         boolean remove = messageService.remove(new QueryWrapper<UserMessage>()
-                .eq("to_user_id", getProfileId())
-                .eq(!all, "id", id));
+            .eq("to_user_id", getProfileId())
+            .eq(!all, "id", id));
         return remove ? Result.success(null) : Result.fail("删除失败");
     }
 
     /**
-     * 我的消息：使用layout.ftl中 利用session来实现【登录状态】 后，发现【接口异常】，
-     *         查看后发现，【/res/mods/index.js】源码，【新消息通知 -> layui.cache.user.uid !== -1】 -> 因此补充 status、count 数据接口
+     * 我的消息：使用layout.ftl中 利用session来实现【登录状态】 后，发现【接口异常】， 查看后发现，【/res/mods/index.js】源码，【新消息通知 ->
+     * layui.cache.user.uid !== -1】 -> 因此补充 status、count 数据接口
      */
     @ResponseBody
     @PostMapping("/message/nums/")
     public Map msgNums() {
         int count = messageService.count(new QueryWrapper<UserMessage>()
-                .eq("to_user_id", getProfileId())//全部数量的消息
-                .eq("status", "0")           //未读的消息  未读0 已读1
+            .eq("to_user_id", getProfileId())//全部数量的消息
+            .eq("status", "0")           //未读的消息  未读0 已读1
         );
         return MapUtil.builder("status", 0).put("count", count).build();
     }

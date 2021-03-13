@@ -9,14 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.myslayers.entity.UserMessage;
 import org.myslayers.vo.UserMessageVo;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author myslayers
- * @since 2020-12-06
- */
 public interface UserMessageMapper extends BaseMapper<UserMessage> {
+
     IPage<UserMessageVo> selectMessages(Page page, @Param(Constants.WRAPPER) QueryWrapper<UserMessage> wrapper);
 }

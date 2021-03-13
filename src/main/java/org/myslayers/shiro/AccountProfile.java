@@ -1,9 +1,8 @@
 package org.myslayers.shiro;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 用户在login后，将查询后的user结果，复制一份给AccountProfile【用户信息】

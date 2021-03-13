@@ -1,23 +1,14 @@
 package org.myslayers.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
+import java.util.Date;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
-import java.util.Date;
-
-/**
- * <p>
- * 
- * </p>
- *
- * @author myslayers
- * @since 2020-12-06
- */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)

@@ -5,8 +5,9 @@ import org.myslayers.entity.UserMessage;
 
 @Data
 public class UserMessageVo extends UserMessage {
+
     /**
-     * 我的消息的【接收消息的用户ID】-用户名name     未使用
+     * 我的消息的【接收消息的用户ID】-用户名name
      */
     private String toUserName;
 

@@ -9,14 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import org.myslayers.entity.Post;
 import org.myslayers.vo.PostVo;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author myslayers
- * @since 2020-12-06
- */
 public interface PostMapper extends BaseMapper<Post> {
 
     IPage<PostVo> selectPosts(Page page, @Param(Constants.WRAPPER) QueryWrapper<Post> wrapper);

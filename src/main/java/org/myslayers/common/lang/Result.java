@@ -1,14 +1,14 @@
 package org.myslayers.common.lang;
 
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * 返回结果：封装类
  */
 @Data
 public class Result implements Serializable {
+
     // 操作状态：0成功，-1失败
     private int status;
 
@@ -54,7 +54,7 @@ public class Result implements Serializable {
     /**
      * 跳转页面
      */
-    public Result action(String action){
+    public Result action(String action) {
         this.action = action;
         return this;
     }

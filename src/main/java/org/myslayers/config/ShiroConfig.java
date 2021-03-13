@@ -1,6 +1,8 @@
 package org.myslayers.config;
 
 import cn.hutool.core.map.MapUtil;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -9,9 +11,6 @@ import org.myslayers.shiro.AccountRealm;
 import org.myslayers.shiro.AuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Shiro配置类：安全管理器、拦截器链、自定义过滤器
@@ -24,7 +23,7 @@ public class ShiroConfig {
      * 安全管理器
      */
     @Bean
-    public SecurityManager securityManager(AccountRealm accountRealm){
+    public SecurityManager securityManager(AccountRealm accountRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(accountRealm);
         log.info("------------------>securityManager注入成功");

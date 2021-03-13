@@ -2,10 +2,9 @@ package org.myslayers.config;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
+import java.util.Properties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Properties;
 
 /**
  * kaptcha图片验证码配置类
@@ -14,7 +13,7 @@ import java.util.Properties;
 public class kaptchaConfig {
 
     @Bean
-    public DefaultKaptcha producer () {
+    public DefaultKaptcha producer() {
         Properties propertis = new Properties();
         //无边框
         propertis.put("kaptcha.border", "no");

@@ -1,6 +1,8 @@
 package org.myslayers.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import java.util.List;
+import javax.servlet.ServletContext;
 import org.myslayers.entity.Category;
 import org.myslayers.service.CategoryService;
 import org.myslayers.service.PostService;
@@ -9,9 +11,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
-
-import javax.servlet.ServletContext;
-import java.util.List;
 
 /**
  * Context配置类
@@ -28,15 +27,12 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     PostService postService;
 
     /**
-     * 项目启动时，会同时调用该run方法：
-     *
-     * 加载导航栏中的“提问、分享、讨论、建议”，并将其list放入servletContext上下文对象
-     * 加载本周热议
+     * 项目启动时，会同时调用该run方法：加载导航栏中的“提问、分享、讨论、建议”，并将其list放入servletContext上下文对象 加载本周热议
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
         List<Category> categories = categoryService.list(new QueryWrapper<Category>()
-                .eq("status", 0)
+            .eq("status", 0)
         );
         servletContext.setAttribute("categorys", categories);
 

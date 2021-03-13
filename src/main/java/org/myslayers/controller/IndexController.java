@@ -11,13 +11,14 @@ public class IndexController extends BaseController {
     /**
      * 首页index
      */
-    @GetMapping({"", "/", "/index","/index.html"})
+    @GetMapping({"", "/", "/index", "/index.html"})
     public String index() {
         /**
          * 多条（post实体类、PostVo实体类）：分页集合results
          */
         //多条：selectPosts(分页信息、分类id、用户id、置顶、精选、排序)
-        IPage<PostVo> results = postService.selectPosts(getPage(), null, null, null, null, "created");
+        IPage<PostVo> results = postService
+            .selectPosts(getPage(), null, null, null, null, "created");
         req.setAttribute("postVoDatas", results);
 
         /**
