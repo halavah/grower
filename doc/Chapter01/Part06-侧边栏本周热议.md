@@ -1,8 +1,6 @@
 ## 6. 侧边栏本周热议
 ### 6.1 Redis环境搭建
-- 添加 redis 依赖，使用 utils 包下的 RedisUtil 对内置 RedisTemplate 进行封装
-- 添加 hutool 依赖，使用 DateUtil 类中的 offsetDay()、format()
-- 考虑到 redis 序列化后出现乱码问题，使用 RedisConfig 配置类进行编码的处理
+- `pom.xml` ：项目依赖，【添加 redis 依赖，添加 hutool 依赖】
 ```xml
 <dependencies>
     <!--Redis-->
@@ -19,6 +17,7 @@
     </dependency>
 </dependencies>
 ```
+- `RedisConfig.java` ：配置类，【考虑到 redis 序列化后出现乱码问题，使用 RedisConfig 配置类进行编码的处理】
 ```java
 /**
  * 指定Redis的序列化后的格式
@@ -108,14 +107,16 @@ public class RedisConfig {
         ```
         
 ### 6.3 本周热议的【初始化操作】
-- 项目启动前，获取【近 7 天文章】
-- 初始化【近 7 天文章】的总评论量（先使用 SortedSet 集合对【排行榜 7 天内全部文章】进行 zadd 操作，并设置它们 expire 为 7 天；再使用 Hash 哈希表对【排行榜 7 天内全部文章】进行 hexists 判断，再 hset 缓存操作）
-    - 添加 add——将【近 7 天文章】创建日期时间作为 key 值，每篇文章对应的 id 作为它的 value 值，每篇文章对应的评论 comment 作为它的 score 值，并使用 redis 的工具类（RedisUtil），对文章的具体属性进行 zSet()缓存操作
-    - 过期 expire——让【近 7 天文章】的 key 过期： 7-（当前时间-创建时间）= 过期时间
-    - 缓存——缓存【近 7 天文章】的一些基本信息，例如文章 id，标题 title，评论数量，作者信息...方便访问【近 7 天文章】时，直接 redis，而非 MySQL
-        - 先对文章进行 EXISTS 判断其缓存是否存在
-        - 如果 false 不存在，则再 hset 缓存操作
-- 对【近 7 天文章】做并集运算（zUnionAndStore）， 并使用根据评论量的数量从大到小进行展示（zrevrange）
+- 实现逻辑：
+    - 项目启动前，获取【近 7 天文章】
+    - 初始化【近 7 天文章】的总评论量（先使用 SortedSet 集合对【排行榜 7 天内全部文章】进行 zadd 操作，并设置它们 expire 为 7 天；再使用 Hash 哈希表对【排行榜 7 天内全部文章】进行 hexists 判断，再 hset 缓存操作）
+        - 添加 add——将【近 7 天文章】创建日期时间作为 key 值，每篇文章对应的 id 作为它的 value 值，每篇文章对应的评论 comment 作为它的 score 值，并使用 redis 的工具类（RedisUtil），对文章的具体属性进行 zSet()缓存操作
+        - 过期 expire——让【近 7 天文章】的 key 过期： 7-（当前时间-创建时间）= 过期时间
+        - 缓存——缓存【近 7 天文章】的一些基本信息，例如文章 id，标题 title，评论数量，作者信息...方便访问【近 7 天文章】时，直接 redis，而非 MySQL
+            - 先对文章进行 EXISTS 判断其缓存是否存在
+            - 如果 false 不存在，则再 hset 缓存操作
+    - 对【近 7 天文章】做并集运算（zUnionAndStore）， 并使用根据评论量的数量从大到小进行展示（zrevrange）
+- `ContextStartup.java` ：配置类
 ```java
 /**
  * Context配置类
@@ -156,6 +157,7 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     }
 }
 ```
+- `PostServiceImpl.java` ：服务层实现
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
@@ -210,9 +212,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 ```
 
 ### 6.4 本周热议的【更新操作】
-- 自增/自减评论数
-- 更新这篇文章的缓存时间，并更新这篇文章的基本信息
-- 对【近 7 天文章】重新做并集运算（zUnionAndStore）， 并使用根据评论量的数量从大到小进行展示（zrevrange）
+- 实现逻辑：
+    - 自增/自减评论数
+    - 更新这篇文章的缓存时间，并更新这篇文章的基本信息
+    - 对【近 7 天文章】重新做并集运算（zUnionAndStore）， 并使用根据评论量的数量从大到小进行展示（zrevrange）
+- `PostServiceImpl.java` ：服务层实现
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {

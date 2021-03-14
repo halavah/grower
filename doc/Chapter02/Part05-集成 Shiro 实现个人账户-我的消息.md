@@ -1,6 +1,6 @@
 ## 5. 集成 Shiro 实现个人账户-我的消息
 ### 5.1 个人账户：我的消息【查询消息】
-- `UserController` 控制层
+- `UserController.java` ：控制层，【查询消息】
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -18,7 +18,7 @@ public class UserController extends BaseController {
     }
 }
 ```
-- `UserMessageVo` 实体类：【我的消息：查询消息】对应的 entity
+- `UserMessageVo.java` ：实体类
 ```java
 @Data
 public class UserMessageVo extends UserMessage {
@@ -43,7 +43,7 @@ public class UserMessageVo extends UserMessage {
     private String commentContent;
 }
 ```
-- `UserMessageMapper` 数据层：【我的消息：查询消息】对应的 Mapper
+- `UserMessageMapper.xml` ：数据层实现
 ```xml
 <select id="selectMessages" resultType="org.myslayers.vo.UserMessageVo">
     SELECT m.*,
@@ -66,7 +66,7 @@ public class UserMessageVo extends UserMessage {
         ${ew.customSqlSegment}
 </select>
 ```
-- 使用：freemarker 模板
+- `index.ftl` ：模板引擎
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
@@ -135,7 +135,7 @@ public class UserMessageVo extends UserMessage {
 ```
 
 ### 5.2 个人账户：我的消息【删除单个消息 或 删除全部消息】
-- `UserController` 控制层
+- `UserController.java` ：控制层，【删除单个消息 或 删除全部消息】
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -168,7 +168,7 @@ public class UserController extends BaseController {
 ```
 
 ### 5.3 个人账户：我的消息【消息弹窗】
-- `UserController` 控制层
+- `UserController.java` ：控制层，【消息弹窗】
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -187,7 +187,7 @@ public class UserController extends BaseController {
     }
 }    
 ```
-- `/res/mods/index.js` 可知：如果 `res.status === 0 && res.count > 0`，会出现弹窗【你有 X 条未读消息】
+- `/res/mods/index.js` ：源码可知，如果 `res.status === 0 && res.count > 0`，会出现弹窗【你有 X 条未读消息】
 ```javascript
 //新消息通知
 newmsg: function () {
@@ -222,7 +222,8 @@ newmsg: function () {
 ```
 
 ### 5.4 其他：`layout.ftl` 中 `script` 设置用户登录状态
-- 方式一：利用 shiro 来实现【登录状态】
+1. 方式一：利用 shiro 来实现【登录状态】
+- `layout.ftl` ：模板引擎
 ```injectedfreemarker
 <#--宏：1.macro定义脚本，名为layout，参数为title-->
 <#macro layout title>
@@ -297,7 +298,8 @@ newmsg: function () {
     </html>
 </#macro>
 ```
-- 方式二：利用 session 来实现【登录状态】，修改【更新资料/更新头像】后，需要【手动更新 shiro/session 数据】
+2.方式二：利用 session 来实现【登录状态】，修改【更新资料/更新头像】后，需要【手动更新 shiro/session 数据】
+- `layout.ftl` ：模板引擎
 ```injectedfreemarker
 <#--宏：1.macro定义脚本，名为layout，参数为title-->
 <#macro layout title>
@@ -350,6 +352,7 @@ newmsg: function () {
     </html>
 </#macro>
 ```
+- `AccountRealm.java` ：配置类，【手动更新 shiro/session 数据】
 ```java
 /**
  * AccountRealm：重写父类AuthorizingRealm方法
@@ -380,6 +383,7 @@ public class AccountRealm extends AuthorizingRealm {
     }
 }
 ```
+- `UserController.java` ：控制层，【手动更新 shiro/session 数据】
 ```java
 @Controller
 public class UserController extends BaseController {

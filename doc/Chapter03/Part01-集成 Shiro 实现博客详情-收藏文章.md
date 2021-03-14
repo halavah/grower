@@ -1,6 +1,6 @@
 ## 1. 集成 Shiro 实现博客详情-收藏文章
 ### 1.1 博客详情：收藏文章【判断用户是否收藏了文章】
-- `PostController` 控制层
+- `PostController.java` ：控制层，【判断用户是否收藏了文章】
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -22,7 +22,7 @@ public class PostController extends BaseController {
 ```
 
 ### 1.2 博客详情：收藏文章【加入收藏】
-- `PostController` 控制层
+- `PostController.java` ：控制层，【加入收藏】
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -63,7 +63,7 @@ public class PostController extends BaseController {
 ```
 
 ### 1.3 博客详情：收藏文章【取消收藏】
-- `PostController` 控制层
+- `PostController.java` ：控制层，【取消收藏】
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -90,8 +90,8 @@ public class PostController extends BaseController {
 
 ### 1.4 其他：Shiro自定义过滤器【判断请求是否是Ajax请求，还是Web请求】
 - 场景：如果用户退出登录后，点击【收藏文章】，报错【请求异常，请重试】，如何弹窗提示【请先登录！】
-- 解决：Shiro自定义过滤器，重写 UserFilter 父类中的 redirectToLogin() 方法
-- `AuthFilter` 过滤器：判断请求是否是Ajax请求，还是Web请求
+- 解决：Shiro 自定义过滤器，重写 UserFilter 父类中的 redirectToLogin() 方法
+- `AuthFilter.java` ：过滤器，判断请求是否是 Ajax 请求，还是 Web 请求
 ```java
 public class AuthFilter extends UserFilter {
 
@@ -122,7 +122,7 @@ public class AuthFilter extends UserFilter {
     }
 }
 ```
-- `ShiroConfig` 配置类：安全管理器、拦截器链、自定义过滤器
+- `ShiroConfig.java` ：配置类，安全管理器、拦截器链、自定义过滤器
 ```java
 /**
  * Shiro配置类：安全管理器、拦截器链、自定义过滤器
@@ -203,7 +203,7 @@ public class ShiroConfig {
     }
 }
 ```
-- `static/res/mods/index.js` 源码可知：如果 status 为 0 ，则代表登录成功；status 为 -1，则代表登录失败，并弹窗显示 msg 内容
+- `static/res/mods/index.js` ：源码可知，如果 status 为 0 ，则代表登录成功；status 为 -1，则代表登录失败，并弹窗显示 msg 内容
 ```javascript
 //Ajax
 json: function (url, data, success, options) {
@@ -236,12 +236,3 @@ json: function (url, data, success, options) {
     });
 }
 ```
-
-
-
-
-
-
-
-
-

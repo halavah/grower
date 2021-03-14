@@ -1,6 +1,6 @@
 ## 7. 文章阅读缓存
 ### 7.1 数据一致性
-- 文章阅读【缓存实现访问量】：减少访问数据库的次数，存在一个 BUG，只与点击链接的次数相关，没有与用户的 id 进行绑定
+- `PostController.java` ：控制层，【文章阅读【缓存实现访问量】，减少访问数据库的次数，存在一个 BUG，只与点击链接的次数相关，没有与用户的 id 进行绑定】
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -36,6 +36,7 @@ public class PostController extends BaseController {
     }
 }
 ```
+- `PostServiceImpl.java` ：服务层实现
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
@@ -66,7 +67,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 ```
 
 ### 7.2 定时器定时更新
-- 每分钟同步一次（缓存 -> 同步到数据库）
+- `Application.java`：项目启动，【每分钟同步一次（缓存 -> 同步到数据库）】
 ```java
 @EnableScheduling//开启定时器
 @SpringBootApplication
@@ -78,6 +79,7 @@ public class Application {
     }
 }
 ```
+- `ViewCountSyncTask.java` ：定时器
 ```java
 /**
  * 定时器定时更新
@@ -138,7 +140,3 @@ public class ViewCountSyncTask {
     }
 }
 ```
-
-
-
-

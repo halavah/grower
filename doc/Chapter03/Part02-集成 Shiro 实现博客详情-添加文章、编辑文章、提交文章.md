@@ -1,6 +1,6 @@
 ## 2. 集成 Shiro 实现博客详情-添加文章、编辑文章、提交文章
 ### 2.1 博客详情：添加文章/编辑文章、提交文章
-- `PostController` 控制层
+- `PostController.java` ：控制层，【添加】、【编辑】、【提交】
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -66,7 +66,7 @@ public class PostController extends BaseController {
     }
 }
 ```
-- 使用：freemarker 模板
+- `edit.ftl` ：模板引擎，【添加】、【编辑】、【提交】
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl" />
@@ -147,7 +147,7 @@ public class PostController extends BaseController {
 ```
 
 ### 2.2 博客详情：添加文章/编辑文章-使用表情
-- `edit.ftl` 模板
+- `edit.ftl` ：模板引擎，默认表情无法被识别，需要引入 fly、face
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl" />

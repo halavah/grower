@@ -1,8 +1,34 @@
 ## 3. Controller 控制层接口
-### 3.1 indexController
-- 渲染分类：首页 index -> 分类（传入 id） -> 渲染分类 -> currentCategoryId
-- 接口数据：首页 index -> 多条（post 实体类、PostVo 实体类） -> postVoDatas
-- SQL 语句展示：多条（post 实体类、PostVo 实体类）
+### 3.1 首页
+- `IndexController.java` ：控制层
+```java
+@Controller
+public class IndexController extends BaseController {
+
+    /**
+     * 首页index
+     */
+    @GetMapping({"", "/", "/index", "/index.html"})
+    public String index() {
+        /**
+         * 多条（post实体类、PostVo实体类）：分页集合results
+         */
+        //多条：selectPosts(分页信息、分类id、用户id、置顶、精选、排序)
+        IPage<PostVo> results = postService
+            .selectPosts(getPage(), null, null, null, null, "created");
+        req.setAttribute("postVoDatas", results);
+
+        /**
+         * 分类（传入id） -> 渲染分类
+         */
+        //req：根据传入category表中当前页的id -> 【渲染】分类
+        req.setAttribute("currentCategoryId", 0);
+
+        return "index";
+    }
+}
+```
+- `PostMapper.xml` ：数据层实现，【多条（post 实体类、PostVo 实体类）】
 ```xml
 <select id="selectPosts" resultType="org.myslayers.vo.PostVo">
     SELECT  p.id,
@@ -35,12 +61,8 @@
 </select>
 ```
 
-### 3.2 PostController
-- 渲染分类：分类 category -> 分类（传入 id）-> 渲染分类 -> currentCategoryId
-- 解决数据：分类 category -> <@details categoryId=currentCategoryId pn=pn size=2>无法传入参数 pn 的方法：让 pn 直接从 req 请求中获取 -> 作为传入 posts 方法的参数
-- 接口数据：详情 detail -> 一条（post 实体类、PostVo 实体类） -> postVoData
-- 接口数据：详情 detail -> 评论（comment 实体类） -> commentVoDatas
-- 配置类：项目启动时，会同时调用该 run 方法：提前加载导航栏中的“提问、分享、讨论、建议”，并将其 list 放入 servletContext 上下文对象：
+### 3.2 导航栏
+- `ContextStartup.java` ：配置类
 ```java
 @Component
 public class ContextStartup implements ApplicationRunner, ServletContextAware {
@@ -70,7 +92,7 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     }
 }
 ```
-- SQL 语句展示：一条（post 实体类、PostVo 实体类）
+- `PostMapper.xml` ：数据层实现，【一条（post 实体类、PostVo 实体类）】
 ```xml
 <select id="selectOnePost" resultType="org.myslayers.vo.PostVo">
     SELECT p.id,
@@ -102,7 +124,7 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     ${ew.customSqlSegment}
 </select>
 ```
-- SQL 语句展示：评论（comment 实体类）
+- `CommentMapper.xml` ：数据层实现，【评论（comment 实体类）】
 ```xml
 <select id="selectComments" resultType="org.myslayers.vo.CommentVo">
     SELECT c.id,

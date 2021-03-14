@@ -1,11 +1,11 @@
 ## 4. 集成 Shiro 实现个人账户-用户中心
 ### 4.1 个人账户：用户中心
-- `UserController` 控制层
+- `UserController.java` ：控制层，【跳转页面】、【发布的贴】、【收藏的贴】
 ```java
 @Controller
 public class UserController extends BaseController {
     /**
-     * 用户中心
+     * 用户中心：跳转页面
      */
     @GetMapping("/user/index")
     public String index() {
@@ -40,7 +40,7 @@ public class UserController extends BaseController {
     }
 }
 ```
-- 使用：freemarker 模板，参考【layui 社区中的 flow 流加载、laytpl 模板引擎、util 工具文档】
+- `index.ftl` ：模板引擎，参考【layui 社区中的 flow 流加载、laytpl 模板引擎、util 工具文档】
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
@@ -183,6 +183,7 @@ public class UserController extends BaseController {
 ```
 
 ### 4.2 宏：个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息）
+- `common.ftl` ：模板引擎，【公共部分】
 ```injectedfreemarker
 <#--宏：个人账户-左侧链接（我的主页、用户中心、基本设置、我的消息）-->
 <#macro centerLeft level>

@@ -50,7 +50,7 @@
                       ${post.viewCount}阅/${post.commentCount}答
                   </em>
                 </li>
-              </#list>
+              </#list>home.ftlhome.ftl
               <#if !posts>
                 <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;">
                   <i style="font-size:14px;">没有发表任何求解</i>
