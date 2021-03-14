@@ -45,10 +45,10 @@ public class PostController extends BaseController {
         return "post/category";
     }
 
-    /*--------------------------------------详情detail-------------------------------------->*/
+    /*--------------------------------详情detail：文章+评论-------------------------------------->*/
 
     /**
-     * 详情detail：【查看】文章、【评论】文章
+     * 详情detail：【查看】文章、【查看】评论
      */
     @GetMapping("/post/{id:\\d*}")
     public String detail(@PathVariable(name = "id") long id) {
@@ -143,6 +143,9 @@ public class PostController extends BaseController {
             message.setStatus(0); //我的消息的【状态】：0代表未读、1代表已读
             message.setCreated(new Date());
             messageService.save(message);
+
+            // 即时通知【文章作者】（websocket）
+            wsService.sendMessCountToUser(message.getToUserId());
         }
 
         // 通知被@的人，有人回复了你的文章
@@ -159,13 +162,41 @@ public class PostController extends BaseController {
                 message.setStatus(0); //我的消息的【状态】：0代表未读、1代表已读
                 message.setCreated(new Date());
                 messageService.save(message);
+
+                // 即时通知【被@的用户】（websocket）
             }
         }
 
         return Result.success().action("/post/" + post.getId());
     }
 
+    /**
+     * 详情detail：【删除】评论
+     */
+    @ResponseBody
+    @Transactional
+    @PostMapping("/post/jieda-delete/")
+    public Result reply(Long id) {
+        Assert.notNull(id, "评论id不能为空！");
+        Comment comment = commentService.getById(id);
+        Assert.notNull(comment, "找不到对应评论！");
 
+        // 删除评论
+        if (comment.getUserId().longValue() != getProfileId().longValue()) {
+            return Result.fail("不是你发表的评论！");
+        }
+        commentService.removeById(id);
+
+        // 评论数量-1
+        Post post = postService.getById(comment.getPostId());
+        post.setCommentCount(post.getCommentCount() - 1);
+        postService.saveOrUpdate(post);
+
+        // 本周热议数量-1
+        postService.incrCommentCountAndUnionForWeekRank(post, false);
+
+        return Result.success(null);
+    }
 
     /*--------------------------------------收藏collection------------------------------------>*/
 
@@ -300,4 +331,3 @@ public class PostController extends BaseController {
         return Result.success().action("/post/" + post.getId());
     }
 }
-

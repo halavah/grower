@@ -22,4 +22,10 @@
     FROM `m_user_message` m
       ${ew.customSqlSegment}
   </select>
+
+  <update id="updateToReaded">
+    UPDATE m_user_message
+    SET status = 1
+      ${ew.customSqlSegment}
+  </update>
 </mapper>

@@ -215,7 +215,7 @@ layui.define('fly', function (exports) {
     , del: function (li) { //删除
       layer.confirm('确认删除该回答么？', function (index) {
         layer.close(index);
-        fly.json('/api/jieda-delete/', {
+        fly.json('/post/jieda-delete/', {
           id: li.data('id')
         }, function (res) {
           if (res.status === 0) {

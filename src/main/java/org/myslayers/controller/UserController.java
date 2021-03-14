@@ -6,6 +6,7 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.shiro.SecurityUtils;
@@ -210,6 +211,16 @@ public class UserController extends BaseController {
             .orderByDesc("created")
         );
         req.setAttribute("pageData", page);
+
+        //查看消息时，将全部消息的【状态：未读0】改为【状态：已读1】，并【批量修改 状态为已读1】
+        List<Long> ids = new ArrayList<>();
+        for (UserMessageVo messageVo : page.getRecords()) {
+            if (messageVo.getStatus() == 0) {
+                ids.add(messageVo.getId());
+            }
+        }
+        messageService.updateToReaded(ids); //批量处理
+
         return "/user/mess";
     }
 

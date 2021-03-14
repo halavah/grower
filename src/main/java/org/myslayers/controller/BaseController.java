@@ -9,6 +9,7 @@ import org.myslayers.service.PostService;
 import org.myslayers.service.UserCollectionService;
 import org.myslayers.service.UserMessageService;
 import org.myslayers.service.UserService;
+import org.myslayers.service.WsService;
 import org.myslayers.shiro.AccountProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,9 @@ public class BaseController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    WsService wsService;
 
     /**
      * 首页 -> 默认分页的基本信息

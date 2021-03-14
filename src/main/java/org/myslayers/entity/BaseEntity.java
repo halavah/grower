@@ -16,7 +16,3 @@ public class BaseEntity {
     private Date modified;
 
 }
-
-
-
-
