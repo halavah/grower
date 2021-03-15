@@ -157,7 +157,7 @@ public class AccountRealm extends AuthorizingRealm {
     }
 }
 ```
-- `UserServiceImpl.java` ：服务层实现，【AccountRealm 根据 token 获取 username、password，并进行 login 登录，返回 AccountProfile 账户信息】
+- `UserServiceImpl.java` ：业务层实现，【AccountRealm 根据 token 获取 username、password，并进行 login 登录，返回 AccountProfile 账户信息】
 ```java
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {

@@ -175,7 +175,7 @@ public class IndexController extends BaseController {
     }
 }
 ```
-- `SearchServiceImpl.java` ：服务层实现，【search 搜索，使用模型映射器进行 MP-page -> 转换为 JPA-page -> 转换为 MP-page】
+- `SearchServiceImpl.java` ：业务层实现，【search 搜索，使用模型映射器进行 MP-page -> 转换为 JPA-page -> 转换为 MP-page】
 ```java
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -212,37 +212,63 @@ public class SearchServiceImpl implements SearchService {
 <#--【三、填充（导航栏 + 页脚）】-->
 <@layout "搜索 - ${q}">
 
-  <#--【二、分类】-->
-  <#include "/inc/header-panel.ftl" />
+<#--【二、分类】-->
+    <#include "/inc/header-panel.ftl" />
 
   <div class="layui-container">
-    <div class="layui-row layui-col-space15">
+      <div class="layui-row layui-col-space15">
 
       <#--1.左侧md8-->
-      <div class="layui-col-md8">
-        <div class="fly-panel">
+          <div class="layui-col-md8">
+              <div class="fly-panel">
 
-          <#--1.2.1 共有X条记录-->
-          <div class="fly-panel-title fly-filter">
-            <a>您正在搜索关键字”${q}“，共有 <strong>${pageData.total}</strong> 条记录</a>
-            <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a>
-          </div>
+              <#--1.2.1 共有X条记录-->
+                  <div class="fly-panel-title fly-filter">
+                      <a>您正在搜索关键字”${q}“，共有 <strong>${pageData.total}</strong> 条记录</a>
+                      <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a>
+                  </div>
 
-          <#--1.2.2 消息列表-->
-          <ul class="fly-list">
+              <#--1.2.2 消息列表-->
+                  <ul class="fly-list">
             <#list pageData.records as post>
               <@plisting post></@plisting>
             </#list>
-          </ul>
+                  </ul>
 
-          <#--1.2.3 分页条-->
-          <@paging pageData></@paging>
-        </div>
-      </div>
+              <#--1.2.3 分页条-->
+                  <div style="text-align: center">
+                  <#--待渲染的div块（laypage-main）-->
+                      <div id="laypage-main"></div>
+
+                  <#--Script渲染div块-->
+                      <script src="/res/layui/layui.js"></script>
+                      <script>
+                          layui.use('laypage', function () {
+                              var laypage = layui.laypage;
+
+                              //执行一个laypage实例
+                              laypage.render({
+                                  elem: 'laypage-main'
+                                  , count: ${pageData.total}
+                                  , curr: ${pageData.current}
+                                  , limit: ${pageData.size}
+                                  , jump: function (obj, first) {
+                                      //首次不执行，之后【跳转curr页面】
+                                      if (!first) {
+                                          location.href = "?q=" + '${q}' + "&&pn=" + obj.curr;
+                                      }
+                                  }
+                              });
+                          });
+                      </script>
+                  </div>
+
+              </div>
+          </div>
 
       <#--2.右侧md4-->
       <#include "/inc/right.ftl" />
-    </div>
+      </div>
   </div>
 </@layout>
 ```
@@ -281,7 +307,7 @@ public class AdminController extends BaseController {
     }
 }
 ```
-- `SearchServiceImpl.java` ：服务层实现，【initEsData 初始化数据】
+- `SearchServiceImpl.java` ：业务层实现，【initEsData 初始化数据】
 ```java
 @Service
 public class SearchServiceImpl implements SearchService {

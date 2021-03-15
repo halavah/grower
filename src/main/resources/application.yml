@@ -25,6 +25,12 @@ spring:
       repositories:
         enabled: true
 
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 127.0.0.1
+    port: 5672
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
 

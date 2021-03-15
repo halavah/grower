@@ -36,7 +36,7 @@ public class PostController extends BaseController {
     }
 }
 ```
-- `PostServiceImpl.java` ：服务层实现
+- `PostServiceImpl.java` ：业务层实现
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {

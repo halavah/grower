@@ -26,7 +26,7 @@
      <li lay-id="pass">密码</li>
 
      <@shiro.hasRole name="admin">
-      <li lay-id="es">同步ES</li>
+      <li lay-id="es">全局搜索</li>
      </@shiro.hasRole>
 
     </ul>
@@ -136,7 +136,7 @@
      <@shiro.hasRole name="admin">
       <div class="layui-form layui-form-pane layui-tab-item">
        <form action="/admin/initEsData" method="post">
-        <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit alert="true">同步ES数据
+        <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit alert="true">同步数据
         </button>
        </form>
       </div>

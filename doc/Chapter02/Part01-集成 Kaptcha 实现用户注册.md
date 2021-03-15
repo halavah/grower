@@ -398,7 +398,7 @@ public class AuthController extends BaseController {
     }
 }
 ```
-- `UserServiceImpl.java` ：服务层实现
+- `UserServiceImpl.java` ：业务层实现
 ```java
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {

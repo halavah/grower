@@ -157,7 +157,7 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     }
 }
 ```
-- `PostServiceImpl.java` ：服务层实现
+- `PostServiceImpl.java` ：业务层实现
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
@@ -216,7 +216,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     - 自增/自减评论数
     - 更新这篇文章的缓存时间，并更新这篇文章的基本信息
     - 对【近 7 天文章】重新做并集运算（zUnionAndStore）， 并使用根据评论量的数量从大到小进行展示（zrevrange）
-- `PostServiceImpl.java` ：服务层实现
+- `PostServiceImpl.java` ：业务层实现
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {

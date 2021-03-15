@@ -1,5 +1,6 @@
 package org.myslayers.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.modelmapper.ModelMapper;
+import org.myslayers.search.amqp.PostMqIndexMessage;
+import org.myslayers.entity.Post;
 import org.myslayers.search.model.PostDocment;
 import org.myslayers.search.repository.PostRepository;
 import org.myslayers.service.PostService;
@@ -53,13 +56,13 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public int initEsData(List<PostVo> records) {
-        if(records == null || records.isEmpty()) {
+        if (records == null || records.isEmpty()) {
             return 0;
         }
 
         //将List<PostVo> -> List<PostDocment>
         List<PostDocment> documents = new ArrayList<>();
-        for(PostVo vo : records) {
+        for (PostVo vo : records) {
             //转换操作：将source映射到destinationType的实例，map(Object source, Class<D> destinationType)
             PostDocment postDocment = new ModelMapper().map(vo, PostDocment.class);
             documents.add(postDocment);
@@ -68,29 +71,32 @@ public class SearchServiceImpl implements SearchService {
         return documents.size();
     }
 
-//    /**
-//     * ES：createOrUpdateIndex 创建/更新索引
-//     */
-//    @Override
-//    public void createOrUpdateIndex(PostMqIndexMessage message) {
-//        Long postId = message.getPostId();
-//        PostVo postVo = postService.selectOnePost(new QueryWrapper<Post>().eq("p.id", postId));
-//
-//        PostDocment postDocment = modelMapper.map(postVo, PostDocment.class);
-//
-//        postRepository.save(postDocment);
-//
-//        log.info("es 索引更新成功！ ---> {}", postDocment.toString());
-//    }
-//
-//    /**
-//     * ES：removeIndex 移除索引
-//     */
-//    @Override
-//    public void removeIndex(PostMqIndexMessage message) {
-//        Long postId = message.getPostId();
-//
-//        postRepository.deleteById(postId);
-//        log.info("es 索引删除成功！ ---> {}", message.toString());
-//    }
+
+    /**
+     * ES：createOrUpdateIndex 创建/更新文章
+     */
+    @Override
+    public void createOrUpdateIndex(PostMqIndexMessage message) {
+        //根据message.getPostId() -> 查询文章
+        PostVo postVo = postService.selectOnePost(
+            new QueryWrapper<Post>().eq("p.id", message.getPostId())
+        );
+
+        //将postVo -> PostDocment
+        PostDocment postDocment = new ModelMapper().map(postVo, PostDocment.class);
+        postRepository.save(postDocment);
+
+        log.info("es 索引更新成功！ ---> {}", postDocment.toString());
+    }
+
+    /**
+     * ES：removeIndex 删除文章
+     */
+    @Override
+    public void removeIndex(PostMqIndexMessage message) {
+        //根据message.getPostId() -> 删除文章
+        postRepository.deleteById(message.getPostId());
+
+        log.info("es 索引删除成功！ ---> {}", message.toString());
+    }
 }

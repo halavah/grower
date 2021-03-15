@@ -180,7 +180,7 @@ outagedetectioninterval=2
 ```
 
 ### 2.4 条件构造器-AbstractWrapper、QueryWrapper、UpdateWrapper
-- `PostServiceImpl.java`：服务层实现
+- `PostServiceImpl.java`：业务层实现
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {

@@ -4,7 +4,9 @@ import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import java.util.Date;
+import org.myslayers.search.amqp.PostMqIndexMessage;
 import org.myslayers.common.lang.Result;
+import org.myslayers.config.RabbitConfig;
 import org.myslayers.entity.Comment;
 import org.myslayers.entity.Post;
 import org.myslayers.entity.User;
@@ -95,6 +97,10 @@ public class PostController extends BaseController {
         messageService.removeByMap(MapUtil.of("post_id", id));
         // 删除-用户中心【收藏的帖】-UserCollection中的post_id
         collectionService.removeByMap(MapUtil.of("post_id", id));
+
+        // RabbitMQ：消息同步，通知消息给RabbitMQ，告知【更新或添加】
+        // convertAndSend 【 交换机，路由密钥，发送的消息（操作的文章、操作的类型) 】
+        amqpTemplate.convertAndSend(RabbitConfig.es_exchage, RabbitConfig.es_bind_key, new PostMqIndexMessage(post.getId(), PostMqIndexMessage.REMOVE));
 
         return Result.success().action("/user/index");
     }
@@ -326,6 +332,10 @@ public class PostController extends BaseController {
             tempPost.setCategoryId(post.getCategoryId());
             postService.updateById(tempPost);
         }
+
+        // RabbitMQ：消息同步，通知消息给RabbitMQ，告知【更新或添加】
+        // convertAndSend 【 交换机，路由密钥，发送的消息（操作的文章、操作的类型) 】
+        amqpTemplate.convertAndSend(RabbitConfig.es_exchage, RabbitConfig.es_bind_key, new PostMqIndexMessage(post.getId(), PostMqIndexMessage.CREATE_OR_UPDATE));
 
         // 无论id是否存在，两类情况都会 retern 跳转到 /post/${id}
         return Result.success().action("/post/" + post.getId());

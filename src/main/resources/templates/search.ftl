@@ -28,7 +28,33 @@
           </ul>
 
           <#--1.2.3 分页条-->
-          <@paging pageData></@paging>
+          <div style="text-align: center">
+            <#--待渲染的div块（laypage-main）-->
+            <div id="laypage-main"></div>
+
+            <#--Script渲染div块-->
+            <script src="/res/layui/layui.js"></script>
+            <script>
+              layui.use('laypage', function () {
+                var laypage = layui.laypage;
+
+                //执行一个laypage实例
+                laypage.render({
+                  elem: 'laypage-main'
+                  , count: ${pageData.total}
+                  , curr: ${pageData.current}
+                  , limit: ${pageData.size}
+                  , jump: function (obj, first) {
+                    //首次不执行，之后【跳转curr页面】
+                    if (!first) {
+                      location.href = "?q=" + '${q}' + "&&pn=" + obj.curr;
+                    }
+                  }
+                });
+              });
+            </script>
+          </div>
+
         </div>
       </div>
 

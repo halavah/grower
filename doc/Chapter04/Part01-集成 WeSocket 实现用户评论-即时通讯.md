@@ -136,7 +136,7 @@ public class PostController extends BaseController {
     }
 }
 ```
-- `WsServiceImpl.java` ：服务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url 为 /user/20/messCount/ 】
+- `WsServiceImpl.java` ：业务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url 为 /user/20/messCount/ 】
 ```java
 @Service
 public class WsServiceImpl implements WsService {
@@ -288,7 +288,7 @@ public class UserController extends BaseController {
     }
 }
 ```
-- `UserMessageServiceImpl.java` ：服务层实现，【批量处理】
+- `UserMessageServiceImpl.java` ：业务层实现，【批量处理】
 ```java
 @Service
 public class UserMessageServiceImpl extends ServiceImpl<UserMessageMapper, UserMessage> implements UserMessageService {

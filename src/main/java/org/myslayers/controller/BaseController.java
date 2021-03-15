@@ -12,6 +12,7 @@ import org.myslayers.service.UserMessageService;
 import org.myslayers.service.UserService;
 import org.myslayers.service.WsService;
 import org.myslayers.shiro.AccountProfile;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -47,6 +48,9 @@ public class BaseController {
 
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    AmqpTemplate amqpTemplate;
 
     /**
      * 首页 -> 默认分页的基本信息
