@@ -136,7 +136,7 @@ public class PostController extends BaseController {
     }
 }
 ```
-- `WsServiceImpl.java` ：服务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url为 /user/20/messCount/ 】
+- `WsServiceImpl.java` ：服务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url 为 /user/20/messCount/ 】
 ```java
 @Service
 public class WsServiceImpl implements WsService {
@@ -260,7 +260,7 @@ public class WsServiceImpl implements WsService {
 ```
 
 ### 1.4 其他：用户中心-批量将未读改为已读
-- `UserController.java` ：控制层，【批量处理，将全部消息的【状态：未读0】改为【状态：已读1】，并【批量修改 状态为已读1】】
+- `UserController.java` ：控制层，【批量处理，将全部消息的【状态：未读 0】改为【状态：已读 1】，并【批量修改 状态为已读 1】】
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -312,7 +312,7 @@ public interface UserMessageMapper extends BaseMapper<UserMessage> {
     void updateToReaded(@Param(Constants.WRAPPER) QueryWrapper<UserMessage> wrapper);
 }
 ```
-- `UserMessageMapper.xml` ：数据层实现，【SQL命令】
+- `UserMessageMapper.xml` ：数据层实现，【SQL 命令】
 ```xml
 <update id="updateToReaded">
   UPDATE m_user_message

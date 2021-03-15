@@ -1,7 +1,10 @@
 package org.myslayers.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.myslayers.common.lang.Result;
 import org.myslayers.entity.Post;
+import org.myslayers.vo.PostVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +35,7 @@ public class AdminController extends BaseController {
         //删除
         if ("delete".equals(field)) {
             postService.removeById(id);
-            return Result.success();
+            return Result.success().action("/");
         } else if ("status".equals(field)) {
             //置顶
             post.setRecommend(rank == 1);
@@ -43,5 +46,33 @@ public class AdminController extends BaseController {
 
         postService.updateById(post);
         return Result.success();
+    }
+
+    /**
+     * 管理员操作：同步ES数据
+     */
+    @ResponseBody
+    @PostMapping("admin/initEsData")
+    public Result initEsData() {
+        //total：索引总记录
+        long total = 0;
+
+        //从第1页 -> 检索 -> 到第1000页
+        for (int i = 1; i < 1000; i++) {
+            //current：当前页   size：每页显示1000条数
+            Page page = new Page(i, 1000);
+
+            //调用【postService层】的selectPosts方法 -> 进行 IPage<PostVo> 查询
+            IPage<PostVo> paging = postService.selectPosts(page, null, null, null, null, null);
+
+            //调用【searchService层】的initEsData方法 -> 进行 total 统计
+            total += searchService.initEsData(paging.getRecords());
+
+            //某一次循环的查询过程中，如果【该页查询 小于 1000条】时，说明【该页 已经是 最后一页了】，因此使用break，停止查询
+            if (paging.getRecords().size() < 1000) {
+                break;
+            }
+        }
+        return Result.success("ES索引初始化成功，共 " + total + " 条记录！", null);
     }
 }

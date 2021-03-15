@@ -151,6 +151,3 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         redisUtil.hset(hKey, "post-viewCount", postVo.getViewCount());
     }
 }
-
-
-

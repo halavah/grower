@@ -107,38 +107,39 @@
       <version>0.1</version>
     </dependency>
 
-    <!--websocket-->
+    <!--websocket：消息即时提醒-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-websocket</artifactId>
     </dependency>
 
-    <!--        &lt;!&ndash; es 6.4.3版本 &ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.springframework.boot</groupId>-->
-    <!--            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
-    <!--            <version>2.1.1.RELEASE</version>-->
-    <!--        </dependency>-->
+    <!--elasticsearch-7.6.2：搜索引擎 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+      <version>2.1.1.RELEASE</version>
+    </dependency>
 
-    <!--        &lt;!&ndash;整合rabbitmq&ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.springframework.boot</groupId>-->
-    <!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
-    <!--            <version>2.1.2.RELEASE</version>-->
-    <!--        </dependency>-->
+    <!--rabbitmq：消息同步-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-amqp</artifactId>
+      <version>2.1.2.RELEASE</version>
+    </dependency>
 
-    <!--        <dependency>-->
-    <!--            <groupId>org.modelmapper</groupId>-->
-    <!--            <artifactId>modelmapper</artifactId>-->
-    <!--            <version>1.1.0</version>-->
-    <!--        </dependency>-->
+    <!--modelmapper：Model和DTO模型类的转换-->
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>1.1.1</version>
+    </dependency>
 
-    <!--        &lt;!&ndash; tio &ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.t-io</groupId>-->
-    <!--            <artifactId>tio-websocket-server</artifactId>-->
-    <!--            <version>3.2.5.v20190101-RELEASE</version>-->
-    <!--        </dependency>-->
+<!--    &lt;!&ndash; tio &ndash;&gt;
+    <dependency>
+      <groupId>org.t-io</groupId>
+      <artifactId>tio-websocket-server</artifactId>
+      <version>3.2.5.v20190101-RELEASE</version>
+    </dependency>-->
 
     <!--Devtools-->
     <dependency>

@@ -6,6 +6,7 @@ import org.apache.shiro.SecurityUtils;
 import org.myslayers.service.CategoryService;
 import org.myslayers.service.CommentService;
 import org.myslayers.service.PostService;
+import org.myslayers.service.SearchService;
 import org.myslayers.service.UserCollectionService;
 import org.myslayers.service.UserMessageService;
 import org.myslayers.service.UserService;
@@ -44,6 +45,9 @@ public class BaseController {
     @Autowired
     WsService wsService;
 
+    @Autowired
+    SearchService searchService;
+
     /**
      * 首页 -> 默认分页的基本信息
      */
@@ -51,7 +55,7 @@ public class BaseController {
         // pn代表起始页码
         int pn = ServletRequestUtils.getIntParameter(req, "pn", 1);
         // size代表页面大小
-        int size = ServletRequestUtils.getIntParameter(req, "size", 10);
+        int size = ServletRequestUtils.getIntParameter(req, "size", 5);
         return new Page(pn, size);
     }
 

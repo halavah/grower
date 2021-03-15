@@ -5,16 +5,26 @@ spring:
     url: jdbc:p6spy:mysql://127.0.0.1:3306/xblog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: 4023615
+
   freemarker:
     settings:
       classic_compatible: true
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
     cache: false  # 清除缓存实现热部署
+
   redis:
     host: 127.0.0.1
     post: 6379
     password: myslayers
+
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 127.0.0.1:9300
+      repositories:
+        enabled: true
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
 

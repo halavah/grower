@@ -27,13 +27,13 @@
 
             <div class="fly-admin-box" data-id="${post.id}">
                 <#--发布者删除-->
-                <#if post.userId == profile.id>
+                <#if post.userId == profile.id  &&  profile.id != 1>
                   <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
                 </#if>
 
                 <#--管理员操作-->
                 <@shiro.hasRole name="admin">
-                  <span class="layui-btn layui-btn-xs jie-admin" type="set" field="delete" rank="1">删除</span>
+                  <span class="layui-btn layui-btn-xs jie-admin" type="set" field="delete" rank="1" reload="true" >删除</span>
                     <#if post.level == 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span></#if>
                     <#if post.level gt 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span></#if>
                     <#if !post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span></#if>
@@ -58,8 +58,16 @@
               </a>
               <span>${timeAgo(post.created)}</span>
             </div>
+
             <div class="detail-hits" id="LAY_jieAdmin" data-id="${post.id}">
-              <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="edit.html">编辑此贴</a></span>
+              <#--登录状态下，用户id = 作者id，才能进行【编辑文章】-->
+              <#if profile.id == post.userId>
+                <span class="layui-btn layui-btn-xs jie-admin" type="edit">
+                  <a href="/post/edit?id=${post.id}">编辑此贴</a>
+                </span>
+              </#if>
+              <#--未登录状态下，【缺少span块引起的显示问题】，作用：空占位，美化样式-->
+              <span class="jie-admin" type=""></span>
             </div>
           </div>
 
