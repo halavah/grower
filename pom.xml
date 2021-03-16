@@ -134,12 +134,13 @@
       <version>1.1.1</version>
     </dependency>
 
-<!--    &lt;!&ndash; tio &ndash;&gt;
+    <!--tio-websocket：网络群聊-->
+    <!--参考：https://www.layui.com/layim/-->
     <dependency>
       <groupId>org.t-io</groupId>
       <artifactId>tio-websocket-server</artifactId>
       <version>3.2.5.v20190101-RELEASE</version>
-    </dependency>-->
+    </dependency>
 
     <!--Devtools-->
     <dependency>

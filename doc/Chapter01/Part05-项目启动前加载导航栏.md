@@ -1,4 +1,22 @@
 ## 5. 项目启动前预加载导航栏
+```text
+blog
+│  pom.xml
+│
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─config
+│      │          │      ContextStartup.java
+│      │
+│      └─resources
+│          ├─templates
+│          │  └─inc
+│          │        header-panel.ftl
+```
+
 ### 5.1 ContextStartup 配置类
 - `ContextStartup.java` ：配置类，【提前加载导航栏中的“提问、分享、讨论、建议”】
 ```java

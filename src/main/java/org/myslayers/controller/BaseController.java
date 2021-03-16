@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.myslayers.service.CategoryService;
+import org.myslayers.service.ChatService;
 import org.myslayers.service.CommentService;
 import org.myslayers.service.PostService;
 import org.myslayers.service.SearchService;
@@ -51,6 +52,9 @@ public class BaseController {
 
     @Autowired
     AmqpTemplate amqpTemplate;
+
+    @Autowired
+    ChatService chatService;
 
     /**
      * 首页 -> 默认分页的基本信息

@@ -1,4 +1,35 @@
 ## 3. 集成 RabbitMQ 保证 ES 随文章增删改查-实时更新
+```text
+blog
+│  pom.xml
+│
+└─src
+│  └─main
+│      ├─java
+│      │   └─org
+│      │      └─myslayers   
+│      │          ├─config
+│      │          │      RabbitConfig.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      PostController.java
+│      │          │  
+│      │          ├─service
+│      │          │  │   SearchService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         SearchServiceImpl.java
+│      │          │ 
+│      │          └─search
+│      │             └─amqp
+│      │                    MqMessageHandler.java
+│      │                    PostMqIndexMessage.java
+│      │
+│      └─resources
+│          │  application.yml
+```
+
 ### 3.1 集成 RabbitMQ 环境
 - `pom.xml` ：项目依赖，【RabbitMQ 消息同步】
 ```xml

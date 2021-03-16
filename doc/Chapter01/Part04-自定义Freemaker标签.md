@@ -1,4 +1,25 @@
 ## 4. 自定义 Freemaker 标签
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─common
+│      │          │  └─templates
+│      │          │         DirectiveHandler.java
+│      │          │         TemplateDirective.java
+│      │          │         TemplateModelUtils.java
+│      │          │
+│      │          ├─config
+│      │          │      FreemarkerConfig.java
+│      │          │
+│      │          ├─template
+│      │          │      PostsTemplate.java
+│      │          │      TimeAgoMethod.java
+```
+
 ### 4.1 方式一：实现TemplateDirectiveModel接口，重写 excute 方法
 - `TemplateDirectiveModel.java` ：配置类
 ```java
@@ -490,46 +511,6 @@ public class PostsTemplate extends TemplateDirective {
     }
 }
 ```
-- `HotsTemplate.java` ：工具类，【开发标签】
-```java
-/**
- * 本周热议文章
- */
-@Component
-public class HotsTemplate extends TemplateDirective {
-
-    @Autowired
-    RedisUtil redisUtil;
-
-    @Override
-    public String getName() {
-        return "hots";
-    }
-
-    @Override
-    public void execute(DirectiveHandler handler) throws Exception {
-        List<Map> hostPost = new ArrayList<>();
-
-        // 获取有序集 key 中成员 member 的排名，其中有序集成员按 score 值递减 (从大到小) 排序
-        Set<ZSetOperations.TypedTuple> typedTuples = redisUtil.getZSetRank("week:rank", 0, 6);
-        for (ZSetOperations.TypedTuple typedTuple : typedTuples) {
-            Map<String, Object> map = new HashMap<>();
-
-            //zSet(key， value， score)  -> zSet(文章日期, 文章id, 文章评论数commentCount)，此处取出zSet中的value，即文章id
-            String postHashKey = "day:rank:post:" + typedTuple.getValue();
-
-            map.put("id", redisUtil.hget(postHashKey, "post-id"));
-            map.put("title", redisUtil.hget(postHashKey, "post-title"));
-            map.put("commentCount", redisUtil.hget(postHashKey, "post-commentCount"));
-            map.put("viewCount", redisUtil.hget(postHashKey, "post-viewCount"));
-
-            hostPost.add(map);
-        }
-
-        handler.put(RESULTS, hostPost).render();
-    }
-}
-```
 - `FreemarkerConfig.java` ：配置类，【注册标签】
 ```java
 /**
@@ -558,7 +539,6 @@ public class FreemarkerConfig {
     public void setUp() {
         configuration.setSharedVariable("timeAgo", timeAgoMethod);
         configuration.setSharedVariable("details", postsTemplate);
-        configuration.setSharedVariable("hots", hotsTemplate);
     }
 }
 ```

@@ -1,4 +1,27 @@
 ## 7. 文章阅读缓存
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          │  Application.java
+│      │          │      
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      PostController.java 
+│      │          │ 
+│      │          ├─service
+│      │          │  │  PostService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         PostServiceImpl.java
+│      │          ├
+│      │          ├─schedules
+│      │          │      ViewCountSyncTask.java
+```
+
 ### 7.1 数据一致性
 - `PostController.java` ：控制层，【文章阅读【缓存实现访问量】，减少访问数据库的次数，存在一个 BUG，只与点击链接的次数相关，没有与用户的 id 进行绑定】
 ```java

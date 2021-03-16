@@ -1,4 +1,16 @@
 ## 4. 集成 Shiro 实现博客详情-用户文章、用户评论
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers   
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      PostController.java
+```
+
 ### 4.1 博客详情-用户文章
 - `PostController.java` ：控制层，【查看】文章、【查看】评论、【删除】文章、【评论】文章、
 ```java

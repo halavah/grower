@@ -1,4 +1,36 @@
 ## 6. 侧边栏本周热议
+```text
+blog
+│  pom.xml
+│
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─config
+│      │          │      RedisConfig.java
+│      │          │      ContextStartup.java
+│      │          │      FreemarkerConfig.java
+│      │          │ 
+│      │          ├─service
+│      │          │  │  PostService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         PostServiceImpl.java
+│      │          │
+│      │          ├─template
+│      │          │      HotsTemplate.java
+│      │          │
+│      │          ├─utils
+│      │          │      RedisUtil.java
+│      │          
+│      └─resources
+│          ├─templates
+│          │  └─inc
+│          │        right.ftl
+```
+
 ### 6.1 Redis环境搭建
 - `pom.xml` ：项目依赖，【添加 redis 依赖，添加 hutool 依赖】
 ```xml
@@ -40,6 +72,621 @@ public class RedisConfig {
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
 
         return template;
+    }
+
+}
+```
+- `RedisUtil.java` ：工具类
+```java
+/**
+ * RedisUtil 工具类
+ */
+@Component
+public class RedisUtil {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    /**
+     * 指定缓存失效时间
+     *
+     * @param key  键
+     * @param time 时间(秒)
+     * @return
+     */
+    public boolean expire(String key, long time) {
+        try {
+            if (time > 0) {
+                redisTemplate.expire(key, time, TimeUnit.SECONDS);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 根据key 获取过期时间
+     *
+     * @param key 键 不能为null
+     * @return 时间(秒) 返回0代表为永久有效
+     */
+    public long getExpire(String key) {
+        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 判断key是否存在
+     *
+     * @param key 键
+     * @return true 存在 false不存在
+     */
+    public boolean hasKey(String key) {
+        try {
+            return redisTemplate.hasKey(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 删除缓存
+     *
+     * @param key 可以传一个值 或多个
+     */
+    @SuppressWarnings("unchecked")
+    public void del(String... key) {
+        if (key != null && key.length > 0) {
+            if (key.length == 1) {
+                redisTemplate.delete(key[0]);
+            } else {
+                redisTemplate.delete(CollectionUtils.arrayToList(key));
+            }
+        }
+    }
+
+    //============================String=============================  
+
+    /**
+     * 普通缓存获取
+     *
+     * @param key 键
+     * @return 值
+     */
+    public Object get(String key) {
+        return key == null ? null : redisTemplate.opsForValue().get(key);
+    }
+
+    /**
+     * 普通缓存放入
+     *
+     * @param key   键
+     * @param value 值
+     * @return true成功 false失败
+     */
+    public boolean set(String key, Object value) {
+        try {
+            redisTemplate.opsForValue().set(key, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    /**
+     * 普通缓存放入并设置时间
+     *
+     * @param key   键
+     * @param value 值
+     * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
+     * @return true成功 false 失败
+     */
+    public boolean set(String key, Object value, long time) {
+        try {
+            if (time > 0) {
+                redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+            } else {
+                set(key, value);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 递增
+     *
+     * @param key 键
+     * @param delta  要增加几(大于0)
+     * @return
+     */
+    public long incr(String key, long delta) {
+        if (delta < 0) {
+            throw new RuntimeException("递增因子必须大于0");
+        }
+        return redisTemplate.opsForValue().increment(key, delta);
+    }
+
+    /**
+     * 递减
+     *
+     * @param key 键
+     * @param delta  要减少几(小于0)
+     * @return
+     */
+    public long decr(String key, long delta) {
+        if (delta < 0) {
+            throw new RuntimeException("递减因子必须大于0");
+        }
+        return redisTemplate.opsForValue().increment(key, -delta);
+    }
+
+    //================================Map=================================  
+
+    /**
+     * HashGet
+     *
+     * @param key  键 不能为null
+     * @param item 项 不能为null
+     * @return 值
+     */
+    public Object hget(String key, String item) {
+        return redisTemplate.opsForHash().get(key, item);
+    }
+
+    /**
+     * 获取hashKey对应的所有键值
+     *
+     * @param key 键
+     * @return 对应的多个键值
+     */
+    public Map<Object, Object> hmget(String key) {
+        return redisTemplate.opsForHash().entries(key);
+    }
+
+    /**
+     * HashSet
+     *
+     * @param key 键
+     * @param map 对应多个键值
+     * @return true 成功 false 失败
+     */
+    public boolean hmset(String key, Map<String, Object> map) {
+        try {
+            redisTemplate.opsForHash().putAll(key, map);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * HashSet 并设置时间
+     *
+     * @param key  键
+     * @param map  对应多个键值
+     * @param time 时间(秒)
+     * @return true成功 false失败
+     */
+    public boolean hmset(String key, Map<String, Object> map, long time) {
+        try {
+            redisTemplate.opsForHash().putAll(key, map);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 向一张hash表中放入数据,如果不存在将创建
+     *
+     * @param key   键
+     * @param item  项
+     * @param value 值
+     * @return true 成功 false失败
+     */
+    public boolean hset(String key, String item, Object value) {
+        try {
+            redisTemplate.opsForHash().put(key, item, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 向一张hash表中放入数据,如果不存在将创建
+     *
+     * @param key   键
+     * @param item  项
+     * @param value 值
+     * @param time  时间(秒)  注意:如果已存在的hash表有时间,这里将会替换原有的时间
+     * @return true 成功 false失败
+     */
+    public boolean hset(String key, String item, Object value, long time) {
+        try {
+            redisTemplate.opsForHash().put(key, item, value);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 删除hash表中的值
+     *
+     * @param key  键 不能为null
+     * @param item 项 可以使多个 不能为null
+     */
+    public void hdel(String key, Object... item) {
+        redisTemplate.opsForHash().delete(key, item);
+    }
+
+    /**
+     * 判断hash表中是否有该项的值
+     *
+     * @param key  键 不能为null
+     * @param item 项 不能为null
+     * @return true 存在 false不存在
+     */
+    public boolean hHasKey(String key, String item) {
+        return redisTemplate.opsForHash().hasKey(key, item);
+    }
+
+    /**
+     * hash递增 如果不存在,就会创建一个 并把新增后的值返回
+     *
+     * @param key  键
+     * @param item 项
+     * @param by   要增加几(大于0)
+     * @return
+     */
+    public double hincr(String key, String item, double by) {
+        return redisTemplate.opsForHash().increment(key, item, by);
+    }
+
+    /**
+     * hash递减
+     *
+     * @param key  键
+     * @param item 项
+     * @param by   要减少记(小于0)
+     * @return
+     */
+    public double hdecr(String key, String item, double by) {
+        return redisTemplate.opsForHash().increment(key, item, -by);
+    }
+
+    //============================set=============================  
+
+    /**
+     * 根据key获取Set中的所有值
+     *
+     * @param key 键
+     * @return
+     */
+    public Set<Object> sGet(String key) {
+        try {
+            return redisTemplate.opsForSet().members(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 根据value从一个set中查询,是否存在
+     *
+     * @param key   键
+     * @param value 值
+     * @return true 存在 false不存在
+     */
+    public boolean sHasKey(String key, Object value) {
+        try {
+            return redisTemplate.opsForSet().isMember(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 将数据放入set缓存
+     *
+     * @param key    键
+     * @param values 值 可以是多个
+     * @return 成功个数
+     */
+    public long sSet(String key, Object... values) {
+        try {
+            return redisTemplate.opsForSet().add(key, values);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 将set数据放入缓存
+     *
+     * @param key    键
+     * @param time   时间(秒)
+     * @param values 值 可以是多个
+     * @return 成功个数
+     */
+    public long sSetAndTime(String key, long time, Object... values) {
+        try {
+            Long count = redisTemplate.opsForSet().add(key, values);
+            if (time > 0) expire(key, time);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取set缓存的长度
+     *
+     * @param key 键
+     * @return
+     */
+    public long sGetSetSize(String key) {
+        try {
+            return redisTemplate.opsForSet().size(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 移除值为value的
+     *
+     * @param key    键
+     * @param values 值 可以是多个
+     * @return 移除的个数
+     */
+    public long setRemove(String key, Object... values) {
+        try {
+            Long count = redisTemplate.opsForSet().remove(key, values);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    //===============================list=================================  
+
+    /**
+     * 获取list缓存的内容
+     *
+     * @param key   键
+     * @param start 开始
+     * @param end   结束  0 到 -1代表所有值
+     * @return
+     */
+    public List<Object> lGet(String key, long start, long end) {
+        try {
+            return redisTemplate.opsForList().range(key, start, end);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 获取list缓存的长度
+     *
+     * @param key 键
+     * @return
+     */
+    public long lGetListSize(String key) {
+        try {
+            return redisTemplate.opsForList().size(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 通过索引 获取list中的值
+     *
+     * @param key   键
+     * @param index 索引  index>=0时， 0 表头，1 第二个元素，依次类推；index<0时，-1，表尾，-2倒数第二个元素，依次类推
+     * @return
+     */
+    public Object lGetIndex(String key, long index) {
+        try {
+            return redisTemplate.opsForList().index(key, index);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 将list放入缓存
+     *
+     * @param key   键
+     * @param value 值
+     * @return
+     */
+    public boolean lSet(String key, Object value) {
+        try {
+            redisTemplate.opsForList().rightPush(key, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 将list放入缓存
+     *
+     * @param key   键
+     * @param value 值
+     * @param time  时间(秒)
+     * @return
+     */
+    public boolean lSet(String key, Object value, long time) {
+        try {
+            redisTemplate.opsForList().rightPush(key, value);
+            if (time > 0) expire(key, time);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 将list放入缓存
+     *
+     * @param key   键
+     * @param value 值
+     * @return
+     */
+    public boolean lSet(String key, List<Object> value) {
+        try {
+            redisTemplate.opsForList().rightPushAll(key, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 将list放入缓存
+     *
+     * @param key   键
+     * @param value 值
+     * @param time  时间(秒)
+     * @return
+     */
+    public boolean lSet(String key, List<Object> value, long time) {
+        try {
+            redisTemplate.opsForList().rightPushAll(key, value);
+            if (time > 0) expire(key, time);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 根据索引修改list中的某条数据
+     *
+     * @param key   键
+     * @param index 索引
+     * @param value 值
+     * @return
+     */
+    public boolean lUpdateIndex(String key, long index, Object value) {
+        try {
+            redisTemplate.opsForList().set(key, index, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 移除N个值为value
+     *
+     * @param key   键
+     * @param count 移除多少个
+     * @param value 值
+     * @return 移除的个数
+     */
+    public long lRemove(String key, long count, Object value) {
+        try {
+            Long remove = redisTemplate.opsForList().remove(key, count, value);
+            return remove;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    //================有序集合 sort set===================
+    /**
+     * 有序set添加元素
+     *
+     * @param key
+     * @param value
+     * @param score
+     * @return
+     */
+    public boolean zSet(String key, Object value, double score) {
+        return redisTemplate.opsForZSet().add(key, value, score);
+    }
+
+    public long batchZSet(String key, Set<ZSetOperations.TypedTuple> typles) {
+        return redisTemplate.opsForZSet().add(key, typles);
+    }
+
+    public void zIncrementScore(String key, Object value, long delta) {
+        redisTemplate.opsForZSet().incrementScore(key, value, delta);
+    }
+
+    /**
+     * ZUNIONSTORE destination numkeys key [key ...]中，无numkeys，因为numkeys = key + otherKeys
+     *
+     * @param key 【第7天的key，即今天的key】
+     * @param otherKeys 【前6天的keys，用Collection集合来保存】
+     * @param destKey 描述key
+     */
+    public void zUnionAndStore(String key, Collection otherKeys, String destKey) {
+        redisTemplate.opsForZSet().unionAndStore(key, otherKeys, destKey);
+    }
+
+    /**
+     * 获取zset数量
+     * @param key
+     * @param value
+     * @return
+     */
+    public long getZsetScore(String key, Object value) {
+        Double score = redisTemplate.opsForZSet().score(key, value);
+        if(score==null){
+            return 0;
+        }else{
+            return score.longValue();
+        }
+    }
+
+    /**
+     * 获取有序集 key 中成员 member 的排名 。
+     * 其中有序集成员按 score 值递减 (从大到小) 排序。
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple> getZSetRank(String key, long start, long end) {
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
     }
 
 }
@@ -256,4 +903,130 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         redisUtil.zUnionAndStore(currentKey, otherKeys, destKey);
     }
 }
+```
+
+### 6.5 本周热议的【标签】
+- `HotsTemplate.java` ：标签类，【开发标签】
+```java
+/**
+ * 本周热议文章【标签】
+ */
+@Component
+public class HotsTemplate extends TemplateDirective {
+
+    @Autowired
+    RedisUtil redisUtil;
+
+    @Override
+    public String getName() {
+        return "hots";
+    }
+
+    @Override
+    public void execute(DirectiveHandler handler) throws Exception {
+        List<Map> hostPost = new ArrayList<>();
+
+        // 获取有序集 key 中成员 member 的排名，其中有序集成员按 score 值递减 (从大到小) 排序
+        Set<ZSetOperations.TypedTuple> typedTuples = redisUtil.getZSetRank("week:rank", 0, 6);
+        for (ZSetOperations.TypedTuple typedTuple : typedTuples) {
+            Map<String, Object> map = new HashMap<>();
+
+            //zSet(key， value， score)  -> zSet(文章日期, 文章id, 文章评论数commentCount)，此处取出zSet中的value，即文章id
+            String postHashKey = "day:rank:post:" + typedTuple.getValue();
+
+            map.put("id", redisUtil.hget(postHashKey, "post-id"));
+            map.put("title", redisUtil.hget(postHashKey, "post-title"));
+            map.put("commentCount", redisUtil.hget(postHashKey, "post-commentCount"));
+            map.put("viewCount", redisUtil.hget(postHashKey, "post-viewCount"));
+
+            hostPost.add(map);
+        }
+
+        handler.put(RESULTS, hostPost).render();
+    }
+}
+```
+- `FreemarkerConfig.java` ：配置类，【注册标签】
+```java
+/**
+ * Freemarker配置类
+ */
+@Configuration
+public class FreemarkerConfig {
+
+    @Autowired
+    private freemarker.template.Configuration configuration;
+
+    @Autowired
+    TimeAgoMethod timeAgoMethod;
+
+    @Autowired
+    PostsTemplate postsTemplate;
+
+    @Autowired
+    HotsTemplate hotsTemplate;
+
+    /**
+     * 注册为“timeAgo”函数：快速实现日期转换 ；注册为“posts”函数：快速实现分页
+     */
+    @PostConstruct
+    public void setUp() {
+        configuration.setSharedVariable("timeAgo", timeAgoMethod);
+        configuration.setSharedVariable("details", postsTemplate);
+        configuration.setSharedVariable("hots", hotsTemplate);
+    }
+}
+```
+- `right.ftl` ：模板引擎
+```injectedfreemarker
+<#--【三（2）、右侧md4】-->
+<div class="layui-col-md4">
+
+  <dl class="fly-panel fly-list-one">
+    <dt class="fly-panel-title">本周热议</dt>
+      <@hots>
+          <#list results as post>
+            <dd>
+              <a href="/post/${post.id}">${post.title}</a>
+              <span><i class="iconfont icon-pinglun1"></i> ${post.commentCount}</span>
+            </dd>
+          </#list>
+      </@hots>
+  </dl>
+
+  <div class="fly-panel">
+    <div class="fly-panel-title">
+      站点信息
+    </div>
+    <div class="fly-panel-main">
+      <a href="https://github.com/" target="_blank" class="fly-zanzhu"
+         time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">Don't let joy take
+        you down !</a>
+    </div>
+  </div>
+
+  <div class="fly-panel fly-link">
+    <h3 class="fly-panel-title">友情链接</h3>
+    <dl class="fly-panel-main">
+      <dd>
+        <a href="https://www.youtube.com/" target="_blank">YouTube</a>
+      <dd>
+      <dd>
+        <a href="https://www.facebook.com/" target="_blank">Facebook</a>
+      <dd>
+      <dd>
+        <a href="https://www.twitter.com/" target="_blank">Twitter</a>
+      <dd>
+      <dd>
+        <a href="https://www.instagram.com/" target="_blank">Instagram</a>
+      <dd>
+          <#--
+          <dd>
+              <a href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE" class="fly-link">申请友链</a>
+          <dd>
+          -->
+    </dl>
+  </div>
+
+</div>
 ```

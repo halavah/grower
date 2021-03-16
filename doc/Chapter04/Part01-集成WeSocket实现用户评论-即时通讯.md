@@ -1,4 +1,32 @@
 ## 1. 集成 WeSocket 实现用户评论-即时通讯
+```text
+blog
+│  pom.xml
+│
+└─src
+│  └─main
+│      ├─java
+│      │   └─org
+│      │      └─myslayers
+│      │          ├─config
+│      │          │      WsConfig.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      PostController.java
+│      │          │  
+│      │          ├─service
+│      │          │  │   WsService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         WsServiceImpl.java
+│      │
+│      └─resources
+│          ├─templates
+│          │  └─inc
+│          │         layout.ftl
+```
+
 ### 1.1 集成 WebSocket 环境
 - `pom.xml` ：项目依赖，【websocket 通讯】
 ```xml

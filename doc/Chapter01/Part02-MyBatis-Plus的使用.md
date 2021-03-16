@@ -1,5 +1,70 @@
 ## 2. MyBatis-Plus 的使用
-### 2.1 代码生成器
+```injectedfreemarker
+blog
+│  pom.xml
+│
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          │  CodeGenerator
+│      │          │
+│      │          ├─config
+│      │          │      MyBatisPlusConfig.java
+│      │          │ 
+│      │          ├─service
+│      │          │  │  PostService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         PostServiceImpl.java
+│      │          │ 
+│      │          ├─mapper
+│      │          │  │  PostMapper.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         PostMapper.xml
+```
+
+### 2.1 MP 环境
+- `pom.xml` ：项目依赖，【mybatis-plus-boot-starter、p6spy】
+```xml
+<dependencies>
+  <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器-->
+  <dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-boot-starter</artifactId>
+    <version>3.2.0</version>
+  </dependency>
+  <!--        <dependency>-->
+  <!--            <groupId>com.alibaba</groupId>-->
+  <!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+  <!--            <version>1.1.10</version>-->
+  <!--        </dependency>-->
+  <dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-generator</artifactId>
+    <version>3.2.0</version>
+  </dependency>
+  <dependency>
+    <groupId>p6spy</groupId>
+    <artifactId>p6spy</artifactId>
+    <version>3.8.6</version>
+  </dependency>
+</dependencies>
+```
+- `application.yml` ：配置文件，【识别 Mapper 层】
+```yaml
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+```
+
+### 2.2 代码生成器
 - CodeGenerator.java：项目依赖，【mybatis-plus-boot-starter、mysql-connector-java、mybatis-plus-generator、druid-spring-boot-starter、spring-boot-starter-freemarker】
 ```java
 // 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
@@ -115,7 +180,7 @@ public class CodeGenerator {
 }
 ```
 
-### 2.2 分页插件
+### 2.3 分页插件
 - `MyBatisPlusConfig.java` ：配置类，【SpringBoot 的使用方式】
 ```java
 @Configuration
@@ -134,7 +199,7 @@ public class MyBatisPlusConfig {
 }
 ```
 
-### 2.3 执行 SQL 分析打印
+### 2.4 执行 SQL 分析打印
 - `spy.properties` ：配置文件，【该功能依赖 p6spy 组件，其中 datasource、freemarker、mybatis-plus 的配置】
 ```yaml
 spring:
@@ -143,15 +208,12 @@ spring:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     url: jdbc:p6spy:mysql://127.0.0.1:3306/xblog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
     username: root
-    password: 4023615
+    password: 123456
   freemarker:
     settings:
       classic_compatible: true
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
-
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/**Mapper.xml
 ```
 - `spy.properties` ：配置文件，【p6spy 组件对应的 spy.properties 配置】
 ```properties
@@ -179,7 +241,14 @@ outagedetection=true
 outagedetectioninterval=2
 ```
 
-### 2.4 条件构造器-AbstractWrapper、QueryWrapper、UpdateWrapper
+### 2.5 条件构造器-AbstractWrapper、QueryWrapper、UpdateWrapper
+- `PostService.java` ：业务层接口
+```java
+public interface PostService extends IService<Post> {
+
+    IPage<PostVo> selectPosts(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order);
+}
+```
 - `PostServiceImpl.java`：业务层实现
 ```java
 @Service

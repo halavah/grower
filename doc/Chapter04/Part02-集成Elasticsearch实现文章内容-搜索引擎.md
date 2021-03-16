@@ -1,4 +1,41 @@
 ## 2. 集成 Elasticsearch 实现文章内容-搜索引擎
+```text
+blog
+│  pom.xml
+│
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      AdminController.java
+│      │          │      IndexController.java
+│      │          │
+│      │          ├─service
+│      │          │  │  SearchService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         SearchServiceImpl.java
+│      │          ├─search
+│      │          │  │      
+│      │          │  ├─model
+│      │          │  │      PostDocment.java
+│      │          │  │      
+│      │          │  └─repository
+│      │          │         PostRepository.java        
+│      │
+│      └─resources
+│          │  application.yml
+│          │ 
+│          ├─templates
+│          │  │  search.ftl
+│          │  │
+│          │  └─user
+│          │         set.ftl
+```
+
 ### 2.1 集成 Elasticsearch 环境
 - `pom.xml` ：项目依赖，【elasticsearch 搜索引擎】
 ```xml

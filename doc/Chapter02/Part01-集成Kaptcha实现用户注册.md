@@ -1,4 +1,42 @@
 ## 1. 集成 Kaptcha 实现用户注册
+```text
+blog
+│  pom.xml
+│
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─common
+│      │          │  └─lang
+│      │          │         Result.java
+│      │          │    
+│      │          ├─config
+│      │          │      kaptchaConfig.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      AuthController.java
+│      │          │ 
+│      │          ├─service
+│      │          │  │  UserService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         UserServiceImpl.java
+│      │          ├
+│      │          ├─utils
+│      │          │      ValidationUtil.java
+│      │          
+│      └─resources
+│          ├─templates
+│          │  ├─auth
+│          │  │     reg.ftl
+│          │  │     login.ftl
+│          │  └─inc
+│          │        header.ftl
+```
+
 ### 1.1 集成 Kaptcha 环境
 - `pom.xml` ：项目依赖，【Hutool-captcha、Google Kaptcha（本次选用）】
 ```xml
@@ -59,7 +97,7 @@ public class AuthController extends BaseController {
     </div>
 </div>
 ```
-- `header.ftl` ：模板引擎
+- `login.ftl` ：模板引擎
 ```injectedfreemarker
 <#--超链接：登入、注册-->
 <ul class="layui-tab-title">

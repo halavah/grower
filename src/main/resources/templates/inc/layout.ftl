@@ -16,6 +16,10 @@
     <script src="/res/js/jquery.min.js"></script>
     <script src="/res/js/sockjs.js"></script>
     <script src="/res/js/stomp.js"></script>
+
+    <#--导入顺序：im.js 一定要在 chat.js 前-->
+    <script src="/res/js/im.js"></script>
+    <script src="/res/js/chat.js"></script>
   </head>
   <body>
 
@@ -31,6 +35,7 @@
   <#--【四、页脚】-->
   <#include "/inc/footer.ftl"/>
 
+  <#--一、登录状态前、登录状态后-->
   <script>
     <#-----------------方式一：利用shiro来实现【登录状态】---------------------->
     <#--未登录的状态-->
@@ -91,6 +96,7 @@
     }).use('fly');
   </script>
 
+  <#--二、评论消息的即时通讯-->
   <script>
     <#--使用ws实现【评论消息的即时通讯】-->
     $(function () {

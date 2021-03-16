@@ -1,4 +1,29 @@
 ## 3. 集成 Shiro 实现博客详情-超级用户、删除、置顶、精华
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─exception
+│      │          │      GlobalException.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      AdminController.java
+│      │          │
+│      │          ├─shiro
+│      │          │      AccountRealm.java    
+│      │
+│      └─resources
+│          ├─templates
+│          │  │  error.ftl
+│          │  │
+│          │  └─post
+│          │         detail.ftl
+```
+
 ### 3.1 博客详情-超级用户
 - `AccountRealm.java` ：过滤器，授权 id=1 的用户 admin 为 超级用户
 ```java
@@ -26,29 +51,6 @@ public class AccountRealm extends AuthorizingRealm {
             return info;
         }
         return null;
-    }
-
-    /**
-     * doGetAuthenticationInfo（认证）
-     * <p>
-     * 执行以下语句的时候，用于生成token验证信息，在doCredentialsMatch之前执行：SecurityUtils.getSubject().login(token);
-     * 即，本次项目在AuthController.java中，/login数据接口，会使用token进行登录（SecurityUtils.getSubject().login(token);）
-     */
-    @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
-        throws AuthenticationException {
-        // 1.获取Token
-        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-        // 2.根据token获取username、password，并进行login登录，返回AccountProfile账户信息
-        AccountProfile profile = userService.login(usernamePasswordToken.getUsername(),
-            String.valueOf(usernamePasswordToken.getPassword()));
-        // 3.通过profile、token.getCredentials()、getName()，获取AuthenticationInfo子接口对象（SimpleAuthenticationInfo）
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(profile,
-            token.getCredentials(), getName());
-
-        // 方式二：利用session来实现【登录状态】，修改【更新资料/更新头像】后，需要【手动更新shiro/session数据】
-        SecurityUtils.getSubject().getSession().setAttribute("profile", profile);
-        return info;
     }
 }
 ```

@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
 /**
- * 本周热议文章
+ * 本周热议文章【标签】
  */
 @Component
 public class HotsTemplate extends TemplateDirective {

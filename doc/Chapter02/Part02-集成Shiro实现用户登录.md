@@ -1,4 +1,40 @@
 ## 2. 集成 Shiro 实现用户登录
+```text
+blog
+│  pom.xml
+│
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─config
+│      │          │      ShiroConfig.java
+│      │          │      FreemarkerConfig
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      AuthController.java
+│      │          │ 
+│      │          ├─service
+│      │          │  │  UserService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         UserServiceImpl.java
+│      │          ├
+│      │          ├─shiro
+│      │          │      AccountProfile.java
+│      │          │      AccountRealm.java
+│      │          
+│      └─resources
+│          ├─templates
+│          │  ├─auth
+│          │  │     reg.ftl
+│          │  │
+│          │  └─inc
+│          │        header.ftl
+```
+
 ### 2.1 集成 Shiro 环境
 - `pom.xml` ：项目依赖，【shiro-spring 权限、shiro-freemarker-tags 标签】
 ```xml

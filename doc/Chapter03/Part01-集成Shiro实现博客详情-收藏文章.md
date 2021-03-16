@@ -1,4 +1,22 @@
 ## 1. 集成 Shiro 实现博客详情-收藏文章
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─shiro
+│      │          │      ShiroConfig.java
+│      │          │
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      PostController.java  
+│      │          │
+│      │          ├─shiro
+│      │          │      AuthFilter.java
+```
+
 ### 1.1 博客详情：收藏文章【判断用户是否收藏了文章】
 - `PostController.java` ：控制层，【判断用户是否收藏了文章】
 ```java

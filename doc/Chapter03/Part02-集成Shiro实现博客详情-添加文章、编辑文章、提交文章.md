@@ -1,4 +1,21 @@
 ## 2. 集成 Shiro 实现博客详情-添加文章、编辑文章、提交文章
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      PostController.java  
+│      │
+│      └─resources
+│          ├─templates
+│          │  └─post
+│          │         edit.ftl
+```
+
 ### 2.1 博客详情：添加文章/编辑文章、提交文章
 - `PostController.java` ：控制层，【添加】、【编辑】、【提交】
 ```java

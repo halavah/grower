@@ -1,4 +1,40 @@
 ## 3. 集成 Shiro 实现个人账户-我的主页、基本设置
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─common
+│      │          │  └─lang
+│      │          │         Consts.java
+│      │          │
+│      │          ├─config
+│      │          │      SpringMvcConfig.java
+│      │          │      
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      UserController.java 
+│      │          │ 
+│      │          ├─service
+│      │          │  │  UserService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         UserServiceImpl.java
+│      │          ├
+│      │          ├─utils
+│      │          │      UploadUtil.java
+│      │          
+│      └─resources
+│          │  application.yml 
+│          │
+│          ├─templates
+│          │  └─user
+│          │        home.ftl
+│          │        set.ftl
+```
+
 ### 3.1 个人账户：我的主页
 - `UserController.java` ：控制层
 ```java

@@ -1,4 +1,30 @@
 ## 4. 集成 Shiro 实现个人账户-用户中心
+```text
+blog
+├─src
+│  └─main
+│      ├─java
+│      │  └─org
+│      │      └─myslayers
+│      │          ├─controller
+│      │          │      BaseController.java
+│      │          │      UserController.java 
+│      │          │ 
+│      │          ├─service
+│      │          │  │  UserService.java
+│      │          │  │  
+│      │          │  └─impl
+│      │          │         UserServiceImpl.java
+│      │          
+│      └─resources
+│          ├─templates
+│          │  ├─inc
+│          │  │     common.ftl
+│          │  │ 
+│          │  └─user
+│          │        index.ftl
+```
+
 ### 4.1 个人账户：用户中心
 - `UserController.java` ：控制层，【跳转页面】、【发布的贴】、【收藏的贴】
 ```java
