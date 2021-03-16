@@ -4,20 +4,21 @@
 练习项目：前后端不分离的博客
 
 ### 软件架构
-1. `springmvc` ：网页开发
-2. `freemarker` ：模板引擎
-3. `lombok、hutool、commons、modelmapper` ：工具类
-4. `mybatis-plus、druid、mysql、mp-generator、p6spy` ：数据库
-5. `redis` ：文章缓存
-6. `kaptcha` ：图片验证码
-7. `shiro、shiro-freemarker-tags` ：权限管理
-8. `websocket、tio-websocket` ：网络通讯
-9. `elasticsearch` ：全文搜索引擎
-10. `rabbitmq` ：消息中间件
+- `springmvc` ：网页开发
+- `freemarker` ：模板引擎
+- `lombok、hutool、commons、modelmapper` ：工具类
+- `mybatis-plus、druid、mysql、mp-generator、p6spy` ：数据库
+- `redis` ：文章缓存
+- `kaptcha` ：图片验证码
+- `shiro、shiro-freemarker-tags` ：权限管理
+- `websocket、tio-websocket` ：网络通讯
+- `elasticsearch` ：全文搜索引擎
+- `rabbitmq` ：消息中间件
 
-### 使用说明
-1. 测试账户：11111@qq.com  
-2. 测试密码：123456
+### 项目界面
+<p>
+  <img src="https://raw.githubusercontent.com/halavah/PinGo/master/project/item01/Home.png" alt="home" width = "70%" height = "70%" style="margin: auto;"/>
+</p>
 
 ### 项目文档
 - Chapter 01
@@ -49,6 +50,10 @@
     - [MySQL_5_7_25-2021_03_11_11_20_45-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_11_11_20_45-xblog.sql)
     - [MySQL_5_7_25-2021_03_11_18_47_44-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_11_18_47_44-xblog.sql)
     - [MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql)
+
+### 使用说明
+- 测试账户：11111@qq.com
+- 测试密码：123456
 
 ### 特别鸣谢
 - 项目原作者：[MarkerHub](https://github.com/MarkerHub/)
