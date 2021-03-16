@@ -49,3 +49,6 @@
     - [MySQL_5_7_25-2021_03_11_11_20_45-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_11_11_20_45-xblog.sql)
     - [MySQL_5_7_25-2021_03_11_18_47_44-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_11_18_47_44-xblog.sql)
     - [MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql)
+
+### 特别鸣谢
+- 项目原地址：[eblog](https://github.com/MarkerHub/eblog)
