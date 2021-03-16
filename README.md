@@ -51,5 +51,5 @@
     - [MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql)
 
 ### 特别鸣谢
-- 项目作者：[MarkerHub](https://github.com/MarkerHub/)
-- 项目地址：[Link](https://github.com/MarkerHub/eblog)
+- 项目原作者：[MarkerHub](https://github.com/MarkerHub/)
+- 项目原地址：[eblog](https://github.com/MarkerHub/eblog)
