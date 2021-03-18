@@ -50,6 +50,7 @@
     - [MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql)
 
 ### 使用说明
+- 访问网址：http://localhost:8080/
 - 测试账户：11111@qq.com
 - 测试密码：123456
 
