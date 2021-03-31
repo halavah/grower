@@ -33,7 +33,7 @@
       <optional>true</optional>
     </dependency>
 
-    <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器-->
+    <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器、MP代码生成使用 freemarker 模板引擎-->
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -59,8 +59,6 @@
       <artifactId>p6spy</artifactId>
       <version>3.8.6</version>
     </dependency>
-
-    <!--Freemarker-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-freemarker</artifactId>

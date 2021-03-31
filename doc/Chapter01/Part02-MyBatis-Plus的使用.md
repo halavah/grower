@@ -30,7 +30,7 @@ blog
 - `pom.xml` ：项目依赖，【mybatis-plus-boot-starter、p6spy】
 ```xml
 <dependencies>
-  <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器-->
+  <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器、MP代码生成使用 freemarker 模板引擎-->
   <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -55,6 +55,10 @@ blog
     <groupId>p6spy</groupId>
     <artifactId>p6spy</artifactId>
     <version>3.8.6</version>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-freemarker</artifactId>
   </dependency>
 </dependencies>
 ```
