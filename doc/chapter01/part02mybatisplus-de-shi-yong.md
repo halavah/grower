@@ -1,5 +1,6 @@
-## 2. MyBatis-Plus 的使用
-```injectedfreemarker
+# 2. MyBatis-Plus 的使用
+
+```text
 blog
 │  pom.xml
 │
@@ -26,10 +27,12 @@ blog
 │      │          │         PostMapper.xml
 ```
 
-### 2.1 MP 环境
-- `pom.xml` ：项目依赖，【mybatis-plus-boot-starter、p6spy】
-```xml
-<dependencies>
+## 2.1 MP 环境
+
+* `pom.xml` ：项目依赖，【mybatis-plus-boot-starter、p6spy】
+
+  ```markup
+  <dependencies>
   <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器、MP代码生成使用 freemarker 模板引擎-->
   <dependency>
     <groupId>com.baomidou</groupId>
@@ -60,19 +63,23 @@ blog
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-freemarker</artifactId>
   </dependency>
-</dependencies>
-```
-- `application.yml` ：配置文件，【识别 Mapper 层】
-```yaml
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/**Mapper.xml
-```
+  </dependencies>
+  ```
 
-### 2.2 代码生成器
-- CodeGenerator.java：项目依赖，【mybatis-plus-boot-starter、mysql-connector-java、mybatis-plus-generator、druid-spring-boot-starter、spring-boot-starter-freemarker】
-```java
-// 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
-public class CodeGenerator {
+* `application.yml` ：配置文件，【识别 Mapper 层】
+
+  ```yaml
+  mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+  ```
+
+## 2.2 代码生成器
+
+* CodeGenerator.java：项目依赖，【mybatis-plus-boot-starter、mysql-connector-java、mybatis-plus-generator、druid-spring-boot-starter、spring-boot-starter-freemarker】
+
+  ```java
+  // 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
+  public class CodeGenerator {
 
     /**
      * <p>
@@ -181,16 +188,18 @@ public class CodeGenerator {
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();
     }
-}
-```
+  }
+  ```
 
-### 2.3 分页插件
-- `MyBatisPlusConfig.java` ：配置类，【SpringBoot 的使用方式】
-```java
-@Configuration
-@EnableTransactionManagement
-@MapperScan("org.myslayers.mapper")
-public class MyBatisPlusConfig {
+## 2.3 分页插件
+
+* `MyBatisPlusConfig.java` ：配置类，【SpringBoot 的使用方式】
+
+  ```java
+  @Configuration
+  @EnableTransactionManagement
+  @MapperScan("org.myslayers.mapper")
+  public class MyBatisPlusConfig {
 
     /**
      * 分页插件
@@ -200,13 +209,15 @@ public class MyBatisPlusConfig {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
         return paginationInterceptor;
     }
-}
-```
+  }
+  ```
 
-### 2.4 执行 SQL 分析打印
-- `spy.properties` ：配置文件，【该功能依赖 p6spy 组件，其中 datasource、freemarker、mybatis-plus 的配置】
-```yaml
-spring:
+## 2.4 执行 SQL 分析打印
+
+* `spy.properties` ：配置文件，【该功能依赖 p6spy 组件，其中 datasource、freemarker、mybatis-plus 的配置】
+
+  ```yaml
+  spring:
   datasource:
     #    driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
@@ -218,45 +229,51 @@ spring:
       classic_compatible: true
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
-```
-- `spy.properties` ：配置文件，【p6spy 组件对应的 spy.properties 配置】
-```properties
-#3.2.1以下使用或者不配置
-module.log=com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory
-# 自定义日志打印
-logMessageFormat=com.baomidou.mybatisplus.extension.p6spy.P6SpyLogger
-#日志输出到控制台
-appender=com.baomidou.mybatisplus.extension.p6spy.StdoutLogger
-# 使用日志系统记录 sql
-#appender=com.p6spy.engine.spy.appender.Slf4JLogger
-# 设置 p6spy driver 代理
-deregisterdrivers=true
-# 取消JDBC URL前缀
-useprefix=true
-# 配置记录 Log 例外,可去掉的结果集有error,info,batch,debug,statement,commit,rollback,result,resultset.
-excludecategories=info,debug,result,batch,resultset
-# 日期格式
-dateformat=yyyy-MM-dd HH:mm:ss
-# 实际驱动可多个
-#driverlist=org.h2.Driver
-# 是否开启慢SQL记录
-outagedetection=true
-# 慢SQL记录标准 2 秒
-outagedetectioninterval=2
-```
+  ```
 
-### 2.5 条件构造器-AbstractWrapper、QueryWrapper、UpdateWrapper
-- `PostService.java` ：业务层接口
-```java
-public interface PostService extends IService<Post> {
+* `spy.properties` ：配置文件，【p6spy 组件对应的 spy.properties 配置】
+
+  ```text
+  #3.2.1以下使用或者不配置
+  module.log=com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory
+  # 自定义日志打印
+  logMessageFormat=com.baomidou.mybatisplus.extension.p6spy.P6SpyLogger
+  #日志输出到控制台
+  appender=com.baomidou.mybatisplus.extension.p6spy.StdoutLogger
+  # 使用日志系统记录 sql
+  #appender=com.p6spy.engine.spy.appender.Slf4JLogger
+  # 设置 p6spy driver 代理
+  deregisterdrivers=true
+  # 取消JDBC URL前缀
+  useprefix=true
+  # 配置记录 Log 例外,可去掉的结果集有error,info,batch,debug,statement,commit,rollback,result,resultset.
+  excludecategories=info,debug,result,batch,resultset
+  # 日期格式
+  dateformat=yyyy-MM-dd HH:mm:ss
+  # 实际驱动可多个
+  #driverlist=org.h2.Driver
+  # 是否开启慢SQL记录
+  outagedetection=true
+  # 慢SQL记录标准 2 秒
+  outagedetectioninterval=2
+  ```
+
+## 2.5 条件构造器-AbstractWrapper、QueryWrapper、UpdateWrapper
+
+* `PostService.java` ：业务层接口
+
+  ```java
+  public interface PostService extends IService<Post> {
 
     IPage<PostVo> selectPosts(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order);
-}
-```
-- `PostServiceImpl.java`：业务层实现
-```java
-@Service
-public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
+  }
+  ```
+
+* `PostServiceImpl.java`：业务层实现
+
+  ```java
+  @Service
+  public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
     @Autowired
     PostMapper postMapper;
 
@@ -276,19 +293,23 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public PostVo selectOnePost(QueryWrapper<Post> warapper) {
         return postMapper.selectOnePost(warapper);
     }
-}
-```
-- `PostMapper.java` ：数据层接口
-```java
-public interface PostMapper extends BaseMapper<Post> {
+  }
+  ```
+
+* `PostMapper.java` ：数据层接口
+
+  ```java
+  public interface PostMapper extends BaseMapper<Post> {
 
     IPage<PostVo> selectPosts(Page page, @Param(Constants.WRAPPER) QueryWrapper<Post> wrapper);
-}
-```
-- `PostMapper.xml` ：数据层实现
-```xml
-<select id="selectPosts" resultType="org.myslayers.vo.PostVo">
-SELECT p.id,
+  }
+  ```
+
+* `PostMapper.xml` ：数据层实现
+
+  ```markup
+  <select id="selectPosts" resultType="org.myslayers.vo.PostVo">
+  SELECT p.id,
        p.title,
        p.content,
        p.edit_mode,
@@ -310,9 +331,10 @@ SELECT p.id,
 
        c.id       AS categoryId,
        c.name     AS categoryName
-FROM m_post p
+  FROM m_post p
        LEFT JOIN m_user u ON p.user_id = u.id
        LEFT JOIN m_category c ON p.category_id = c.id
   ${ew.customSqlSegment}
-</select>
-```
+  </select>
+  ```
+

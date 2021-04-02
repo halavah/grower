@@ -1,4 +1,5 @@
-## 4. 自定义 Freemaker 标签
+# 4. 自定义 Freemaker 标签
+
 ```text
 blog
 ├─src
@@ -20,182 +21,163 @@ blog
 │      │          │      TimeAgoMethod.java
 ```
 
-### 4.1 方式一：实现TemplateDirectiveModel接口，重写 excute 方法
-- `TemplateDirectiveModel.java` ：配置类
-```java
-public interface TemplateDirectiveModel extends TemplateModel {
+## 4.1 方式一：实现TemplateDirectiveModel接口，重写 excute 方法
+
+* `TemplateDirectiveModel.java` ：配置类
+
+  ```java
+  public interface TemplateDirectiveModel extends TemplateModel {
   public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException;
-}
-```
-上述方法的参数说明：
-- env：系统环境变量，通常用它来输出相关内容，如 Writer out = env.getOut()。
-- params：自定义标签传过来的对象，其 key = 自定义标签的参数名，value 值是 TemplateModel 类型，而 TemplateModel 是一个接口类型，通常我们都使用 TemplateScalarModel 接口来替代它获取一个 String 值，如 TemplateScalarModel.getAsString(); 当然还有其它常用的替代接口，如 TemplateNumberModel 获取 number，TemplateHashModel 等。
-- loopVars 循环替代变量。
-- body 用于处理自定义标签中的内容，如 <@myDirective> 将要被处理的内容；当标签是<@myDirective /> 格式时，body=null。
+  }
+  ```
 
-### 4.2 方式二：采用 mblog 项目对该 TemplateDirectiveModel 接口进行封装
-- 实现逻辑：
-    - 实现 TemplateDirectiveModel 接口较为复杂，故我们可以直接使用 mblog 项目中已经封装好的类：org.myslayers.common.templates.DirectiveHandler、TemplateDirective、TemplateModelUtils；
-    - 其中，我们只需要重写 TemplateDirective 类中的 getName（）和 excute（DirectiveHandler handler），本次使用 `PostsTemplate`、`TimeAgoMethod` 进行开发使用；
-    - 最后，使用 `FreemarkerConfig` 类在 Springboot 中对 PostsTemplate、TimeAgoMethod 进行标签的声明`<timeAgo></timeAgo>`、`<details></details>`。
-- `DirectiveHandler.java`：配置类，【配置标签】
-```java
+  上述方法的参数说明：
+
+* env：系统环境变量，通常用它来输出相关内容，如 Writer out = env.getOut\(\)。
+* params：自定义标签传过来的对象，其 key = 自定义标签的参数名，value 值是 TemplateModel 类型，而 TemplateModel 是一个接口类型，通常我们都使用 TemplateScalarModel 接口来替代它获取一个 String 值，如 TemplateScalarModel.getAsString\(\); 当然还有其它常用的替代接口，如 TemplateNumberModel 获取 number，TemplateHashModel 等。
+* loopVars 循环替代变量。
+* body 用于处理自定义标签中的内容，如 &lt;@myDirective&gt; 将要被处理的内容；当标签是&lt;@myDirective /&gt; 格式时，body=null。
+
+## 4.2 方式二：采用 mblog 项目对该 TemplateDirectiveModel 接口进行封装
+
+* 实现逻辑：
+  * 实现 TemplateDirectiveModel 接口较为复杂，故我们可以直接使用 mblog 项目中已经封装好的类：org.myslayers.common.templates.DirectiveHandler、TemplateDirective、TemplateModelUtils；
+  * 其中，我们只需要重写 TemplateDirective 类中的 getName（）和 excute（DirectiveHandler handler），本次使用 `PostsTemplate`、`TimeAgoMethod` 进行开发使用；
+  * 最后，使用 `FreemarkerConfig` 类在 Springboot 中对 PostsTemplate、TimeAgoMethod 进行标签的声明`<timeAgo></timeAgo>`、`<details></details>`。
+* `DirectiveHandler.java`：配置类，【配置标签】
+
+  \`\`\`java /\*\*
+
+  * mblog：开发标签 \*/ public class DirectiveHandler {
+
+    private Environment env; private Map parameters; private TemplateModel\[\] loopVars; private TemplateDirectiveBody body; private Environment.Namespace namespace;
+
+    /\*\*
+
+    * 构建 DirectiveHandler
+
+      \*
+
+    * @param env        系统环境变量，通常用它来输出相关内容，如Writer out = env.getOut\(\)。
+    * @param parameters 自定义标签传过来的对象
+    * @param loopVars   循环替代变量
+    * @param body       用于处理自定义标签中的内容，如&lt;@myDirective&gt;将要被处理的内容[/@myDirective](mailto:/@myDirective)；当标签是&lt;@myDirective
+    * /&gt;格式时，body=null。
+
+      \*/
+
+      public DirectiveHandler\(Environment env, Map parameters,
+
+      TemplateModel\[\] loopVars,
+
+      TemplateDirectiveBody body\) {
+
+      this.env = env;
+
+      this.loopVars = loopVars;
+
+      this.parameters = parameters;
+
+      this.body = body;
+
+      this.namespace = env.getCurrentNamespace\(\);
+
+      }
+
+    public void render\(\) throws IOException, TemplateException { Assert.notNull\(body, "must have template directive body"\); body.render\(env.getOut\(\)\); }
+
+    public void renderString\(String text\) throws Exception { StringWriter writer = new StringWriter\(\); writer.append\(text\); env.getOut\(\).write\(text\); }
+
+    public DirectiveHandler put\(String key, Object value\) throws TemplateModelException { namespace.put\(key, wrap\(value\)\); return this; }
+
+    public String getString\(String name\) throws TemplateModelException { return TemplateModelUtils.converString\(getModel\(name\)\); }
+
+    public Integer getInteger\(String name\) throws TemplateModelException { return TemplateModelUtils.converInteger\(getModel\(name\)\); }
+
+    public Short getShort\(String name\) throws TemplateModelException { return TemplateModelUtils.converShort\(getModel\(name\)\); }
+
+    public Long getLong\(String name\) throws TemplateModelException { return TemplateModelUtils.converLong\(getModel\(name\)\); }
+
+    public Double getDouble\(String name\) throws TemplateModelException { return TemplateModelUtils.converDouble\(getModel\(name\)\); }
+
+    public String\[\] getStringArray\(String name\) throws TemplateModelException { return TemplateModelUtils.converStringArray\(getModel\(name\)\); }
+
+    public Boolean getBoolean\(String name\) throws TemplateModelException { return TemplateModelUtils.converBoolean\(getModel\(name\)\); }
+
+    public Date getDate\(String name\) throws TemplateModelException { return TemplateModelUtils.converDate\(getModel\(name\)\); }
+
+    public String getString\(String name, String defaultValue\) throws Exception { String result = getString\(name\); return null == result ? defaultValue : result; }
+
+    public Integer getInteger\(String name, int defaultValue\) throws Exception { Integer result = getInteger\(name\); return null == result ? defaultValue : result; }
+
+    public Long getLong\(String name, long defaultValue\) throws Exception { Long result = getLong\(name\); return null == result ? defaultValue : result; }
+
+```text
+public String getContextPath() {
+    String ret = null;
+    try {
+        ret = TemplateModelUtils.converString(getEnvModel("base"));
+    } catch (TemplateModelException e) {
+    }
+    return ret;
+}
+
 /**
- * mblog：开发标签
+ * 包装对象
  */
-public class DirectiveHandler {
+public TemplateModel wrap(Object object) throws TemplateModelException {
+    return env.getObjectWrapper().wrap(object);
+}
 
-    private Environment env;
-    private Map<String, TemplateModel> parameters;
-    private TemplateModel[] loopVars;
-    private TemplateDirectiveBody body;
-    private Environment.Namespace namespace;
+/**
+ * 获取局部变量
+ */
+public TemplateModel getEnvModel(String name) throws TemplateModelException {
+    return env.getVariable(name);
+}
 
-    /**
-     * 构建 DirectiveHandler
-     *
-     * @param env        系统环境变量，通常用它来输出相关内容，如Writer out = env.getOut()。
-     * @param parameters 自定义标签传过来的对象
-     * @param loopVars   循环替代变量
-     * @param body       用于处理自定义标签中的内容，如<@myDirective>将要被处理的内容</@myDirective>；当标签是<@myDirective
-     *                   />格式时，body=null。
-     */
-    public DirectiveHandler(Environment env, Map<String, TemplateModel> parameters,
-        TemplateModel[] loopVars,
-        TemplateDirectiveBody body) {
-        this.env = env;
-        this.loopVars = loopVars;
-        this.parameters = parameters;
-        this.body = body;
-        this.namespace = env.getCurrentNamespace();
+public void write(String text) throws IOException {
+    env.getOut().write(text);
+}
+
+private TemplateModel getModel(String name) {
+    return parameters.get(name);
+}
+
+public abstract static class BaseMethod implements TemplateMethodModelEx {
+
+    public String getString(List<TemplateModel> arguments, int index)
+        throws TemplateModelException {
+        return TemplateModelUtils.converString(getModel(arguments, index));
     }
 
-    public void render() throws IOException, TemplateException {
-        Assert.notNull(body, "must have template directive body");
-        body.render(env.getOut());
+    public Integer getInteger(List<TemplateModel> arguments, int index)
+        throws TemplateModelException {
+        return TemplateModelUtils.converInteger(getModel(arguments, index));
     }
 
-    public void renderString(String text) throws Exception {
-        StringWriter writer = new StringWriter();
-        writer.append(text);
-        env.getOut().write(text);
+    public Long getLong(List<TemplateModel> arguments, int index)
+        throws TemplateModelException {
+        return TemplateModelUtils.converLong(getModel(arguments, index));
     }
 
-    public DirectiveHandler put(String key, Object value) throws TemplateModelException {
-        namespace.put(key, wrap(value));
-        return this;
+    public Date getDate(List<TemplateModel> arguments, int index)
+        throws TemplateModelException {
+        return TemplateModelUtils.converDate(getModel(arguments, index));
     }
 
-    public String getString(String name) throws TemplateModelException {
-        return TemplateModelUtils.converString(getModel(name));
-    }
-
-    public Integer getInteger(String name) throws TemplateModelException {
-        return TemplateModelUtils.converInteger(getModel(name));
-    }
-
-    public Short getShort(String name) throws TemplateModelException {
-        return TemplateModelUtils.converShort(getModel(name));
-    }
-
-    public Long getLong(String name) throws TemplateModelException {
-        return TemplateModelUtils.converLong(getModel(name));
-    }
-
-    public Double getDouble(String name) throws TemplateModelException {
-        return TemplateModelUtils.converDouble(getModel(name));
-    }
-
-    public String[] getStringArray(String name) throws TemplateModelException {
-        return TemplateModelUtils.converStringArray(getModel(name));
-    }
-
-    public Boolean getBoolean(String name) throws TemplateModelException {
-        return TemplateModelUtils.converBoolean(getModel(name));
-    }
-
-    public Date getDate(String name) throws TemplateModelException {
-        return TemplateModelUtils.converDate(getModel(name));
-    }
-
-    public String getString(String name, String defaultValue) throws Exception {
-        String result = getString(name);
-        return null == result ? defaultValue : result;
-    }
-
-    public Integer getInteger(String name, int defaultValue) throws Exception {
-        Integer result = getInteger(name);
-        return null == result ? defaultValue : result;
-    }
-
-    public Long getLong(String name, long defaultValue) throws Exception {
-        Long result = getLong(name);
-        return null == result ? defaultValue : result;
-    }
-
-
-    public String getContextPath() {
-        String ret = null;
-        try {
-            ret = TemplateModelUtils.converString(getEnvModel("base"));
-        } catch (TemplateModelException e) {
+    public TemplateModel getModel(List<TemplateModel> arguments, int index) {
+        if (index < arguments.size()) {
+            return arguments.get(index);
         }
-        return ret;
-    }
-
-    /**
-     * 包装对象
-     */
-    public TemplateModel wrap(Object object) throws TemplateModelException {
-        return env.getObjectWrapper().wrap(object);
-    }
-
-    /**
-     * 获取局部变量
-     */
-    public TemplateModel getEnvModel(String name) throws TemplateModelException {
-        return env.getVariable(name);
-    }
-
-    public void write(String text) throws IOException {
-        env.getOut().write(text);
-    }
-
-    private TemplateModel getModel(String name) {
-        return parameters.get(name);
-    }
-
-    public abstract static class BaseMethod implements TemplateMethodModelEx {
-
-        public String getString(List<TemplateModel> arguments, int index)
-            throws TemplateModelException {
-            return TemplateModelUtils.converString(getModel(arguments, index));
-        }
-
-        public Integer getInteger(List<TemplateModel> arguments, int index)
-            throws TemplateModelException {
-            return TemplateModelUtils.converInteger(getModel(arguments, index));
-        }
-
-        public Long getLong(List<TemplateModel> arguments, int index)
-            throws TemplateModelException {
-            return TemplateModelUtils.converLong(getModel(arguments, index));
-        }
-
-        public Date getDate(List<TemplateModel> arguments, int index)
-            throws TemplateModelException {
-            return TemplateModelUtils.converDate(getModel(arguments, index));
-        }
-
-        public TemplateModel getModel(List<TemplateModel> arguments, int index) {
-            if (index < arguments.size()) {
-                return arguments.get(index);
-            }
-            return null;
-        }
+        return null;
     }
 }
 ```
+
+}
+
+```text
 - `TemplateDirective.java` ：配置类，【配置标签】
 ```java
 /**
@@ -225,12 +207,14 @@ public abstract class TemplateDirective implements TemplateDirectiveModel {
 
 }
 ```
-- `TemplateModelUtils.java` ：配置类，【配置标签】
-```java
-/**
- * mblog：开发标签（Freemarker 模型工具类）
- */
-public class TemplateModelUtils {
+
+* `TemplateModelUtils.java` ：配置类，【配置标签】
+
+  ```java
+  /**
+  * mblog：开发标签（Freemarker 模型工具类）
+  */
+  public class TemplateModelUtils {
 
     public static final DateFormat FULL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final int FULL_DATE_LENGTH = 19;
@@ -386,12 +370,14 @@ public class TemplateModelUtils {
         }
         return ret;
     }
-}
-```
-- `TimeAgoMethod.java` ：工具类，【开发标签】
-```java
-@Component
-public class TimeAgoMethod extends DirectiveHandler.BaseMethod {
+  }
+  ```
+
+* `TimeAgoMethod.java` ：工具类，【开发标签】
+
+  ```java
+  @Component
+  public class TimeAgoMethod extends DirectiveHandler.BaseMethod {
 
     private static final long ONE_MINUTE = 60000L;
     private static final long ONE_HOUR = 3600000L;
@@ -468,15 +454,17 @@ public class TimeAgoMethod extends DirectiveHandler.BaseMethod {
     private static long toYears(long date) {
         return toMonths(date) / 365L;
     }
-}
-```
-- `PostsTemplate.java` ：工具类，【开发标签】
-```java
-/**
- * 文章具体详情
- */
-@Component
-public class PostsTemplate extends TemplateDirective {
+  }
+  ```
+
+* `PostsTemplate.java` ：工具类，【开发标签】
+
+  ```java
+  /**
+  * 文章具体详情
+  */
+  @Component
+  public class PostsTemplate extends TemplateDirective {
 
     @Autowired
     PostService postService;
@@ -509,15 +497,17 @@ public class PostsTemplate extends TemplateDirective {
             .selectPosts(new Page(pn, size), categoryId, null, level, null, "created");
         handler.put(RESULTS, page).render();
     }
-}
-```
-- `FreemarkerConfig.java` ：配置类，【注册标签】
-```java
-/**
- * Freemarker配置类
- */
-@Configuration
-public class FreemarkerConfig {
+  }
+  ```
+
+* `FreemarkerConfig.java` ：配置类，【注册标签】
+
+  ```java
+  /**
+  * Freemarker配置类
+  */
+  @Configuration
+  public class FreemarkerConfig {
 
     @Autowired
     private freemarker.template.Configuration configuration;
@@ -540,5 +530,6 @@ public class FreemarkerConfig {
         configuration.setSharedVariable("timeAgo", timeAgoMethod);
         configuration.setSharedVariable("details", postsTemplate);
     }
-}
-```
+  }
+  ```
+

@@ -1,4 +1,5 @@
-## 3. 集成 Shiro 实现博客详情-超级用户、删除、置顶、精华
+# 3. 集成 Shiro 实现博客详情-超级用户、删除、置顶、精华
+
 ```text
 blog
 ├─src
@@ -24,14 +25,16 @@ blog
 │          │         detail.ftl
 ```
 
-### 3.1 博客详情-超级用户
-- `AccountRealm.java` ：过滤器，授权 id=1 的用户 admin 为 超级用户
-```java
-/**
- * Shiro过滤器：授权 / 认证
- */
-@Component
-public class AccountRealm extends AuthorizingRealm {
+## 3.1 博客详情-超级用户
+
+* `AccountRealm.java` ：过滤器，授权 id=1 的用户 admin 为 超级用户
+
+  ```java
+  /**
+  * Shiro过滤器：授权 / 认证
+  */
+  @Component
+  public class AccountRealm extends AuthorizingRealm {
 
     @Autowired
     UserService userService;
@@ -52,42 +55,26 @@ public class AccountRealm extends AuthorizingRealm {
         }
         return null;
     }
-}
-```
+  }
+  ```
 
-### 3.2 博客详情-删除、置顶、精华
-- `detail.ftl` ：模板引擎，使用<@shiro.hasRole name="admin"></@shiro>标签对【删除】、【置顶】、【加精】进行处理，因此，该功能只能【登录 admin 超级用户】
-```injectedfreemarker
-<#--1.1.2 文章标签-->
-<div class="fly-detail-info">
-<span class="layui-badge layui-bg-green fly-detail-column">${post.categoryName}</span>
+## 3.2 博客详情-删除、置顶、精华
 
-<#if post.level gt 0><span class="layui-badge layui-bg-black">置顶</span></#if>
-<#if post.recommend><span class="layui-badge layui-bg-red">精帖</span></#if>
+* `detail.ftl` ：模板引擎，使用&lt;@shiro.hasRole name="admin"&gt;[/@shiro](mailto:/@shiro)标签对【删除】、【置顶】、【加精】进行处理，因此，该功能只能【登录 admin 超级用户】
 
-<div class="fly-admin-box" data-id="${post.id}">
-    <#--发布者删除-->
-    <#if post.userId == profile.id>
-      <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
-    </#if>
+  \`\`\`injectedfreemarker
 
-    <#--管理员操作-->
-    <@shiro.hasRole name="admin">
-      <span class="layui-btn layui-btn-xs jie-admin" type="set" field="delete" rank="1">删除</span>
-        <#if post.level == 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span></#if>
-        <#if post.level gt 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span></#if>
-        <#if !post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span></#if>
-        <#if post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span></#if>
-    </@shiro.hasRole>
-</div>
+  &lt;\#--1.1.2 文章标签--&gt;
 
-<span class="fly-list-nums">
-  <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i>${post.commentCount}</a>
-  <i class="iconfont" title="人气">&#xe60b;</i>${post.viewCount}
-</span>
-</div>
-```
+  ${post.categoryName}
 
+&lt;\#if post.level gt 0&gt;置顶&lt;/\#if&gt; &lt;\#if post.recommend&gt;精帖&lt;/\#if&gt;
+
+ 删除 删除置顶取消置顶加精取消加精
+
+ [${post.commentCount}](part03-ji-cheng-shiro-shi-xian-bo-ke-xiang-qing-chao-ji-yong-hu-shan-chu-zhi-ding-jing-hua.md#comment) ${post.viewCount} &lt;/div&gt;
+
+```text
 ### 3.3 博客详情-数据接口
 - `AdminController.java` ：控制层，根据前端传来的 3 个参数：id、rank、field，对功能进行实现
 ```java
@@ -131,15 +118,17 @@ public class AdminController extends BaseController {
 }
 ```
 
-### 3.4 其他-全局异常
-- `GlobalException.java` ：全局异常，分别对 Ajax 异常请求、Web 异常请求进行处理
-```java
-/**
- * 全局异常
- */
-@Slf4j
-@ControllerAdvice
-public class GlobalException {
+## 3.4 其他-全局异常
+
+* `GlobalException.java` ：全局异常，分别对 Ajax 异常请求、Web 异常请求进行处理
+
+  ```java
+  /**
+  * 全局异常
+  */
+  @Slf4j
+  @ControllerAdvice
+  public class GlobalException {
 
     @ExceptionHandler(value = Exception.class)
     public ModelAndView handler(HttpServletRequest req, HttpServletResponse resp, Exception e) throws IOException {
@@ -155,31 +144,26 @@ public class GlobalException {
         modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
-}
-```
-- `error.ftl` ：模板引擎，将 message 错误信息进行显示
-```injectedfreemarker
-<#--宏layout.ftl（导航栏 + 页脚）-->
-<#include "/inc/layout.ftl" />
+  }
+  ```
 
-<#--【三、填充（导航栏 + 页脚）】-->
-<@layout "错误页面">
+* `error.ftl` ：模板引擎，将 message 错误信息进行显示
 
-  <#--【二、分类】-->
-  <#include "/inc/header-panel.ftl" />
+  \`\`\`injectedfreemarker
 
-  <div class="layui-container fly-marginTop">
-    <div class="fly-panel">
-      <div class="fly-none">
-        <h2><i class="iconfont icon-tishilian"></i></h2>
-        <p>${message}</p>
-      </div>
-    </div>
-  </div>
+  &lt;\#--宏layout.ftl（导航栏 + 页脚）--&gt;
 
-  <script>
-    layui.cache.page = '';
-  </script>
+  &lt;\#include "/inc/layout.ftl" /&gt;
 
-</@layout>
-```
+&lt;\#--【三、填充（导航栏 + 页脚）】--&gt; &lt;@layout "错误页面"&gt;
+
+&lt;\#--【二、分类】--&gt; &lt;\#include "/inc/header-panel.ftl" /&gt;
+
+${message}
+
+  
+    layui.cache.page = '';  
+  
+
+[/@layout](mailto:/@layout) \`\`\`
+

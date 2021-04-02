@@ -1,4 +1,5 @@
-## 3. 集成 RabbitMQ 保证 ES 随文章增删改查-实时更新
+# 3. 集成 RabbitMQ 保证 ES 随文章增删改查-实时更新
+
 ```text
 blog
 │  pom.xml
@@ -30,36 +31,42 @@ blog
 │          │  application.yml
 ```
 
-### 3.1 集成 RabbitMQ 环境
-- `pom.xml` ：项目依赖，【RabbitMQ 消息同步】
-```xml
-<dependencies>
+## 3.1 集成 RabbitMQ 环境
+
+* `pom.xml` ：项目依赖，【RabbitMQ 消息同步】
+
+  ```markup
+  <dependencies>
   <!--rabbitmq：消息同步-->
   <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-amqp</artifactId>
     <version>2.1.2.RELEASE</version>
   </dependency>
-</dependencies>
-```
-- `application.yml` ：配置文件，【RabbitMQ 消息同步】
-```yaml
-spring:
+  </dependencies>
+  ```
+
+* `application.yml` ：配置文件，【RabbitMQ 消息同步】
+
+  ```yaml
+  spring:
   rabbitmq:
     username: guest
     password: guest
     host: 127.0.0.1
     port: 5672
-```
+  ```
 
-### 3.2 配置 RabbitMQ 环境
-- `RabbitConfig.java` ：配置类，【创建队列、交换机，并把它们通过 es_bind_key 进行绑定】
-```java
-/**
- * RabbitConfig：配置类
- */
-@Configuration
-public class RabbitConfig {
+## 3.2 配置 RabbitMQ 环境
+
+* `RabbitConfig.java` ：配置类，【创建队列、交换机，并把它们通过 es\_bind\_key 进行绑定】
+
+  ```java
+  /**
+  * RabbitConfig：配置类
+  */
+  @Configuration
+  public class RabbitConfig {
 
     public final static String es_queue = "es_queue";
     public final static String es_exchage = "es_exchage";
@@ -82,30 +89,25 @@ public class RabbitConfig {
     Binding binding(Queue exQueue, DirectExchange exchange) {
         return BindingBuilder.bind(exQueue).to(exchange).with(es_bind_key);
     }
-}
-```
-- `PostMqIndexMessage.java` ：实体类，供 -> 【/post/submit、/post/delete】 -> 使用 convertAndSend 【 交换机，路由密钥，发送的消息（操作的文章、操作的类型) 】
-```java
-/**
- * PostMqIndexMessage：实体类
- * 供 -> 【/post/submit、/post/delete】 -> 使用 convertAndSend 【 交换机，路由密钥，发送的消息（操作的文章、操作的类型) 】
- */
-@Data
-@AllArgsConstructor
-public class PostMqIndexMessage implements Serializable {
+  }
+  ```
 
-    // 两种type：一种是create_update、一种是remove
-    public final static String CREATE_OR_UPDATE = "create_update";
-    public final static String REMOVE = "remove";
+* `PostMqIndexMessage.java` ：实体类，供 -&gt; 【/post/submit、/post/delete】 -&gt; 使用 convertAndSend 【 交换机，路由密钥，发送的消息（操作的文章、操作的类型\) 】
 
-    // 操作的文章：postId
-    private Long postId;
+  \`\`\`java /\*\*
 
-    // 操作的类型：增删改查
-    private String type;
+  * PostMqIndexMessage：实体类
+  * 供 -&gt; 【/post/submit、/post/delete】 -&gt; 使用 convertAndSend 【 交换机，路由密钥，发送的消息（操作的文章、操作的类型\) 】 \*/ @Data @AllArgsConstructor public class PostMqIndexMessage implements Serializable {
+
+    // 两种type：一种是create\_update、一种是remove public final static String CREATE\_OR\_UPDATE = "create\_update"; public final static String REMOVE = "remove";
+
+    // 操作的文章：postId private Long postId;
+
+    // 操作的类型：增删改查 private String type;
 
 }
-```
+
+```text
 - `MqMessageHandler.java` ：执行类，【执行操作的逻辑】
 ```java
 /**
@@ -143,18 +145,20 @@ public class MqMessageHandler {
     }
 }
 ```
-- `SearchServiceImpl.java` ：业务层实现，【创建/更新文章】、删除文章
-```java
-@Slf4j
-@Service
-public class SearchServiceImpl implements SearchService {
+
+* `SearchServiceImpl.java` ：业务层实现，【创建/更新文章】、删除文章
+
+  ```java
+  @Slf4j
+  @Service
+  public class SearchServiceImpl implements SearchService {
 
     @Autowired
     PostRepository postRepository;
 
     @Autowired
     PostService postService;
-    
+
     /**
      * ES：createOrUpdateIndex 创建/更新文章
      */
@@ -182,14 +186,16 @@ public class SearchServiceImpl implements SearchService {
 
         log.info("es 索引删除成功！ ---> {}", message.toString());
     }
-}
-```
+  }
+  ```
 
-### 3.3 使用 RabbitMQ 保证 ES 随文章增删改查-实时更新
-- `PostController.java` ：控制层，【消息同步，通知消息给 RabbitMQ，告知 ES【更新文章或添加文章】、【删除文章】】
-```java
-@Controller
-public class PostController extends BaseController {
+## 3.3 使用 RabbitMQ 保证 ES 随文章增删改查-实时更新
+
+* `PostController.java` ：控制层，【消息同步，通知消息给 RabbitMQ，告知 ES【更新文章或添加文章】、【删除文章】】
+
+  ```java
+  @Controller
+  public class PostController extends BaseController {
     /**
      * 详情detail：【删除】文章
      */
@@ -258,5 +264,6 @@ public class PostController extends BaseController {
         // 无论id是否存在，两类情况都会 retern 跳转到 /post/${id}
         return Result.success().action("/post/" + post.getId());
     }
-}
-```
+  }
+  ```
+

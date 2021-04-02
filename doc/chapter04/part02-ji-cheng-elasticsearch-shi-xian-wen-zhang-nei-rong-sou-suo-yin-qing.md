@@ -1,4 +1,5 @@
-## 2. 集成 Elasticsearch 实现文章内容-搜索引擎
+# 2. 集成 Elasticsearch 实现文章内容-搜索引擎
+
 ```text
 blog
 │  pom.xml
@@ -36,40 +37,46 @@ blog
 │          │         set.ftl
 ```
 
-### 2.1 集成 Elasticsearch 环境
-- `pom.xml` ：项目依赖，【elasticsearch 搜索引擎】
-```xml
-<dependencies>
+## 2.1 集成 Elasticsearch 环境
+
+* `pom.xml` ：项目依赖，【elasticsearch 搜索引擎】
+
+  ```markup
+  <dependencies>
   <!--elasticsearch-6.4.3：搜索引擎 -->
   <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
     <version>2.1.1.RELEASE</version>
   </dependency>
-  
+
   <!--modelmapper：Model和DTO模型类的转换-->
   <dependency>
     <groupId>org.modelmapper</groupId>
     <artifactId>modelmapper</artifactId>
     <version>1.1.1</version>
   </dependency>
-</dependencies>
-```
-- `application.yml` ：配置文件，【elasticsearch 搜索引擎】
-```yaml
-spring:
+  </dependencies>
+  ```
+
+* `application.yml` ：配置文件，【elasticsearch 搜索引擎】
+
+  ```yaml
+  spring:
   data:
     elasticsearch:
       cluster-name: elasticsearch
       cluster-nodes: 127.0.0.1:9300
       repositories:
         enabled: true
-```
-- `Application.java`：项目启动，【解决 elasticsearch 启动时，由于底层 netty 版本问题引发的项目启动问题】
-```java
-@EnableScheduling//开启定时器
-@SpringBootApplication
-public class Application {
+  ```
+
+* `Application.java`：项目启动，【解决 elasticsearch 启动时，由于底层 netty 版本问题引发的项目启动问题】
+
+  ```java
+  @EnableScheduling//开启定时器
+  @SpringBootApplication
+  public class Application {
 
     public static void main(String[] args) {
 
@@ -79,19 +86,21 @@ public class Application {
         SpringApplication.run(Application.class, args);
         System.out.println("http://localhost:8080");
     }
-}
-```
+  }
+  ```
 
-### 2.2 配置 Elasticsearch 环境
-- `PostDocment.java` ：实体类，【类似 MySQL 表】
-```java
-/**
- * Elasticsearch：实体类，类似MySQL表
- */
-@Data
-//indexName代表索引名称，type代表post类型，createIndex代表”启动时，是否创建该文档，默认为true“
-@Document(indexName="post", type="post", createIndex=true)
-public class PostDocment implements Serializable {
+## 2.2 配置 Elasticsearch 环境
+
+* `PostDocment.java` ：实体类，【类似 MySQL 表】
+
+  ```java
+  /**
+  * Elasticsearch：实体类，类似MySQL表
+  */
+  @Data
+  //indexName代表索引名称，type代表post类型，createIndex代表”启动时，是否创建该文档，默认为true“
+  @Document(indexName="post", type="post", createIndex=true)
+  public class PostDocment implements Serializable {
 
     //主键ID
     @Id
@@ -135,25 +144,29 @@ public class PostDocment implements Serializable {
     //文章的【创建日期】
     @Field(type = FieldType.Date)
     private Date created;
-}
-```
-- `PostRepository.java` ：配置类，【自定义 ElasticsearchRepository】
-```java
-/**
- * PostRepository：继承ElasticsearchRepository
- */
-@Repository
-public interface PostRepository extends ElasticsearchRepository<PostDocment, Long> {
+  }
+  ```
+
+* `PostRepository.java` ：配置类，【自定义 ElasticsearchRepository】
+
+  ```java
+  /**
+  * PostRepository：继承ElasticsearchRepository
+  */
+  @Repository
+  public interface PostRepository extends ElasticsearchRepository<PostDocment, Long> {
     // 符合jpa命名规范的接口
     // ...
-}
-```
+  }
+  ```
 
-### 2.3 使用 Elasticsearch 搜索引擎-【搜索按钮】
-- `/res/mods/index.js` ：源码可知，【将默认跳转http://cn.bing.com/search 更改为 /search】
-```javascript
-//搜索
-$('.fly-search').on('click', function () {
+## 2.3 使用 Elasticsearch 搜索引擎-【搜索按钮】
+
+* `/res/mods/index.js` ：源码可知，【将默认跳转[http://cn.bing.com/search](http://cn.bing.com/search) 更改为 /search】
+
+  ```javascript
+  //搜索
+  $('.fly-search').on('click', function () {
   layer.open({
     type: 1
     ,
@@ -189,12 +202,14 @@ $('.fly-search').on('click', function () {
       });
     }
   })
-});
-```
-- `IndexController.java` ：控制层，【搜索按钮】
-```java
-@Controller
-public class IndexController extends BaseController {
+  });
+  ```
+
+* `IndexController.java` ：控制层，【搜索按钮】
+
+  ```java
+  @Controller
+  public class IndexController extends BaseController {
     /**
      * 搜索 Elasticsearch
      */
@@ -210,12 +225,14 @@ public class IndexController extends BaseController {
 
         return "search";
     }
-}
-```
-- `SearchServiceImpl.java` ：业务层实现，【search 搜索，使用模型映射器进行 MP-page -> 转换为 JPA-page -> 转换为 MP-page】
-```java
-@Service
-public class SearchServiceImpl implements SearchService {
+  }
+  ```
+
+* `SearchServiceImpl.java` ：业务层实现，【search 搜索，使用模型映射器进行 MP-page -&gt; 转换为 JPA-page -&gt; 转换为 MP-page】
+
+  ```java
+  @Service
+  public class SearchServiceImpl implements SearchService {
 
     @Autowired
     PostRepository postRepository;
@@ -239,77 +256,70 @@ public class SearchServiceImpl implements SearchService {
         pageData.setRecords(docments.getContent());
         return pageData;
     }
-}
-```
-- `search.ftl` ：目标引擎，【搜索结果后的页面】
-```injectedfreemarker
-<#--宏layout.ftl（导航栏 + 页脚）-->
-<#include "/inc/layout.ftl" />
+  }
+  ```
 
-<#--【三、填充（导航栏 + 页脚）】-->
-<@layout "搜索 - ${q}">
+* `search.ftl` ：目标引擎，【搜索结果后的页面】
 
-<#--【二、分类】-->
-    <#include "/inc/header-panel.ftl" />
+  \`\`\`injectedfreemarker
 
-  <div class="layui-container">
-      <div class="layui-row layui-col-space15">
+  &lt;\#--宏layout.ftl（导航栏 + 页脚）--&gt;
 
-      <#--1.左侧md8-->
-          <div class="layui-col-md8">
-              <div class="fly-panel">
+  &lt;\#include "/inc/layout.ftl" /&gt;
 
-              <#--1.2.1 共有X条记录-->
-                  <div class="fly-panel-title fly-filter">
-                      <a>您正在搜索关键字”${q}“，共有 <strong>${pageData.total}</strong> 条记录</a>
-                      <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a>
-                  </div>
+&lt;\#--【三、填充（导航栏 + 页脚）】--&gt; &lt;@layout "搜索 - ${q}"&gt;
 
-              <#--1.2.2 消息列表-->
-                  <ul class="fly-list">
-            <#list pageData.records as post>
-              <@plisting post></@plisting>
-            </#list>
-                  </ul>
+&lt;\#--【二、分类】--&gt; &lt;\#include "/inc/header-panel.ftl" /&gt;
 
-              <#--1.2.3 分页条-->
-                  <div style="text-align: center">
-                  <#--待渲染的div块（laypage-main）-->
-                      <div id="laypage-main"></div>
+ [您正在搜索关键字”${q}“，共有 **${pageData.total}** 条记录](part02-ji-cheng-elasticsearch-shi-xian-wen-zhang-nei-rong-sou-suo-yin-qing.md) [去签到](part02-ji-cheng-elasticsearch-shi-xian-wen-zhang-nei-rong-sou-suo-yin-qing.md#signin)
 
-                  <#--Script渲染div块-->
-                      <script src="/res/layui/layui.js"></script>
-                      <script>
-                          layui.use('laypage', function () {
-                              var laypage = layui.laypage;
+```text
+          <#--1.2.2 消息列表-->
+              <ul class="fly-list">
+        <#list pageData.records as post>
+          <@plisting post></@plisting>
+        </#list>
+              </ul>
 
-                              //执行一个laypage实例
-                              laypage.render({
-                                  elem: 'laypage-main'
-                                  , count: ${pageData.total}
-                                  , curr: ${pageData.current}
-                                  , limit: ${pageData.size}
-                                  , jump: function (obj, first) {
-                                      //首次不执行，之后【跳转curr页面】
-                                      if (!first) {
-                                          location.href = "?q=" + '${q}' + "&&pn=" + obj.curr;
-                                      }
+          <#--1.2.3 分页条-->
+              <div style="text-align: center">
+              <#--待渲染的div块（laypage-main）-->
+                  <div id="laypage-main"></div>
+
+              <#--Script渲染div块-->
+                  <script src="/res/layui/layui.js"></script>
+                  <script>
+                      layui.use('laypage', function () {
+                          var laypage = layui.laypage;
+
+                          //执行一个laypage实例
+                          laypage.render({
+                              elem: 'laypage-main'
+                              , count: ${pageData.total}
+                              , curr: ${pageData.current}
+                              , limit: ${pageData.size}
+                              , jump: function (obj, first) {
+                                  //首次不执行，之后【跳转curr页面】
+                                  if (!first) {
+                                      location.href = "?q=" + '${q}' + "&&pn=" + obj.curr;
                                   }
-                              });
+                              }
                           });
-                      </script>
-                  </div>
-
+                      });
+                  </script>
               </div>
-          </div>
 
-      <#--2.右侧md4-->
-      <#include "/inc/right.ftl" />
+          </div>
       </div>
+
+  <#--2.右侧md4-->
+  <#include "/inc/right.ftl" />
   </div>
-</@layout>
 ```
 
+&lt;/div&gt; [/@layout](mailto:/@layout)
+
+```text
 ### 2.4 使用 Elasticsearch 搜索引擎-【管理员-同步ES数据】
 - `AdminController.java` ：超级用户，【只有管理员，才可以同步 ES 数据】
 ```java
@@ -344,10 +354,12 @@ public class AdminController extends BaseController {
     }
 }
 ```
-- `SearchServiceImpl.java` ：业务层实现，【initEsData 初始化数据】
-```java
-@Service
-public class SearchServiceImpl implements SearchService {
+
+* `SearchServiceImpl.java` ：业务层实现，【initEsData 初始化数据】
+
+  ```java
+  @Service
+  public class SearchServiceImpl implements SearchService {
 
     @Autowired
     PostRepository postRepository;
@@ -371,17 +383,20 @@ public class SearchServiceImpl implements SearchService {
         postRepository.saveAll(documents);
         return documents.size();
     }
-}
-```
-- `set.ftl` ：模板引擎，【只有管理员，才可以同步 ES 数据】
-```injectedfreemarker
-<#--4.同步ES数据-->
-<@shiro.hasRole name="admin">
+  }
+  ```
+
+* `set.ftl` ：模板引擎，【只有管理员，才可以同步 ES 数据】
+
+  ```text
+  <#--4.同步ES数据-->
+  <@shiro.hasRole name="admin">
   <div class="layui-form layui-form-pane layui-tab-item">
    <form action="/admin/initEsData" method="post">
     <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit alert="true">同步ES数据
     </button>
    </form>
   </div>
-</@shiro.hasRole>
-```
+  </@shiro.hasRole>
+  ```
+

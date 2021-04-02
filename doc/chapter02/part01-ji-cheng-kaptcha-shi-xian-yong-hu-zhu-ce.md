@@ -1,4 +1,5 @@
-## 1. 集成 Kaptcha 实现用户注册
+# 1. 集成 Kaptcha 实现用户注册
+
 ```text
 blog
 │  pom.xml
@@ -37,24 +38,28 @@ blog
 │          │        header.ftl
 ```
 
-### 1.1 集成 Kaptcha 环境
-- `pom.xml` ：项目依赖，【Hutool-captcha、Google Kaptcha（本次选用）】
-```xml
-<dependencies>
+## 1.1 集成 Kaptcha 环境
+
+* `pom.xml` ：项目依赖，【Hutool-captcha、Google Kaptcha（本次选用）】
+
+  ```markup
+  <dependencies>
     <!--图片验证码：Hutool-captcha、Google Kaptcha（本次选用）-->
     <dependency>
         <groupId>com.github.axet</groupId>
         <artifactId>kaptcha</artifactId>
         <version>0.0.9</version>
     </dependency>
-</dependencies>
-```
+  </dependencies>
+  ```
 
-### 1.2 个人用户的【注册】：简易页面搭建
-- `AuthController.java` ：控制层
-```java
-@Controller
-public class AuthController extends BaseController {
+## 1.2 个人用户的【注册】：简易页面搭建
+
+* `AuthController.java` ：控制层
+
+  ```java
+  @Controller
+  public class AuthController extends BaseController {
     /**
      * 登录
      */
@@ -70,12 +75,14 @@ public class AuthController extends BaseController {
     public String register() {
         return "/auth/reg";
     }
-}
-```
-- `header.ftl` ：模板引擎
-```injectedfreemarker
-<#--【一、导航栏】-->
-<div class="fly-header layui-bg-black">
+  }
+  ```
+
+* `header.ftl` ：模板引擎
+
+  ```text
+  <#--【一、导航栏】-->
+  <div class="fly-header layui-bg-black">
     <div class="layui-container">
         <#--1.图标-->
         <a class="fly-logo" href="/">
@@ -95,33 +102,39 @@ public class AuthController extends BaseController {
             </li>
         </ul>
     </div>
-</div>
-```
-- `login.ftl` ：模板引擎
-```injectedfreemarker
-<#--超链接：登入、注册-->
-<ul class="layui-tab-title">
+  </div>
+  ```
+
+* `login.ftl` ：模板引擎
+
+  ```text
+  <#--超链接：登入、注册-->
+  <ul class="layui-tab-title">
     <li><a href="/login">登入</a></li>
     <li class="layui-this">注册</li>
-</ul>
-```
-- `reg.ftl` ：模板引擎
-```injectedfreemarker
-<#--超链接：登入、注册-->
-<ul class="layui-tab-title">
+  </ul>
+  ```
+
+* `reg.ftl` ：模板引擎
+
+  ```text
+  <#--超链接：登入、注册-->
+  <ul class="layui-tab-title">
     <li class="layui-this">登入</li>
     <li><a href="/register">注册</a></li>
-</ul>
-```
+  </ul>
+  ```
 
-### 1.3 个人用户的【注册】：Kaptcha 图片验证码
-- `kaptchaConfig.java` ：配置类，【配置验证码】
-```java
-/**
- * kaptcha 图片验证码配置类
- */
-@Configuration
-public class kaptchaConfig {
+## 1.3 个人用户的【注册】：Kaptcha 图片验证码
+
+* `kaptchaConfig.java` ：配置类，【配置验证码】
+
+  ```java
+  /**
+  * kaptcha 图片验证码配置类
+  */
+  @Configuration
+  public class kaptchaConfig {
 
     @Bean
     public DefaultKaptcha producer () {
@@ -141,12 +154,14 @@ public class kaptchaConfig {
         defaultKaptcha.setConfig(config);
         return defaultKaptcha;
     }
-}
-```
-- `AuthController.java` ：控制层，【生成验证码】
-```java
-@Controller
-public class AuthController extends BaseController {
+  }
+  ```
+
+* `AuthController.java` ：控制层，【生成验证码】
+
+  ```java
+  @Controller
+  public class AuthController extends BaseController {
 
     private static final String KAPTCHA_SESSION_KEY = "KAPTCHA_SESSION_KEY";
 
@@ -171,12 +186,14 @@ public class AuthController extends BaseController {
         ServletOutputStream outputStream = resp.getOutputStream();
         ImageIO.write(image, "jpg", outputStream);
     }
-}
-```
-- `reg.ftl` ：模板引擎，【使用验证码】
-```injectedfreemarker
-<#--5.图片验证码-->
-<div class="layui-form-item">
+  }
+  ```
+
+* `reg.ftl` ：模板引擎，【使用验证码】
+
+  ```text
+  <#--5.图片验证码-->
+  <div class="layui-form-item">
     <label for="L_vercode" class="layui-form-label">验证码</label>
     <div class="layui-input-inline">
         <input type="text" id="L_vercode" name="vercode" required lay-verify="required"
@@ -186,13 +203,15 @@ public class AuthController extends BaseController {
     <div class="">
         <img id="capthca" src="/capthca.jpg">
     </div>
-</div>
-```
+  </div>
+  ```
 
-### 1.4 个人用户的【注册】：提交表单后，自己跳转【/login】登录页面
-- `/res/mods/index.js` ：源码可知，【lay-submit】此处默认【表单跳转】alert="true"，则会跳转【action 属性中的值】
-```javascript
-//表单提交
+## 1.4 个人用户的【注册】：提交表单后，自己跳转【/login】登录页面
+
+* `/res/mods/index.js` ：源码可知，【lay-submit】此处默认【表单跳转】alert="true"，则会跳转【action 属性中的值】
+
+  ```javascript
+  //表单提交
   form.on('submit(*)', function(data){
     var action = $(data.form).attr('action'), button = $(data.elem);
     fly.json(action, data.field, function(res){
@@ -216,20 +235,24 @@ public class AuthController extends BaseController {
     });
     return false;
   });
-```
-- `reg.ftl` ：模板引擎
-```injectedfreemarker
-<#--6.注册-->
-<div class="layui-form-item">
+  ```
+
+* `reg.ftl` ：模板引擎
+
+  ```text
+  <#--6.注册-->
+  <div class="layui-form-item">
     <#--通过阅读/res/mods/index.js源码可知，【lay-submit】此处默认【表单提交】对应的链接为”文件名“，即【/register】-->
     <#--通过阅读/res/mods/index.js源码可知，【lay-submit】此处默认【表单跳转】alert="true"，则会跳转【action属性中的值】-->
     <button class="layui-btn" lay-filter="*" lay-submit alert="true">立即注册</button>
-</div>
-```
-- `Result.java` ：实体类
-```java
-@Data
-public class Result implements Serializable {
+  </div>
+  ```
+
+* `Result.java` ：实体类
+
+  ```java
+  @Data
+  public class Result implements Serializable {
     // 操作状态：0成功，-1失败
     private int status;
 
@@ -279,132 +302,157 @@ public class Result implements Serializable {
         this.action = action;
         return this;
     }
+  }
+  ```
+
+* `ValidationUtil.java` ：工具类
+
+  \`\`\`java /\*\*
+
+  * ValidationUtil 工具类 \*/ @Component public class ValidationUtil {
+
+    /\*\*
+
+    * 开启快速结束模式 failFast \(true\)
+
+      \*/
+
+      private static Validator validator = Validation.byProvider\(HibernateValidator.class\).configure\(\).failFast\(false\).buildValidatorFactory\(\).getValidator\(\);
+
+      /\*\*
+
+    * 校验对象
+
+      \*
+
+    * @param t bean
+    * @param groups 校验组
+    * @return ValidResult
+
+      \*/
+
+      public static  ValidResult validateBean\(T t,Class&lt;?&gt;...groups\) {
+
+       ValidResult result = new ValidationUtil\(\).new ValidResult\(\);
+
+       Set&gt; violationSet = validator.validate\(t,groups\);
+
+       boolean hasError = violationSet != null && violationSet.size\(\) &gt; 0;
+
+       result.setHasErrors\(hasError\);
+
+       if \(hasError\) {
+
+      ```text
+       for (ConstraintViolation<T> violation : violationSet) {
+           result.addError(violation.getPropertyPath().toString(), violation.getMessage());
+       }
+      ```
+
+       }
+
+       return result;
+
+      }
+
+      /\*\*
+
+    * 校验bean的某一个属性
+
+      \*
+
+    * @param obj          bean
+    * @param propertyName 属性名称
+    * @return ValidResult
+
+      \*/
+
+      public static  ValidResult validateProperty\(T obj, String propertyName\) {
+
+       ValidResult result = new ValidationUtil\(\).new ValidResult\(\);
+
+       Set&gt; violationSet = validator.validateProperty\(obj, propertyName\);
+
+       boolean hasError = violationSet != null && violationSet.size\(\) &gt; 0;
+
+       result.setHasErrors\(hasError\);
+
+       if \(hasError\) {
+
+      ```text
+       for (ConstraintViolation<T> violation : violationSet) {
+           result.addError(propertyName, violation.getMessage());
+       }
+      ```
+
+       }
+
+       return result;
+
+      }
+
+      /\*\*
+
+    * 校验结果类 \*/ @Data public class ValidResult {
+
+      /\*\*
+
+      * 是否有错误 \*/ private boolean hasErrors;
+
+        /\*\*
+
+      * 错误信息 \*/ private List errors;
+
+        public ValidResult\(\) { this.errors = new ArrayList&lt;&gt;\(\); } public boolean hasErrors\(\) { return hasErrors; }
+
+        public void setHasErrors\(boolean hasErrors\) { this.hasErrors = hasErrors; }
+
+        /\*\*
+
+      * 获取所有验证信息
+      * @return 集合形式
+
+        \*/
+
+        public List getAllErrors\(\) {
+
+         return errors;
+
+        }
+
+        /\*\*
+
+      * 获取所有验证信息
+      * @return 字符串形式 \*/ public String getErrors\(\){ StringBuilder sb = new StringBuilder\(\); for \(ErrorMessage error : errors\) { sb.append\(error.getPropertyPath\(\)\).append\(":"\).append\(error.getMessage\(\)\).append\(" "\); } return sb.toString\(\); }
+
+        public void addError\(String propertyName, String message\) { this.errors.add\(new ErrorMessage\(propertyName, message\)\); } }
+
+    @Data public class ErrorMessage {
+
+    ```text
+    private String propertyPath;
+
+    private String message;
+
+    public ErrorMessage() {
+    }
+
+    public ErrorMessage(String propertyPath, String message) {
+        this.propertyPath = propertyPath;
+        this.message = message;
+    }
+    ```
+
+    }
+
 }
-```
-- `ValidationUtil.java` ：工具类
-```java
-/**
- * ValidationUtil 工具类
- */
-@Component
-public class ValidationUtil {
 
-    /**
-     * 开启快速结束模式 failFast (true)
-     */
-    private static Validator validator = Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory().getValidator();
-    /**
-     * 校验对象
-     *
-     * @param t bean
-     * @param groups 校验组
-     * @return ValidResult
-     */
-    public static <T> ValidResult validateBean(T t,Class<?>...groups) {
-        ValidResult result = new ValidationUtil().new ValidResult();
-        Set<ConstraintViolation<T>> violationSet = validator.validate(t,groups);
-        boolean hasError = violationSet != null && violationSet.size() > 0;
-        result.setHasErrors(hasError);
-        if (hasError) {
-            for (ConstraintViolation<T> violation : violationSet) {
-                result.addError(violation.getPropertyPath().toString(), violation.getMessage());
-            }
-        }
-        return result;
-    }
-    /**
-     * 校验bean的某一个属性
-     *
-     * @param obj          bean
-     * @param propertyName 属性名称
-     * @return ValidResult
-     */
-    public static <T> ValidResult validateProperty(T obj, String propertyName) {
-        ValidResult result = new ValidationUtil().new ValidResult();
-        Set<ConstraintViolation<T>> violationSet = validator.validateProperty(obj, propertyName);
-        boolean hasError = violationSet != null && violationSet.size() > 0;
-        result.setHasErrors(hasError);
-        if (hasError) {
-            for (ConstraintViolation<T> violation : violationSet) {
-                result.addError(propertyName, violation.getMessage());
-            }
-        }
-        return result;
-    }
-    /**
-     * 校验结果类
-     */
-    @Data
-    public class ValidResult {
-
-        /**
-         * 是否有错误
-         */
-        private boolean hasErrors;
-
-        /**
-         * 错误信息
-         */
-        private List<ErrorMessage> errors;
-
-        public ValidResult() {
-            this.errors = new ArrayList<>();
-        }
-        public boolean hasErrors() {
-            return hasErrors;
-        }
-
-        public void setHasErrors(boolean hasErrors) {
-            this.hasErrors = hasErrors;
-        }
-
-        /**
-         * 获取所有验证信息
-         * @return 集合形式
-         */
-        public List<ErrorMessage> getAllErrors() {
-            return errors;
-        }
-        /**
-         * 获取所有验证信息
-         * @return 字符串形式
-         */
-        public String getErrors(){
-            StringBuilder sb = new StringBuilder();
-            for (ErrorMessage error : errors) {
-                sb.append(error.getPropertyPath()).append(":").append(error.getMessage()).append(" ");
-            }
-            return sb.toString();
-        }
-
-        public void addError(String propertyName, String message) {
-            this.errors.add(new ErrorMessage(propertyName, message));
-        }
-    }
-
-    @Data
-    public class ErrorMessage {
-
-        private String propertyPath;
-
-        private String message;
-
-        public ErrorMessage() {
-        }
-
-        public ErrorMessage(String propertyPath, String message) {
-            this.propertyPath = propertyPath;
-            this.message = message;
-        }
-    }
-
-}
-```
+```text
 - `AuthController.java` ：控制层
 ```java
 @Controller
 public class AuthController extends BaseController {
-    
+
     /**
      * 注册：校验
      */
@@ -436,10 +484,12 @@ public class AuthController extends BaseController {
     }
 }
 ```
-- `UserServiceImpl.java` ：业务层实现
-```java
-@Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+* `UserServiceImpl.java` ：业务层实现
+
+  ```java
+  @Service
+  public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override
     public Result register(User user) {
@@ -475,5 +525,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         this.save(temp);
         return Result.success();
     }
-}
-```
+  }
+  ```
+

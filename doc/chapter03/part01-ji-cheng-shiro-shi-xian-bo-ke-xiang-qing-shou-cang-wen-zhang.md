@@ -1,4 +1,5 @@
-## 1. 集成 Shiro 实现博客详情-收藏文章
+# 1. 集成 Shiro 实现博客详情-收藏文章
+
 ```text
 blog
 ├─src
@@ -17,11 +18,13 @@ blog
 │      │          │      AuthFilter.java
 ```
 
-### 1.1 博客详情：收藏文章【判断用户是否收藏了文章】
-- `PostController.java` ：控制层，【判断用户是否收藏了文章】
-```java
-@Controller
-public class PostController extends BaseController {
+## 1.1 博客详情：收藏文章【判断用户是否收藏了文章】
+
+* `PostController.java` ：控制层，【判断用户是否收藏了文章】
+
+  ```java
+  @Controller
+  public class PostController extends BaseController {
     /**
      * 详情detail：判断用户是否收藏了文章
      */
@@ -36,14 +39,16 @@ public class PostController extends BaseController {
         //【/res/mods/jie.js】源码可知，异步渲染（res.data.collection ? '取消收藏' : '收藏'），count > 0 为true时，则res.data.collection也为true
         return Result.success(MapUtil.of("collection", count > 0));
     }
-}
-```
+  }
+  ```
 
-### 1.2 博客详情：收藏文章【加入收藏】
-- `PostController.java` ：控制层，【加入收藏】
-```java
-@Controller
-public class PostController extends BaseController {
+## 1.2 博客详情：收藏文章【加入收藏】
+
+* `PostController.java` ：控制层，【加入收藏】
+
+  ```java
+  @Controller
+  public class PostController extends BaseController {
     /**
      * 详情detail：【加入收藏】文章
      */
@@ -77,14 +82,16 @@ public class PostController extends BaseController {
 
         return Result.success();
     }
-}
-```
+  }
+  ```
 
-### 1.3 博客详情：收藏文章【取消收藏】
-- `PostController.java` ：控制层，【取消收藏】
-```java
-@Controller
-public class PostController extends BaseController {
+## 1.3 博客详情：收藏文章【取消收藏】
+
+* `PostController.java` ：控制层，【取消收藏】
+
+  ```java
+  @Controller
+  public class PostController extends BaseController {
     /**
      * 详情detail：【取消收藏】文章
      */
@@ -103,15 +110,17 @@ public class PostController extends BaseController {
 
         return Result.success();
     }
-}
-```
+  }
+  ```
 
-### 1.4 其他：Shiro自定义过滤器【判断请求是否是Ajax请求，还是Web请求】
-- 场景：如果用户退出登录后，点击【收藏文章】，报错【请求异常，请重试】，如何弹窗提示【请先登录！】
-- 解决：Shiro 自定义过滤器，重写 UserFilter 父类中的 redirectToLogin() 方法
-- `AuthFilter.java` ：过滤器，判断请求是否是 Ajax 请求，还是 Web 请求
-```java
-public class AuthFilter extends UserFilter {
+## 1.4 其他：Shiro自定义过滤器【判断请求是否是Ajax请求，还是Web请求】
+
+* 场景：如果用户退出登录后，点击【收藏文章】，报错【请求异常，请重试】，如何弹窗提示【请先登录！】
+* 解决：Shiro 自定义过滤器，重写 UserFilter 父类中的 redirectToLogin\(\) 方法
+* `AuthFilter.java` ：过滤器，判断请求是否是 Ajax 请求，还是 Web 请求
+
+  ```java
+  public class AuthFilter extends UserFilter {
 
     @Override
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
@@ -138,16 +147,18 @@ public class AuthFilter extends UserFilter {
             super.redirectToLogin(request, response);
         }
     }
-}
-```
-- `ShiroConfig.java` ：配置类，安全管理器、拦截器链、自定义过滤器
-```java
-/**
- * Shiro配置类：安全管理器、拦截器链、自定义过滤器
- */
-@Slf4j
-@Configuration
-public class ShiroConfig {
+  }
+  ```
+
+* `ShiroConfig.java` ：配置类，安全管理器、拦截器链、自定义过滤器
+
+  ```java
+  /**
+  * Shiro配置类：安全管理器、拦截器链、自定义过滤器
+  */
+  @Slf4j
+  @Configuration
+  public class ShiroConfig {
 
     /**
      * 安全管理器
@@ -219,12 +230,14 @@ public class ShiroConfig {
     public AuthFilter authFilter() {
         return new AuthFilter();
     }
-}
-```
-- `static/res/mods/index.js` ：源码可知，如果 status 为 0 ，则代表登录成功；status 为 -1，则代表登录失败，并弹窗显示 msg 内容
-```javascript
-//Ajax
-json: function (url, data, success, options) {
+  }
+  ```
+
+* `static/res/mods/index.js` ：源码可知，如果 status 为 0 ，则代表登录成功；status 为 -1，则代表登录失败，并弹窗显示 msg 内容
+
+  ```javascript
+  //Ajax
+  json: function (url, data, success, options) {
     var that = this, type = typeof data === 'function';
 
     if (type) {
@@ -252,5 +265,6 @@ json: function (url, data, success, options) {
             options.error && options.error(e);
         }
     });
-}
-```
+  }
+  ```
+

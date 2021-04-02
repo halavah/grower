@@ -1,4 +1,5 @@
-## 3. 集成 Shiro 实现个人账户-我的主页、基本设置
+# 3. 集成 Shiro 实现个人账户-我的主页、基本设置
+
 ```text
 blog
 ├─src
@@ -35,11 +36,13 @@ blog
 │          │        set.ftl
 ```
 
-### 3.1 个人账户：我的主页
-- `UserController.java` ：控制层
-```java
-@Controller
-public class UserController extends BaseController {
+## 3.1 个人账户：我的主页
+
+* `UserController.java` ：控制层
+
+  ```java
+  @Controller
+  public class UserController extends BaseController {
 
     /**
      * 我的主页
@@ -59,89 +62,95 @@ public class UserController extends BaseController {
 
         return "/user/home";
     }
-}
-```
-- `home.ftl` ：模板引擎
-```injectedfreemarker
-<#--宏layout.ftl（导航栏 + 页脚）-->
-<#include "/inc/layout.ftl"/>
+  }
+  ```
 
-<#--【三、填充（导航栏 + 页脚）】-->
-<@layout "我的主页">
+* `home.ftl` ：模板引擎
 
-    <#--1.用户基本信息-->
-    <div class="fly-home fly-panel" >
-        <#--头像-->
-        <img src="${user.avatar}" alt="贤心">
-        <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
+  \`\`\`injectedfreemarker
 
-        <#--作者信息-->
-        <h1>
-            ${user.username}
-            <i class="iconfont icon-nan"></i>
-            <i class="layui-badge fly-badge-vip">SVIP</i>
-        </h1>
+  &lt;\#--宏layout.ftl（导航栏 + 页脚）--&gt;
 
-        <#--创建时间-->
-        <p class="fly-home-info">
-            <i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">66666 飞吻</span>
-            <i class="iconfont icon-shijian"></i><span>${timeAgo(user.created)} 加入</span>
-        </p>
+  &lt;\#include "/inc/layout.ftl"/&gt;
 
-        <#--个性签名-->
-        <p class="fly-home-sign">
-            ${user.sign!'这个人好懒，什么都没留下！'}
-        </p>
-    </div>
+&lt;\#--【三、填充（导航栏 + 页脚）】--&gt; &lt;@layout "我的主页"&gt;
 
-    <#--2.最近的提问 + 最近的回答-->
-    <div class="layui-container">
-        <div class="layui-row layui-col-space15">
-            <#--用户近期【30天】的文章-->
-            <div class="layui-col-md6 fly-home-jie">
-                <div class="fly-panel">
-                    <h3 class="fly-panel-title">${user.username} 最近的提问</h3>
-                    <ul class="jie-row">
-                        <#list posts as post>
-                            <li>
-                                <#if post.recommend>
-                                    <span class="fly-jing">精</span>
-                                </#if>
-                                <a href="/post/${post.id}" class="jie-title">
-                                    ${post.title}
-                                </a>
-                                <i>${timeAgo(post.created)}</i>
-                                <em class="layui-hide-xs">
-                                    ${post.viewCount}阅/${post.commentCount}答
-                                </em>
-                            </li>
-                        </#list>
-                        <#if !posts>
-                            <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;">
-                                <i style="font-size:14px;">没有发表任何求解</i>
-                            </div>
-                        </#if>
-                    </ul>
-                </div>
+```text
+<#--1.用户基本信息-->
+<div class="fly-home fly-panel" >
+    <#--头像-->
+    <img src="${user.avatar}" alt="贤心">
+    <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
+
+    <#--作者信息-->
+    <h1>
+        ${user.username}
+        <i class="iconfont icon-nan"></i>
+        <i class="layui-badge fly-badge-vip">SVIP</i>
+    </h1>
+
+    <#--创建时间-->
+    <p class="fly-home-info">
+        <i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">66666 飞吻</span>
+        <i class="iconfont icon-shijian"></i><span>${timeAgo(user.created)} 加入</span>
+    </p>
+
+    <#--个性签名-->
+    <p class="fly-home-sign">
+        ${user.sign!'这个人好懒，什么都没留下！'}
+    </p>
+</div>
+
+<#--2.最近的提问 + 最近的回答-->
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <#--用户近期【30天】的文章-->
+        <div class="layui-col-md6 fly-home-jie">
+            <div class="fly-panel">
+                <h3 class="fly-panel-title">${user.username} 最近的提问</h3>
+                <ul class="jie-row">
+                    <#list posts as post>
+                        <li>
+                            <#if post.recommend>
+                                <span class="fly-jing">精</span>
+                            </#if>
+                            <a href="/post/${post.id}" class="jie-title">
+                                ${post.title}
+                            </a>
+                            <i>${timeAgo(post.created)}</i>
+                            <em class="layui-hide-xs">
+                                ${post.viewCount}阅/${post.commentCount}答
+                            </em>
+                        </li>
+                    </#list>
+                    <#if !posts>
+                        <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;">
+                            <i style="font-size:14px;">没有发表任何求解</i>
+                        </div>
+                    </#if>
+                </ul>
             </div>
-            <#--最近的回答-->
-            <div class="layui-col-md6 fly-home-da">
-                <div class="fly-panel">
-                    <h3 class="fly-panel-title">${user.username} 最近的回答</h3>
-                    <ul class="home-jieda">
-                        <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>没有回答任何问题</span></div>
-                    </ul>
-                </div>
+        </div>
+        <#--最近的回答-->
+        <div class="layui-col-md6 fly-home-da">
+            <div class="fly-panel">
+                <h3 class="fly-panel-title">${user.username} 最近的回答</h3>
+                <ul class="home-jieda">
+                    <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>没有回答任何问题</span></div>
+                </ul>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        layui.cache.page = 'user';
-    </script>
-</@layout>
+<script>
+    layui.cache.page = 'user';
+</script>
 ```
 
+[/@layout](mailto:/@layout)
+
+```text
 ### 3.2 个人账户：基本设置-更新资料
 - `/res/mods/index.js` ：源码可知，【lay-submit】此处默认【表单跳转】reload="true"，则会【重新加载当前页面】
 ```javascript
@@ -172,10 +181,12 @@ form.on('submit(*)', function (data) {
     return false;
 });
 ```
-- `UserController.java` ：控制层
-```java
-@Controller
-public class UserController extends BaseController {
+
+* `UserController.java` ：控制层
+
+  ```java
+  @Controller
+  public class UserController extends BaseController {
     /**
      * 基本设置
      */
@@ -187,7 +198,7 @@ public class UserController extends BaseController {
 
         return "/user/set";
     }
-    
+
     /**
      * 基本设置：更新资料
      */
@@ -221,12 +232,14 @@ public class UserController extends BaseController {
 
         return Result.success().action("/user/set#info");
     }
-}
-```
-- `set.ftl` ：模板引擎
-```injectedfreemarker
-<#--1.更新资料-->
-<div class="layui-form layui-form-pane layui-tab-item layui-show">
+  }
+  ```
+
+* `set.ftl` ：模板引擎
+
+  ```text
+  <#--1.更新资料-->
+  <div class="layui-form layui-form-pane layui-tab-item layui-show">
     <form method="post">
         <#--1.1 邮箱-->
         <div class="layui-form-item">
@@ -270,42 +283,38 @@ public class UserController extends BaseController {
             </button>
         </div>
     </form>
-</div>
-```
+  </div>
+  ```
 
-### 3.2 个人账户：基本设置-更新头像（上传图片）
-- `application.yml` ：配置文件，自定义上传路径
-```yaml
-file:
+## 3.2 个人账户：基本设置-更新头像（上传图片）
+
+* `application.yml` ：配置文件，自定义上传路径
+
+  ```yaml
+  file:
   upload:
     dir: ${user.dir}/upload
-```
-- `Consts.java` ：实体类，上传图片（基本设置）
-```java
-/**
- * 上传图片（基本设置）：封装类
- */
-@Data
-@Component
-public class Consts {
+  ```
 
-    @Value("${file.upload.dir}")
-    private String uploadDir;
+* `Consts.java` ：实体类，上传图片（基本设置）
 
-    public static final Long IM_DEFAULT_USER_ID = 999L;
+  \`\`\`java /\*\*
 
-    public final static Long IM_GROUP_ID = 999L;
-    public final static String IM_GROUP_NAME = "e-group-study";
+  * 上传图片（基本设置）：封装类 \*/ @Data @Component public class Consts {
 
-    //消息类型
-    public final static String IM_MESS_TYPE_PING = "pingMessage";
-    public final static String IM_MESS_TYPE_CHAT = "chatMessage";
+    @Value\("${file.upload.dir}"\) private String uploadDir;
 
-    public static final String IM_ONLINE_MEMBERS_KEY = "online_members_key";
-    public static final String IM_GROUP_HISTROY_MSG_KEY = "group_histroy_msg_key";
+    public static final Long IM\_DEFAULT\_USER\_ID = 999L;
+
+    public final static Long IM\_GROUP\_ID = 999L; public final static String IM\_GROUP\_NAME = "e-group-study";
+
+    //消息类型 public final static String IM\_MESS\_TYPE\_PING = "pingMessage"; public final static String IM\_MESS\_TYPE\_CHAT = "chatMessage";
+
+    public static final String IM\_ONLINE\_MEMBERS\_KEY = "online\_members\_key"; public static final String IM\_GROUP\_HISTROY\_MSG\_KEY = "group\_histroy\_msg\_key";
 
 }
-```
+
+```text
 - `SpringMvcConfig.java` ：配置类，重写父类 addResourceHandlers 方法（识别非静态资源目录：/upload/avatar/**）
 ```java
 /**
@@ -327,70 +336,70 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     }
 }
 ```
-- `UploadUtil.java` ：工具类，上传图片（基本设置）
-```java
-/**
- * 上传图片（基本设置）：工具类
- */
-@Slf4j
-@Component
-public class UploadUtil {
 
-    @Autowired
-    Consts consts;
+* `UploadUtil.java` ：工具类，上传图片（基本设置）
 
-    public final static String type_avatar = "avatar";
+  \`\`\`java /\*\*
 
-    public Result upload(String type, MultipartFile file) throws IOException {
+  * 上传图片（基本设置）：工具类 \*/ @Slf4j @Component public class UploadUtil {
 
-        if(StrUtil.isBlank(type) || file.isEmpty()) {
-            return Result.fail("上传失败");
-        }
+    @Autowired Consts consts;
 
-        // 获取文件名
-        String fileName = file.getOriginalFilename();
-        log.info("上传的文件名为：" + fileName);
-        // 获取文件的后缀名
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        log.info("上传的后缀名为：" + suffixName);
-        // 文件上传后的路径
-        String filePath = consts.getUploadDir();
+    public final static String type\_avatar = "avatar";
 
-        if ("avatar".equalsIgnoreCase(type)) {
-            AccountProfile profile = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
-            fileName = "/avatar/avatar_" + profile.getId() + suffixName;
+    public Result upload\(String type, MultipartFile file\) throws IOException {
 
-        } else if ("post".equalsIgnoreCase(type)) {
-            fileName = "/post/post_" + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_MS_PATTERN) + suffixName;
-        }
+    ```text
+    if(StrUtil.isBlank(type) || file.isEmpty()) {
+        return Result.fail("上传失败");
+    }
 
-        File dest = new File(filePath + fileName);
-        // 检测是否存在目录
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
-        try {
-            file.transferTo(dest);
-            log.info("上传成功后的文件路径为：" + filePath + fileName);
+    // 获取文件名
+    String fileName = file.getOriginalFilename();
+    log.info("上传的文件名为：" + fileName);
+    // 获取文件的后缀名
+    String suffixName = fileName.substring(fileName.lastIndexOf("."));
+    log.info("上传的后缀名为：" + suffixName);
+    // 文件上传后的路径
+    String filePath = consts.getUploadDir();
 
-            String path = filePath + fileName;
-            String url = "/upload" + fileName;
+    if ("avatar".equalsIgnoreCase(type)) {
+        AccountProfile profile = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        fileName = "/avatar/avatar_" + profile.getId() + suffixName;
 
-            log.info("url ---> {}", url);
+    } else if ("post".equalsIgnoreCase(type)) {
+        fileName = "/post/post_" + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_MS_PATTERN) + suffixName;
+    }
 
-            return Result.success(url);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    File dest = new File(filePath + fileName);
+    // 检测是否存在目录
+    if (!dest.getParentFile().exists()) {
+        dest.getParentFile().mkdirs();
+    }
+    try {
+        file.transferTo(dest);
+        log.info("上传成功后的文件路径为：" + filePath + fileName);
 
-        return Result.success(null);
+        String path = filePath + fileName;
+        String url = "/upload" + fileName;
+
+        log.info("url ---> {}", url);
+
+        return Result.success(url);
+    } catch (IllegalStateException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    return Result.success(null);
+    ```
 
     }
 
 }
-```
+
+```text
 - `UserController.java` ：控制层，上传头像（Post 请求）
 ```java
 @Controller
@@ -406,11 +415,13 @@ public class UserController extends BaseController {
 }
 ```
 
-### 3.3 个人账户：基本设置-更新头像（更新图片）
-- `/res/mods/user.js` ：源码可知，修改默认 `Post请求` 更新图片路径，从 `/user/set` 更换为 `/user/setAvatar`
-```javascript
-//上传图片
-if ($('.upload-img')[0]) {
+## 3.3 个人账户：基本设置-更新头像（更新图片）
+
+* `/res/mods/user.js` ：源码可知，修改默认 `Post请求` 更新图片路径，从 `/user/set` 更换为 `/user/setAvatar`
+
+  ```javascript
+  //上传图片
+  if ($('.upload-img')[0]) {
     layui.use('upload', function (upload) {
         var avatarAdd = $('.avatar-add');
 
@@ -439,12 +450,14 @@ if ($('.upload-img')[0]) {
             }
         });
     });
-}
-```
-- `UserController.java` ：控制层，更新头像（Post 请求）
-```java
-@Controller
-public class UserController extends BaseController {
+  }
+  ```
+
+* `UserController.java` ：控制层，更新头像（Post 请求）
+
+  ```java
+  @Controller
+  public class UserController extends BaseController {
     /**
      * 基本设置：更新头像
      */
@@ -465,12 +478,14 @@ public class UserController extends BaseController {
         }
         return Result.success().action("/user/set#avatar");
     }
-}
-```
-- `set.ftl` ：模板引擎
-```injectedfreemarker
-<#--2.更新头像-->
-<div class="layui-form layui-form-pane layui-tab-item">
+  }
+  ```
+
+* `set.ftl` ：模板引擎
+
+  ```text
+  <#--2.更新头像-->
+  <div class="layui-form layui-form-pane layui-tab-item">
     <div class="layui-form-item">
         <div class="avatar-add">
             <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过2048KB</p>
@@ -482,14 +497,16 @@ public class UserController extends BaseController {
             <span class="loading"></span>
         </div>
     </div>
-</div>
-```
+  </div>
+  ```
 
-### 3.4 个人账户：基本设置-更新密码
-- `UserController.java` ：控制层，更新密码
-```java
-@Controller
-public class UserController extends BaseController {
+## 3.4 个人账户：基本设置-更新密码
+
+* `UserController.java` ：控制层，更新密码
+
+  ```java
+  @Controller
+  public class UserController extends BaseController {
     /**
      * 基本设置：更新密码
      */
@@ -514,12 +531,14 @@ public class UserController extends BaseController {
 
         return Result.success().action("/user/set#pass");
     }
-}
-```
-- `set.ftl` ：模板引擎
-```injectedfreemarker
-<#--3.更新密码-->
-<div class="layui-form layui-form-pane layui-tab-item">
+  }
+  ```
+
+* `set.ftl` ：模板引擎
+
+  ```text
+  <#--3.更新密码-->
+  <div class="layui-form layui-form-pane layui-tab-item">
     <form action="/user/repass" method="post">
         <#--3.1 当前密码-->
         <div class="layui-form-item">
@@ -554,5 +573,6 @@ public class UserController extends BaseController {
             </button>
         </div>
     </form>
-</div>
-```
+  </div>
+  ```
+

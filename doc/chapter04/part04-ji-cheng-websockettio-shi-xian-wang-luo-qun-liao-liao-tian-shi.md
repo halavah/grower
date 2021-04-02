@@ -1,4 +1,5 @@
-## 4. 集成 WebSocket-tio 实现网络群聊-聊天室.md
+# 4. 集成 WebSocket-tio 实现网络群聊-聊天室.md
+
 ```text
 blog
 │  pom.xml
@@ -99,10 +100,12 @@ blog
 │          │         layout.ftl
 ```
 
-### 4.1 集成 WebSocket-tio 环境
-- `pom.xml` ：项目依赖，【tio：网络群聊】
-```xml
-<dependencies>
+## 4.1 集成 WebSocket-tio 环境
+
+* `pom.xml` ：项目依赖，【tio：网络群聊】
+
+  ```markup
+  <dependencies>
   <!--websocket-tio：网络群聊-->
   <!--参考：https://www.layui.com/layim/-->
   <dependency>
@@ -110,27 +113,32 @@ blog
     <artifactId>tio-websocket-server</artifactId>
     <version>3.2.5.v20190101-RELEASE</version>
   </dependency>
-</dependencies>
-```
-- `static/res/layui/lay/modules/layim.js` ：js文件，【拷贝 `layim.js` -> `static/res/layui/lay/modules/`】
-- `static/res/layui/css/modules/layim/...` ：css文件，【拷贝 `layim/...` -> `static/res/layui/css/modules/`】
+  </dependencies>
+  ```
 
-### 4.2 配置 WebSocket-tio 环境
-- `application.yml` ：配置文件
-```yaml
-im:
+* `static/res/layui/lay/modules/layim.js` ：js文件，【拷贝 `layim.js` -&gt; `static/res/layui/lay/modules/`】
+* `static/res/layui/css/modules/layim/...` ：css文件，【拷贝 `layim/...` -&gt; `static/res/layui/css/modules/`】
+
+## 4.2 配置 WebSocket-tio 环境
+
+* `application.yml` ：配置文件
+
+  ```yaml
+  im:
   server:
     port: 9326
-```
-- `ImServerConfig.java` ：配置类，【执行入口类】
-```java
-/**
- * 执行入口类 -> 1.启动tio服务（绑定端口），并调用-消息处理器
- *          -> 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】
- */
-@Slf4j
-@Configuration
-public class ImServerConfig {
+  ```
+
+* `ImServerConfig.java` ：配置类，【执行入口类】
+
+  ```java
+  /**
+  * 执行入口类 -> 1.启动tio服务（绑定端口），并调用-消息处理器
+  *          -> 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】
+  */
+  @Slf4j
+  @Configuration
+  public class ImServerConfig {
 
     @Value("${im.server.port}")
     private int imPort;
@@ -151,15 +159,17 @@ public class ImServerConfig {
 
         return null;
     }
-}
-```
-- `ImServerStarter.java` ：配置类，【1.启动tio服务（绑定端口），并调用-消息处理器】
-```java
-/**
- * 1.启动tio服务（绑定端口），并调用-消息处理器
- */
-@Slf4j
-public class ImServerStarter {
+  }
+  ```
+
+* `ImServerStarter.java` ：配置类，【1.启动tio服务（绑定端口），并调用-消息处理器】
+
+  ```java
+  /**
+  * 1.启动tio服务（绑定端口），并调用-消息处理器
+  */
+  @Slf4j
+  public class ImServerStarter {
 
     //返回全局变量：使用websocket-tio包中的ImServerStarter【org.tio.websocket.server.WsServerStarter】
     private WsServerStarter starter;
@@ -184,15 +194,17 @@ public class ImServerStarter {
         starter.start();
         log.info("tio server start !!");
     }
-}
-```
-- `ImWsMsgHandler.java` ：配置类，【2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】】
-```java
-/**
- * 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】
- */
-@Slf4j
-public class ImWsMsgHandler implements IWsMsgHandler {
+  }
+  ```
+
+* `ImWsMsgHandler.java` ：配置类，【2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】】
+
+  ```java
+  /**
+  * 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】
+  */
+  @Slf4j
+  public class ImWsMsgHandler implements IWsMsgHandler {
 
     /**
      * 握手时候走的方法
@@ -255,15 +267,17 @@ public class ImWsMsgHandler implements IWsMsgHandler {
 
         return null;
     }
-}
-```
+  }
+  ```
 
-### 4.3 使用 WebSocket-tio 环境
-- `ChatController.java` ：控制层
-```java
-@RestController
-@RequestMapping("/chat")
-public class ChatController extends BaseController {
+## 4.3 使用 WebSocket-tio 环境
+
+* `ChatController.java` ：控制层
+
+  ```java
+  @RestController
+  @RequestMapping("/chat")
+  public class ChatController extends BaseController {
 
     @GetMapping("/getMineAndGroupData")
     public Result getMineAndGroupData() {
@@ -288,23 +302,27 @@ public class ChatController extends BaseController {
         List<Object> messages = chatService.getGroupHistoryMsg(20);
         return Result.success(messages);
     }
-}
-```
-- `ChatService.java` ：业务层接口
-```java
-public interface ChatService {
+  }
+  ```
+
+* `ChatService.java` ：业务层接口
+
+  ```java
+  public interface ChatService {
     ImUser getCurrentUser();
 
     void setGroupHistoryMsg(ImMess responseMess);
 
     List<Object> getGroupHistoryMsg(int count);
-}
-```
-- `ChatServiceImpl.java` ：业务层实现
-```java
-@Slf4j
-@Service("chatService")
-public class ChatServiceImpl implements ChatService {
+  }
+  ```
+
+* `ChatServiceImpl.java` ：业务层实现
+
+  ```java
+  @Slf4j
+  @Service("chatService")
+  public class ChatServiceImpl implements ChatService {
 
     @Autowired
     RedisUtil redisUtil;
@@ -348,42 +366,34 @@ public class ChatServiceImpl implements ChatService {
         long length = redisUtil.lGetListSize(Consts.IM_GROUP_HISTROY_MSG_KEY);
         return redisUtil.lGet(Consts.IM_GROUP_HISTROY_MSG_KEY, length - count < 0 ? 0 : length - count, length);
     }
-}
-```
+  }
+  ```
 
-### 4.3 编写 chat.js、im.js 文件
-- `chat.js` ：js文件，【layim 聊天窗口（chat.js 调用 im.js 方法）】
-```javascript
-/**
- * layim 聊天窗口（chat.js 调用 im.js 方法）
- */
-layui.use('layim', function (layim) {
+## 4.3 编写 chat.js、im.js 文件
 
-  var $ = layui.jquery;
-  layim.config({
-    brief: true //是否简约模式（如果true则不显示主面板）
-    , voice: false
-    , chatLog: layui.cache.dir + 'css/modules/layim/html/chatlog.html'
-  });
+* `chat.js` ：js文件，【layim 聊天窗口（chat.js 调用 im.js 方法）】
 
-  var tiows = new tio.ws($, layim);
+  \`\`\`javascript /\*\*
 
-  //1.【获取个人、群聊信息】 + 【打开聊天窗口】
-  tiows.openChatWindow();
+  * layim 聊天窗口（chat.js 调用 im.js 方法）
 
-  //2.【查看历史聊天记录 - 回显】
-  tiows.initHistoryMess();
+    \*/
 
-  //3.【使用websocket建立连接】
-  tiows.connect();
+    layui.use\('layim', function \(layim\) {
 
-  //4.【发送消息】
-  layim.on('sendMessage', function (res) {
-    tiows.sendChatMessage(res);
-  });
-});
+  var $ = layui.jquery; layim.config\({ brief: true //是否简约模式（如果true则不显示主面板） , voice: false , chatLog: layui.cache.dir + 'css/modules/layim/html/chatlog.html' }\);
 
-```
+  var tiows = new tio.ws\($, layim\);
+
+  //1.【获取个人、群聊信息】 + 【打开聊天窗口】 tiows.openChatWindow\(\);
+
+  //2.【查看历史聊天记录 - 回显】 tiows.initHistoryMess\(\);
+
+  //3.【使用websocket建立连接】 tiows.connect\(\);
+
+  //4.【发送消息】 layim.on\('sendMessage', function \(res\) { tiows.sendChatMessage\(res\); }\); }\);
+
+```text
 - `im.js` ：js文件，【layim 聊天窗口（chat.js 调用 im.js 方法）】
 ```javascript
 /**
@@ -523,10 +533,12 @@ tio.ws = function ($, layim) {
 }
 ```
 
-### 4.4 使用 chat.js、im.js 文件
-- `layout.ftl` ：模板引擎，【引入 im.js、chat.js】
-```injectedfreemarker
-<#macro layout title>
+## 4.4 使用 chat.js、im.js 文件
+
+* `layout.ftl` ：模板引擎，【引入 im.js、chat.js】
+
+  ```text
+  <#macro layout title>
   <!DOCTYPE html>
   <html>
   <head>
@@ -547,5 +559,6 @@ tio.ws = function ($, layim) {
     <script src="/res/js/chat.js"></script>
   </head>
   <body>
-</#macro>
-```
+  </#macro>
+  ```
+

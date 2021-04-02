@@ -1,4 +1,5 @@
-## 4. 集成 Shiro 实现博客详情-用户文章、用户评论
+# 4. 集成 Shiro 实现博客详情-用户文章、用户评论
+
 ```text
 blog
 ├─src
@@ -11,11 +12,13 @@ blog
 │      │          │      PostController.java
 ```
 
-### 4.1 博客详情-用户文章
-- `PostController.java` ：控制层，【查看】文章、【查看】评论、【删除】文章、【评论】文章、
-```java
-@Controller
-public class PostController extends BaseController {
+## 4.1 博客详情-用户文章
+
+* `PostController.java` ：控制层，【查看】文章、【查看】评论、【删除】文章、【评论】文章、
+
+  ```java
+  @Controller
+  public class PostController extends BaseController {
     /**
      * 详情detail：【查看】文章、【查看】评论
      */
@@ -46,7 +49,7 @@ public class PostController extends BaseController {
 
         return "post/detail";
     }
-    
+
     /**
      * 详情detail：【删除】文章
      */
@@ -67,14 +70,16 @@ public class PostController extends BaseController {
 
         return Result.success().action("/user/index");
     }
-}
-```
+  }
+  ```
 
-### 4.2 博客详情-用户评论
-- `PostController.java` ：控制层，【评论】文章、【删除】评论
-```java
-@Controller
-public class PostController extends BaseController {
+## 4.2 博客详情-用户评论
+
+* `PostController.java` ：控制层，【评论】文章、【删除】评论
+
+  ```java
+  @Controller
+  public class PostController extends BaseController {
     /**
      * 详情detail：【评论】文章
      */
@@ -168,5 +173,6 @@ public class PostController extends BaseController {
 
         return Result.success(null);
     }
-}
-```
+  }
+  ```
+

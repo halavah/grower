@@ -1,4 +1,5 @@
-## 5. 项目启动前预加载导航栏
+# 5. 项目启动前预加载导航栏
+
 ```text
 blog
 │  pom.xml
@@ -17,42 +18,57 @@ blog
 │          │        header-panel.ftl
 ```
 
-### 5.1 ContextStartup 配置类
-- `ContextStartup.java` ：配置类，【提前加载导航栏中的“提问、分享、讨论、建议”】
-```java
-/**
- * Context配置类
- */
-@Component
-public class ContextStartup implements ApplicationRunner, ServletContextAware {
+## 5.1 ContextStartup 配置类
 
-    @Autowired
-    CategoryService categoryService;
+* `ContextStartup.java` ：配置类，【提前加载导航栏中的“提问、分享、讨论、建议”】
+
+  \`\`\`java /\*\*
+
+  * Context配置类 \*/ @Component public class ContextStartup implements ApplicationRunner, ServletContextAware {
+
+    @Autowired CategoryService categoryService;
 
     ServletContext servletContext;
 
-    /**
-     * 项目启动时，会同时调用该run方法：提前加载导航栏中的“提问、分享、讨论、建议”，并将其list放入servletContext上下文对象
-     */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        List<Category> categories = categoryService.list(new QueryWrapper<Category>()
-                .eq("status", 0)
-        );
-        servletContext.setAttribute("categorys", categories);
-    }
+    /\*\*
 
-    /**
-     * servletContext上下文对象
-     */
-    @Override
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
+    * 项目启动时，会同时调用该run方法：提前加载导航栏中的“提问、分享、讨论、建议”，并将其list放入servletContext上下文对象
+
+      \*/
+
+      @Override
+
+      public void run\(ApplicationArguments args\) throws Exception {
+
+       List categories = categoryService.list\(new QueryWrapper\(\)
+
+      ```text
+           .eq("status", 0)
+      ```
+
+       \);
+
+       servletContext.setAttribute\("categorys", categories\);
+
+      }
+
+    /\*\*
+
+    * servletContext上下文对象
+
+      \*/
+
+      @Override
+
+      public void setServletContext\(ServletContext servletContext\) {
+
+       this.servletContext = servletContext;
+
+      }
 
 }
-```
 
+```text
 ### 5.2 使用
 - `header-panel.ftl` ：模板引擎，【根据 currentCategoryId、categorys 对数据进行渲染】
 ```injectedfreemarker
@@ -86,3 +102,4 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     </div>
 </div>
 ```
+

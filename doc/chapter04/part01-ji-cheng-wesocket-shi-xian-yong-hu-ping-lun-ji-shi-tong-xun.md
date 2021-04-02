@@ -1,4 +1,5 @@
-## 1. 集成 WeSocket 实现用户评论-即时通讯
+# 1. 集成 WeSocket 实现用户评论-即时通讯
+
 ```text
 blog
 │  pom.xml
@@ -27,28 +28,32 @@ blog
 │          │         layout.ftl
 ```
 
-### 1.1 集成 WebSocket 环境
-- `pom.xml` ：项目依赖，【websocket 通讯】
-```xml
-<dependencies>
+## 1.1 集成 WebSocket 环境
+
+* `pom.xml` ：项目依赖，【websocket 通讯】
+
+  ```markup
+  <dependencies>
   <!--websocket-->
   <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-websocket</artifactId>
   </dependency>
-</dependencies>
-```
+  </dependencies>
+  ```
 
-### 1.2 配置 WebSocket 环境
-- `WsConfig.java` ：配置类，【点对点通讯，订阅通道/user/、/topic/，访问地址/websocket】
-```java
-/**
- * WebSocket 配置类：点对点
- */
-@EnableAsync //开启异步消息
-@Configuration
-@EnableWebSocketMessageBroker //表示开启使用STOMP协议的消息代理
-public class WsConfig implements WebSocketMessageBrokerConfigurer {
+## 1.2 配置 WebSocket 环境
+
+* `WsConfig.java` ：配置类，【点对点通讯，订阅通道/user/、/topic/，访问地址/websocket】
+
+  ```java
+  /**
+  * WebSocket 配置类：点对点
+  */
+  @EnableAsync //开启异步消息
+  @Configuration
+  @EnableWebSocketMessageBroker //表示开启使用STOMP协议的消息代理
+  public class WsConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -61,11 +66,13 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/user/", "/topic/"); //推送消息的前缀
         registry.setApplicationDestinationPrefixes("/app"); //注册代理点
     }
-}
-```
-- `layout.ftl` ：模板引擎，【引入 sockjs.js、stomp.js】
-```injectedfreemarker
-<#macro layout title>
+  }
+  ```
+
+* `layout.ftl` ：模板引擎，【引入 sockjs.js、stomp.js】
+
+  ```text
+  <#macro layout title>
   <!DOCTYPE html>
   <html>
   <head>
@@ -84,14 +91,16 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
     <script src="/res/js/stomp.js"></script>
   </head>
   <body>
-</#macro>
-```
+  </#macro>
+  ```
 
-### 1.3 使用 WebSocket 通讯
-- `PostController.java` ：控制层，【即时通知作者（websocket）】
-```java
-@Controller
-public class PostController extends BaseController {
+## 1.3 使用 WebSocket 通讯
+
+* `PostController.java` ：控制层，【即时通知作者（websocket）】
+
+  ```java
+  @Controller
+  public class PostController extends BaseController {
     /**
      * 详情detail：【评论】文章
      */
@@ -162,12 +171,14 @@ public class PostController extends BaseController {
 
         return Result.success().action("/post/" + post.getId());
     }
-}
-```
-- `WsServiceImpl.java` ：业务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url 为 /user/20/messCount/ 】
-```java
-@Service
-public class WsServiceImpl implements WsService {
+  }
+  ```
+
+* `WsServiceImpl.java` ：业务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url 为 /user/20/messCount/ 】
+
+  ```java
+  @Service
+  public class WsServiceImpl implements WsService {
 
     @Autowired
     UserMessageService messageService;
@@ -187,12 +198,14 @@ public class WsServiceImpl implements WsService {
         // super.convertAndSend(this.destinationPrefix + user + destination, payload, headers, postProcessor);
         messagingTemplate.convertAndSendToUser(toUserId.toString(), "/messCount", count);
     }
-}
-```
-- `layout.ftl` ：模板引擎
-```injectedfreemarker
-<#--宏：1.macro定义脚本，名为layout，参数为title-->
-<#macro layout title>
+  }
+  ```
+
+* `layout.ftl` ：模板引擎
+
+  ```text
+  <#--宏：1.macro定义脚本，名为layout，参数为title-->
+  <#macro layout title>
   <!DOCTYPE html>
   <html>
   <head>
@@ -284,14 +297,16 @@ public class WsServiceImpl implements WsService {
 
   </body>
   </html>
-</#macro>
-```
+  </#macro>
+  ```
 
-### 1.4 其他：用户中心-批量将未读改为已读
-- `UserController.java` ：控制层，【批量处理，将全部消息的【状态：未读 0】改为【状态：已读 1】，并【批量修改 状态为已读 1】】
-```java
-@Controller
-public class UserController extends BaseController {
+## 1.4 其他：用户中心-批量将未读改为已读
+
+* `UserController.java` ：控制层，【批量处理，将全部消息的【状态：未读 0】改为【状态：已读 1】，并【批量修改 状态为已读 1】】
+
+  ```java
+  @Controller
+  public class UserController extends BaseController {
     /**
      * 我的消息：查询消息
      */
@@ -314,12 +329,14 @@ public class UserController extends BaseController {
 
         return "/user/mess";
     }
-}
-```
-- `UserMessageServiceImpl.java` ：业务层实现，【批量处理】
-```java
-@Service
-public class UserMessageServiceImpl extends ServiceImpl<UserMessageMapper, UserMessage> implements UserMessageService {
+  }
+  ```
+
+* `UserMessageServiceImpl.java` ：业务层实现，【批量处理】
+
+  ```java
+  @Service
+  public class UserMessageServiceImpl extends ServiceImpl<UserMessageMapper, UserMessage> implements UserMessageService {
 
     @Override
     public void updateToReaded(List<Long> ids) {
@@ -330,21 +347,26 @@ public class UserMessageServiceImpl extends ServiceImpl<UserMessageMapper, UserM
             .in("id", ids)
         );
     }
-}
-```
-- `UserMessageMapper.java` ：数据层接口，【开启事务】
-```java
-public interface UserMessageMapper extends BaseMapper<UserMessage> {
+  }
+  ```
+
+* `UserMessageMapper.java` ：数据层接口，【开启事务】
+
+  ```java
+  public interface UserMessageMapper extends BaseMapper<UserMessage> {
 
     @Transactional
     void updateToReaded(@Param(Constants.WRAPPER) QueryWrapper<UserMessage> wrapper);
-}
-```
-- `UserMessageMapper.xml` ：数据层实现，【SQL 命令】
-```xml
-<update id="updateToReaded">
+  }
+  ```
+
+* `UserMessageMapper.xml` ：数据层实现，【SQL 命令】
+
+  ```markup
+  <update id="updateToReaded">
   UPDATE m_user_message
   SET status = 1
   ${ew.customSqlSegment}
-</update>
-```
+  </update>
+  ```
+
