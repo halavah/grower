@@ -51,10 +51,10 @@
     - [MySQL_5_7_25-2021_03_11_18_47_44-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_11_18_47_44-xblog.sql)
     - [MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql](https://github.com/halavah/blog/tree/master/doc/SQL/MySQL_5_7_25-2021_03_14_14_36_04-xblog.sql)
 
-### 使用说明
+### 项目说明
 - 测试账户：11111@qq.com
 - 测试密码：123456
 
-### 特别鸣谢
+### 项目鸣谢
 - 项目原作者：[MarkerHub](https://github.com/MarkerHub/)
 - 项目原地址：[eblog](https://github.com/MarkerHub/eblog)
