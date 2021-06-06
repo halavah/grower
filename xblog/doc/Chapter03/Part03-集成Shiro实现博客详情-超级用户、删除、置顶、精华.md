@@ -1,4 +1,5 @@
-## 3. 集成 Shiro 实现博客详情-超级用户、删除、置顶、精华
+# Part03-集成Shiro实现博客详情-超级用户、删除、置顶、精华
+
 ```text
 blog
 ├─src
@@ -14,7 +15,7 @@ blog
 │      │          │      AdminController.java
 │      │          │
 │      │          ├─shiro
-│      │          │      AccountRealm.java    
+│      │          │      AccountRealm.java
 │      │
 │      └─resources
 │          ├─templates
@@ -24,8 +25,10 @@ blog
 │          │         detail.ftl
 ```
 
-### 3.1 博客详情-超级用户
+## 3.1 博客详情-超级用户
+
 - `AccountRealm.java` ：过滤器，授权 id=1 的用户 admin 为 超级用户
+
 ```java
 /**
  * Shiro过滤器：授权 / 认证
@@ -55,8 +58,10 @@ public class AccountRealm extends AuthorizingRealm {
 }
 ```
 
-### 3.2 博客详情-删除、置顶、精华
+## 3.2 博客详情-删除、置顶、精华
+
 - `detail.ftl` ：模板引擎，使用<@shiro.hasRole name="admin"></@shiro>标签对【删除】、【置顶】、【加精】进行处理，因此，该功能只能【登录 admin 超级用户】
+
 ```injectedfreemarker
 <#--1.1.2 文章标签-->
 <div class="fly-detail-info">
@@ -88,8 +93,10 @@ public class AccountRealm extends AuthorizingRealm {
 </div>
 ```
 
-### 3.3 博客详情-数据接口
+## 3.3 博客详情-数据接口
+
 - `AdminController.java` ：控制层，根据前端传来的 3 个参数：id、rank、field，对功能进行实现
+
 ```java
 @Controller
 public class AdminController extends BaseController {
@@ -131,8 +138,10 @@ public class AdminController extends BaseController {
 }
 ```
 
-### 3.4 其他-全局异常
+## 3.4 其他-全局异常
+
 - `GlobalException.java` ：全局异常，分别对 Ajax 异常请求、Web 异常请求进行处理
+
 ```java
 /**
  * 全局异常
@@ -157,7 +166,9 @@ public class GlobalException {
     }
 }
 ```
+
 - `error.ftl` ：模板引擎，将 message 错误信息进行显示
+
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl" />

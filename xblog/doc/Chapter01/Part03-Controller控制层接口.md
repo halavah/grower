@@ -1,4 +1,5 @@
-## 3. Controller 控制层接口
+# Part03-Controller控制层接口
+
 ```text
 blog
 ├─src
@@ -8,32 +9,34 @@ blog
 │      │      └─myslayers
 │      │          ├─config
 │      │          │      ContextStartup.java
-│      │          │      
+│      │          │
 │      │          ├─controller
 │      │          │      BaseController.java
-│      │          │      IndexController.java 
-│      │          │      PostController.java 
-│      │          │ 
+│      │          │      IndexController.java
+│      │          │      PostController.java
+│      │          │
 │      │          ├─service
 │      │          │  │  postService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         postServiceImpl.java
-│      │          
+│      │
 │      └─resources
 │          ├─templates
 │          │  │  index.ftl
 │          │  │
 │          │  ├─inc
 │          │  │     header-panel.ftl
-│          │  │ 
+│          │  │
 │          │  └─post
 │          │        category.ftl
 │          │        detail.ftl
 ```
 
-### 3.1 首页
+## 3.1 首页
+
 - `IndexController.java` ：控制层
+
 ```java
 @Controller
 public class IndexController extends BaseController {
@@ -60,7 +63,9 @@ public class IndexController extends BaseController {
     }
 }
 ```
+
 - `index.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
@@ -132,8 +137,10 @@ public class IndexController extends BaseController {
 </@layout>
 ```
 
-### 3.2 导航栏、文章分类
+## 3.2 导航栏、文章分类
+
 - `ContextStartup.java` ：配置类，【向 `header-panel.ftl` 传入 `categorys`】
+
 ```java
 @Component
 public class ContextStartup implements ApplicationRunner, ServletContextAware {
@@ -163,7 +170,9 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
     }
 }
 ```
+
 - `PostController.java` ：控制类，【向 `header-panel.ftl` 传入 `currentCategoryId`】
+
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -185,7 +194,9 @@ public class PostController extends BaseController {
     }
 }
 ```
+
 - `header-panel.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--【二、分类】-->
 <div class="fly-panel fly-column">
@@ -215,7 +226,9 @@ public class PostController extends BaseController {
   </div>
 </div>
 ```
+
 - `category.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
@@ -273,8 +286,10 @@ public class PostController extends BaseController {
 </@layout>
 ```
 
-### 3.3 文章详情
+## 3.3 文章详情
+
 - `PostController.java` ：控制层，【查看】文章、【查看】评论
+
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -311,7 +326,9 @@ public class PostController extends BaseController {
     }
 }
 ```
+
 - `detail.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl" />

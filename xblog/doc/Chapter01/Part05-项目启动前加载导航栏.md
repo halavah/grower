@@ -1,4 +1,5 @@
-## 5. 项目启动前预加载导航栏
+# Part05-项目启动前加载导航栏
+
 ```text
 blog
 │  pom.xml
@@ -17,8 +18,10 @@ blog
 │          │        header-panel.ftl
 ```
 
-### 5.1 ContextStartup 配置类
+## 5.1 ContextStartup 配置类
+
 - `ContextStartup.java` ：配置类，【提前加载导航栏中的“提问、分享、讨论、建议”】
+
 ```java
 /**
  * Context配置类
@@ -53,8 +56,10 @@ public class ContextStartup implements ApplicationRunner, ServletContextAware {
 }
 ```
 
-### 5.2 使用
+## 5.2 使用
+
 - `header-panel.ftl` ：模板引擎，【根据 currentCategoryId、categorys 对数据进行渲染】
+
 ```injectedfreemarker
 <#--【二、分类】-->
 <div class="fly-panel fly-column">

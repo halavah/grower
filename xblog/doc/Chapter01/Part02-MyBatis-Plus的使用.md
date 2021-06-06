@@ -1,4 +1,5 @@
-## 2. MyBatis-Plus 的使用
+# Part02-MyBatis-Plus的使用
+
 ```text
 blog
 │  pom.xml
@@ -12,22 +13,24 @@ blog
 │      │          │
 │      │          ├─config
 │      │          │      MyBatisPlusConfig.java
-│      │          │ 
+│      │          │
 │      │          ├─service
 │      │          │  │  PostService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         PostServiceImpl.java
-│      │          │ 
+│      │          │
 │      │          ├─mapper
 │      │          │  │  PostMapper.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         PostMapper.xml
 ```
 
-### 2.1 MP 环境
+## 2.1 MP 环境
+
 - `pom.xml` ：项目依赖，【mybatis-plus-boot-starter、p6spy】
+
 ```xml
 <dependencies>
   <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器-->
@@ -58,14 +61,18 @@ blog
   </dependency>
 </dependencies>
 ```
+
 - `application.yml` ：配置文件，【识别 Mapper 层】
+
 ```yaml
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
 ```
 
-### 2.2 代码生成器
+## 2.2 代码生成器
+
 - CodeGenerator.java：项目依赖，【mybatis-plus-boot-starter、mysql-connector-java、mybatis-plus-generator、druid-spring-boot-starter、spring-boot-starter-freemarker】
+
 ```java
 // 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
 public class CodeGenerator {
@@ -180,8 +187,10 @@ public class CodeGenerator {
 }
 ```
 
-### 2.3 分页插件
+## 2.3 分页插件
+
 - `MyBatisPlusConfig.java` ：配置类，【SpringBoot 的使用方式】
+
 ```java
 @Configuration
 @EnableTransactionManagement
@@ -199,8 +208,10 @@ public class MyBatisPlusConfig {
 }
 ```
 
-### 2.4 执行 SQL 分析打印
+## 2.4 执行 SQL 分析打印
+
 - `spy.properties` ：配置文件，【该功能依赖 p6spy 组件，其中 datasource、freemarker、mybatis-plus 的配置】
+
 ```yaml
 spring:
   datasource:
@@ -215,7 +226,9 @@ spring:
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
 ```
+
 - `spy.properties` ：配置文件，【p6spy 组件对应的 spy.properties 配置】
+
 ```properties
 #3.2.1以下使用或者不配置
 module.log=com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory
@@ -241,15 +254,19 @@ outagedetection=true
 outagedetectioninterval=2
 ```
 
-### 2.5 条件构造器-AbstractWrapper、QueryWrapper、UpdateWrapper
+## 2.5 条件构造器
+
 - `PostService.java` ：业务层接口
+
 ```java
 public interface PostService extends IService<Post> {
 
     IPage<PostVo> selectPosts(Page page, Long categoryId, Long userId, Integer level, Boolean recommend, String order);
 }
 ```
+
 - `PostServiceImpl.java`：业务层实现
+
 ```java
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
@@ -274,14 +291,18 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 }
 ```
+
 - `PostMapper.java` ：数据层接口
+
 ```java
 public interface PostMapper extends BaseMapper<Post> {
 
     IPage<PostVo> selectPosts(Page page, @Param(Constants.WRAPPER) QueryWrapper<Post> wrapper);
 }
 ```
+
 - `PostMapper.xml` ：数据层实现
+
 ```xml
 <select id="selectPosts" resultType="org.myslayers.vo.PostVo">
 SELECT p.id,

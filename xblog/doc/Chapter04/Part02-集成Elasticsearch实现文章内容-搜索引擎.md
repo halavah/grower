@@ -1,4 +1,5 @@
-## 2. 集成 Elasticsearch 实现文章内容-搜索引擎
+# Part02-集成Elasticsearch实现文章内容-搜索引擎
+
 ```text
 blog
 │  pom.xml
@@ -15,20 +16,20 @@ blog
 │      │          │
 │      │          ├─service
 │      │          │  │  SearchService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         SearchServiceImpl.java
 │      │          ├─search
-│      │          │  │      
+│      │          │  │
 │      │          │  ├─model
 │      │          │  │      PostDocment.java
-│      │          │  │      
+│      │          │  │
 │      │          │  └─repository
-│      │          │         PostRepository.java        
+│      │          │         PostRepository.java
 │      │
 │      └─resources
 │          │  application.yml
-│          │ 
+│          │
 │          ├─templates
 │          │  │  search.ftl
 │          │  │
@@ -36,8 +37,10 @@ blog
 │          │         set.ftl
 ```
 
-### 2.1 集成 Elasticsearch 环境
+## 2.1 集成 Elasticsearch 环境
+
 - `pom.xml` ：项目依赖，【elasticsearch 搜索引擎】
+
 ```xml
 <dependencies>
   <!--elasticsearch-6.4.3：搜索引擎 -->
@@ -46,7 +49,7 @@ blog
     <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
     <version>2.1.1.RELEASE</version>
   </dependency>
-  
+
   <!--modelmapper：Model和DTO模型类的转换-->
   <dependency>
     <groupId>org.modelmapper</groupId>
@@ -55,7 +58,9 @@ blog
   </dependency>
 </dependencies>
 ```
+
 - `application.yml` ：配置文件，【elasticsearch 搜索引擎】
+
 ```yaml
 spring:
   data:
@@ -65,7 +70,9 @@ spring:
       repositories:
         enabled: true
 ```
+
 - `Application.java`：项目启动，【解决 elasticsearch 启动时，由于底层 netty 版本问题引发的项目启动问题】
+
 ```java
 @EnableScheduling//开启定时器
 @SpringBootApplication
@@ -82,8 +89,10 @@ public class Application {
 }
 ```
 
-### 2.2 配置 Elasticsearch 环境
+## 2.2 配置 Elasticsearch 环境
+
 - `PostDocment.java` ：实体类，【类似 MySQL 表】
+
 ```java
 /**
  * Elasticsearch：实体类，类似MySQL表
@@ -137,7 +146,9 @@ public class PostDocment implements Serializable {
     private Date created;
 }
 ```
+
 - `PostRepository.java` ：配置类，【自定义 ElasticsearchRepository】
+
 ```java
 /**
  * PostRepository：继承ElasticsearchRepository
@@ -149,8 +160,10 @@ public interface PostRepository extends ElasticsearchRepository<PostDocment, Lon
 }
 ```
 
-### 2.3 使用 Elasticsearch 搜索引擎-【搜索按钮】
-- `/res/mods/index.js` ：源码可知，【将默认跳转http://cn.bing.com/search 更改为 /search】
+## 2.3 使用 Elasticsearch 搜索引擎-【搜索按钮】
+
+- `/res/mods/index.js` ：源码可知，【将默认跳转<http://cn.bing.com/search> 更改为 /search】
+
 ```javascript
 //搜索
 $('.fly-search').on('click', function () {
@@ -191,7 +204,9 @@ $('.fly-search').on('click', function () {
   })
 });
 ```
+
 - `IndexController.java` ：控制层，【搜索按钮】
+
 ```java
 @Controller
 public class IndexController extends BaseController {
@@ -212,7 +227,9 @@ public class IndexController extends BaseController {
     }
 }
 ```
+
 - `SearchServiceImpl.java` ：业务层实现，【search 搜索，使用模型映射器进行 MP-page -> 转换为 JPA-page -> 转换为 MP-page】
+
 ```java
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -241,7 +258,9 @@ public class SearchServiceImpl implements SearchService {
     }
 }
 ```
+
 - `search.ftl` ：目标引擎，【搜索结果后的页面】
+
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl" />
@@ -310,8 +329,10 @@ public class SearchServiceImpl implements SearchService {
 </@layout>
 ```
 
-### 2.4 使用 Elasticsearch 搜索引擎-【管理员-同步ES数据】
+## 2.4 使用 Elasticsearch 搜索引擎-【管理员-同步ES数据】
+
 - `AdminController.java` ：超级用户，【只有管理员，才可以同步 ES 数据】
+
 ```java
 @Controller
 public class AdminController extends BaseController {
@@ -344,7 +365,9 @@ public class AdminController extends BaseController {
     }
 }
 ```
+
 - `SearchServiceImpl.java` ：业务层实现，【initEsData 初始化数据】
+
 ```java
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -373,7 +396,9 @@ public class SearchServiceImpl implements SearchService {
     }
 }
 ```
+
 - `set.ftl` ：模板引擎，【只有管理员，才可以同步 ES 数据】
+
 ```injectedfreemarker
 <#--4.同步ES数据-->
 <@shiro.hasRole name="admin">

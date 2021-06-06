@@ -1,13 +1,14 @@
-## 1. 博客页面划分
+# Part01-博客页面划分
+
 ```text
 blog
 │  pom.xml
 │
 ├─src
 │  └─main
-│      ├─java  
+│      ├─java
 │      └─resources
-│          │  application.yml 
+│          │  application.yml
 │          │
 │          ├─templates
 │          │  └─inc
@@ -20,28 +21,34 @@ blog
 │          │        right.ftl
 ```
 
-### 1.1 导航栏（header.ftl）
+## 1.1 导航栏（header.ftl）
+
 - 图标
 - 登录/注册
 
-### 1.2 分类（header-panel.ftl）
+## 1.2 分类（header-panel.ftl）
+
 - 首页
 - 提问、分享、讨论、建议
 
-### 1.3 左侧md8（left.ftl）
+## 1.3 左侧md8（left.ftl）
 
-### 1.4 右侧md4（right.ftl）
+## 1.4 右侧md4（right.ftl）
 
-### 1.5 宏（common.ftl）
+## 1.5 宏（common.ftl）
+
 - 分页：`<@paging XXX></@paging>`
 - 一条数据 posting：`<@plisting XXX></@plisting>`
 
-### 1.6 布局（layout.ftl）
+## 1.6 布局（layout.ftl）
+
 - 宏：macro 定义脚本，名为 layout，参数为 title
 - 划分：header.ftl、<#nested/>、footer.ftl
 
-### 1.7 项目环境
+## 1.7 项目环境
+
 - `application.yml` ：配置文件，【识别 Mapper 层】
+
 ```yaml
 spring:
   datasource:
@@ -58,7 +65,9 @@ spring:
       number_format: 0.##
     cache: false  # 清除缓存实现热部署，部署环境，建议开启 true（默认）
 ```
+
 - `pom.xml` ：项目依赖
+
 ```xml
 <dependencies>
   <!--SpringMVC-->
@@ -73,7 +82,7 @@ spring:
     <artifactId>lombok</artifactId>
     <optional>true</optional>
   </dependency>
-  
+
   <!--mp、druid、mysql、mp-generator（MyBatis-Plus 从 3.0.3后移除了代码生成器与模板引擎的默认依赖）、MP支持的SQL分析器-->
   <dependency>
     <groupId>com.baomidou</groupId>

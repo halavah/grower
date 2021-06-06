@@ -1,4 +1,5 @@
-## 3. 集成 Shiro 实现个人账户-我的主页、基本设置
+# Part03-集成Shiro实现个人账户-我的主页、基本设置
+
 ```text
 blog
 ├─src
@@ -12,22 +13,22 @@ blog
 │      │          │
 │      │          ├─config
 │      │          │      SpringMvcConfig.java
-│      │          │      
+│      │          │
 │      │          ├─controller
 │      │          │      BaseController.java
-│      │          │      UserController.java 
-│      │          │ 
+│      │          │      UserController.java
+│      │          │
 │      │          ├─service
 │      │          │  │  UserService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         UserServiceImpl.java
 │      │          ├
 │      │          ├─utils
 │      │          │      UploadUtil.java
-│      │          
+│      │
 │      └─resources
-│          │  application.yml 
+│          │  application.yml
 │          │
 │          ├─templates
 │          │  └─user
@@ -35,8 +36,10 @@ blog
 │          │        set.ftl
 ```
 
-### 3.1 个人账户：我的主页
+## 3.1 个人账户：我的主页
+
 - `UserController.java` ：控制层
+
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -61,7 +64,9 @@ public class UserController extends BaseController {
     }
 }
 ```
+
 - `home.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--宏layout.ftl（导航栏 + 页脚）-->
 <#include "/inc/layout.ftl"/>
@@ -142,8 +147,10 @@ public class UserController extends BaseController {
 </@layout>
 ```
 
-### 3.2 个人账户：基本设置-更新资料
+## 3.2 个人账户：基本设置-更新资料
+
 - `/res/mods/index.js` ：源码可知，【lay-submit】此处默认【表单跳转】reload="true"，则会【重新加载当前页面】
+
 ```javascript
 //表单提交
 form.on('submit(*)', function (data) {
@@ -172,7 +179,9 @@ form.on('submit(*)', function (data) {
     return false;
 });
 ```
+
 - `UserController.java` ：控制层
+
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -187,7 +196,7 @@ public class UserController extends BaseController {
 
         return "/user/set";
     }
-    
+
     /**
      * 基本设置：更新资料
      */
@@ -223,7 +232,9 @@ public class UserController extends BaseController {
     }
 }
 ```
+
 - `set.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--1.更新资料-->
 <div class="layui-form layui-form-pane layui-tab-item layui-show">
@@ -273,14 +284,18 @@ public class UserController extends BaseController {
 </div>
 ```
 
-### 3.2 个人账户：基本设置-更新头像（上传图片）
+## 3.2 个人账户：基本设置-更新头像（上传图片）
+
 - `application.yml` ：配置文件，自定义上传路径
+
 ```yaml
 file:
   upload:
     dir: ${user.dir}/upload
 ```
+
 - `Consts.java` ：实体类，上传图片（基本设置）
+
 ```java
 /**
  * 上传图片（基本设置）：封装类
@@ -306,7 +321,9 @@ public class Consts {
 
 }
 ```
+
 - `SpringMvcConfig.java` ：配置类，重写父类 addResourceHandlers 方法（识别非静态资源目录：/upload/avatar/**）
+
 ```java
 /**
  * SpringMvc配置类
@@ -327,7 +344,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     }
 }
 ```
+
 - `UploadUtil.java` ：工具类，上传图片（基本设置）
+
 ```java
 /**
  * 上传图片（基本设置）：工具类
@@ -391,7 +410,9 @@ public class UploadUtil {
 
 }
 ```
+
 - `UserController.java` ：控制层，上传头像（Post 请求）
+
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -406,8 +427,10 @@ public class UserController extends BaseController {
 }
 ```
 
-### 3.3 个人账户：基本设置-更新头像（更新图片）
+## 3.3 个人账户：基本设置-更新头像（更新图片）
+
 - `/res/mods/user.js` ：源码可知，修改默认 `Post请求` 更新图片路径，从 `/user/set` 更换为 `/user/setAvatar`
+
 ```javascript
 //上传图片
 if ($('.upload-img')[0]) {
@@ -441,7 +464,9 @@ if ($('.upload-img')[0]) {
     });
 }
 ```
+
 - `UserController.java` ：控制层，更新头像（Post 请求）
+
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -467,7 +492,9 @@ public class UserController extends BaseController {
     }
 }
 ```
+
 - `set.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--2.更新头像-->
 <div class="layui-form layui-form-pane layui-tab-item">
@@ -485,8 +512,10 @@ public class UserController extends BaseController {
 </div>
 ```
 
-### 3.4 个人账户：基本设置-更新密码
+## 3.4 个人账户：基本设置-更新密码
+
 - `UserController.java` ：控制层，更新密码
+
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -508,7 +537,7 @@ public class UserController extends BaseController {
             return Result.fail("密码不正确");
         }
 
-        //如果nowpass正确，则更新密码 
+        //如果nowpass正确，则更新密码
         user.setPassword(SecureUtil.md5(pass));
         userService.updateById(user);
 
@@ -516,7 +545,9 @@ public class UserController extends BaseController {
     }
 }
 ```
+
 - `set.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--3.更新密码-->
 <div class="layui-form layui-form-pane layui-tab-item">

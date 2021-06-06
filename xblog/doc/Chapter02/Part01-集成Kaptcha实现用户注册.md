@@ -1,4 +1,5 @@
-## 1. 集成 Kaptcha 实现用户注册
+# Part01-集成Kaptcha实现用户注册
+
 ```text
 blog
 │  pom.xml
@@ -11,23 +12,23 @@ blog
 │      │          ├─common
 │      │          │  └─lang
 │      │          │         Result.java
-│      │          │    
+│      │          │
 │      │          ├─config
 │      │          │      kaptchaConfig.java
 │      │          │
 │      │          ├─controller
 │      │          │      BaseController.java
 │      │          │      AuthController.java
-│      │          │ 
+│      │          │
 │      │          ├─service
 │      │          │  │  UserService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         UserServiceImpl.java
 │      │          ├
 │      │          ├─utils
 │      │          │      ValidationUtil.java
-│      │          
+│      │
 │      └─resources
 │          ├─templates
 │          │  ├─auth
@@ -37,8 +38,10 @@ blog
 │          │        header.ftl
 ```
 
-### 1.1 集成 Kaptcha 环境
+## 1.1 集成 Kaptcha 环境
+
 - `pom.xml` ：项目依赖，【Hutool-captcha、Google Kaptcha（本次选用）】
+
 ```xml
 <dependencies>
     <!--图片验证码：Hutool-captcha、Google Kaptcha（本次选用）-->
@@ -50,8 +53,10 @@ blog
 </dependencies>
 ```
 
-### 1.2 个人用户的【注册】：简易页面搭建
+## 1.2 个人用户的【注册】：简易页面搭建
+
 - `AuthController.java` ：控制层
+
 ```java
 @Controller
 public class AuthController extends BaseController {
@@ -72,7 +77,9 @@ public class AuthController extends BaseController {
     }
 }
 ```
+
 - `header.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--【一、导航栏】-->
 <div class="fly-header layui-bg-black">
@@ -97,7 +104,9 @@ public class AuthController extends BaseController {
     </div>
 </div>
 ```
+
 - `login.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--超链接：登入、注册-->
 <ul class="layui-tab-title">
@@ -105,7 +114,9 @@ public class AuthController extends BaseController {
     <li class="layui-this">注册</li>
 </ul>
 ```
+
 - `reg.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--超链接：登入、注册-->
 <ul class="layui-tab-title">
@@ -114,8 +125,10 @@ public class AuthController extends BaseController {
 </ul>
 ```
 
-### 1.3 个人用户的【注册】：Kaptcha 图片验证码
+## 1.3 个人用户的【注册】：Kaptcha 图片验证码
+
 - `kaptchaConfig.java` ：配置类，【配置验证码】
+
 ```java
 /**
  * kaptcha 图片验证码配置类
@@ -143,7 +156,9 @@ public class kaptchaConfig {
     }
 }
 ```
+
 - `AuthController.java` ：控制层，【生成验证码】
+
 ```java
 @Controller
 public class AuthController extends BaseController {
@@ -173,7 +188,9 @@ public class AuthController extends BaseController {
     }
 }
 ```
+
 - `reg.ftl` ：模板引擎，【使用验证码】
+
 ```injectedfreemarker
 <#--5.图片验证码-->
 <div class="layui-form-item">
@@ -189,8 +206,10 @@ public class AuthController extends BaseController {
 </div>
 ```
 
-### 1.4 个人用户的【注册】：提交表单后，自己跳转【/login】登录页面
+## 1.4 个人用户的【注册】：提交表单后，自己跳转【/login】登录页面
+
 - `/res/mods/index.js` ：源码可知，【lay-submit】此处默认【表单跳转】alert="true"，则会跳转【action 属性中的值】
+
 ```javascript
 //表单提交
   form.on('submit(*)', function(data){
@@ -217,7 +236,9 @@ public class AuthController extends BaseController {
     return false;
   });
 ```
+
 - `reg.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--6.注册-->
 <div class="layui-form-item">
@@ -226,7 +247,9 @@ public class AuthController extends BaseController {
     <button class="layui-btn" lay-filter="*" lay-submit alert="true">立即注册</button>
 </div>
 ```
+
 - `Result.java` ：实体类
+
 ```java
 @Data
 public class Result implements Serializable {
@@ -281,7 +304,9 @@ public class Result implements Serializable {
     }
 }
 ```
+
 - `ValidationUtil.java` ：工具类
+
 ```java
 /**
  * ValidationUtil 工具类
@@ -400,11 +425,13 @@ public class ValidationUtil {
 
 }
 ```
+
 - `AuthController.java` ：控制层
+
 ```java
 @Controller
 public class AuthController extends BaseController {
-    
+
     /**
      * 注册：校验
      */
@@ -436,7 +463,9 @@ public class AuthController extends BaseController {
     }
 }
 ```
+
 - `UserServiceImpl.java` ：业务层实现
+
 ```java
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {

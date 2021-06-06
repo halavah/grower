@@ -1,4 +1,5 @@
-## 2. 集成 Shiro 实现用户登录
+# Part02-集成Shiro实现用户登录
+
 ```text
 blog
 │  pom.xml
@@ -15,17 +16,17 @@ blog
 │      │          ├─controller
 │      │          │      BaseController.java
 │      │          │      AuthController.java
-│      │          │ 
+│      │          │
 │      │          ├─service
 │      │          │  │  UserService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         UserServiceImpl.java
 │      │          ├
 │      │          ├─shiro
 │      │          │      AccountProfile.java
 │      │          │      AccountRealm.java
-│      │          
+│      │
 │      └─resources
 │          ├─templates
 │          │  ├─auth
@@ -35,8 +36,10 @@ blog
 │          │        header.ftl
 ```
 
-### 2.1 集成 Shiro 环境
+## 2.1 集成 Shiro 环境
+
 - `pom.xml` ：项目依赖，【shiro-spring 权限、shiro-freemarker-tags 标签】
+
 ```xml
 <dependencies>
     <!--shiro权限框架-->
@@ -53,7 +56,9 @@ blog
     </dependency>
 </dependencies>
 ```
+
 - `ShiroConfig.java` ：配置类，【安全管理器、拦截器链】
+
 ```java
 /**
  * Shiro配置类：安全管理器、拦截器链
@@ -100,8 +105,10 @@ public class ShiroConfig {
 }
 ```
 
-### 2.2 个人用户的【登录】：使用 Shiro 进行 `/login` 操作
+## 2.2 个人用户的【登录】：使用 Shiro 进行 `/login` 操作
+
 - `AuthController.java` ：控制层，【用户登录】
+
 ```java
 @Controller
 public class AuthController extends BaseController {
@@ -146,7 +153,9 @@ public class AuthController extends BaseController {
     }
 }
 ```
+
 - `AccountProfile.java` ：实体类
+
 ```java
 /**
  * 用户在login后，将查询后的user结果，复制一份给AccountProfile【用户信息】
@@ -165,7 +174,9 @@ public class AccountProfile implements Serializable {
     private Date created;
 }
 ```
+
 - `AccountRealm.java` ：过滤器，【重写父类 AuthorizingRealm 方法】
+
 ```java
 /**
  * AccountRealm：重写父类AuthorizingRealm方法
@@ -193,7 +204,9 @@ public class AccountRealm extends AuthorizingRealm {
     }
 }
 ```
+
 - `UserServiceImpl.java` ：业务层实现，【AccountRealm 根据 token 获取 username、password，并进行 login 登录，返回 AccountProfile 账户信息】
+
 ```java
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -228,8 +241,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 }
 ```
 
-### 2.3 个人用户的【登录】：shiro-freemarker-tags 标签
+## 2.3 个人用户的【登录】：shiro-freemarker-tags 标签
+
 - `FreemarkerConfig.java` ：配置类，【注册标签，将 shiro-freemarker-tags 注册到 Freemarker 配置类】
+
 ```java
 /**
  * Freemarker配置类
@@ -262,7 +277,9 @@ public class FreemarkerConfig {
     }
 }
 ```
+
 - `header.ftl` ：模板引擎，【未登录的状态、登录后的状态】
+
 ```injectedfreemarker
 <#--【一、导航栏】-->
 <div class="fly-header layui-bg-black">
@@ -338,8 +355,10 @@ public class FreemarkerConfig {
 </div>
 ```
 
-### 2.4 个人用户的【登录】：使用 Shiro 进行【登出】操作
+## 2.4 个人用户的【登录】：使用 Shiro 进行【登出】操作
+
 - `AuthController.java` ：控制层，【用户登出】
+
 ```java
 @Controller
 public class AuthController extends BaseController {
@@ -355,7 +374,9 @@ public class AuthController extends BaseController {
     }
 }
 ```
+
 - `header.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--退出登录-->
 <dd>

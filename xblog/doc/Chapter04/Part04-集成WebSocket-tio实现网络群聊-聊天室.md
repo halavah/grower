@@ -1,4 +1,5 @@
-## 4. 集成 WebSocket-tio 实现网络群聊-聊天室.md
+# Part04-集成WebSocket-tio实现网络群聊-聊天室
+
 ```text
 blog
 │  pom.xml
@@ -7,77 +8,77 @@ blog
 │  └─main
 │      ├─java
 │      │  └─org
-│      │      └─myslayers   
+│      │      └─myslayers
 │      │          ├─config
 │      │          │      ImServerConfig.java  # 执行入口类
 │      │          │
 │      │          ├─controller
 │      │          │      BaseController.java
 │      │          │      ChatController.java
-│      │          │  
+│      │          │
 │      │          ├─service
 │      │          │  │  ChatService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │          ChatServiceImpl.java
 │      │          │
 │      │          ├─utils
 │      │          │      SpringUtil.java
-│      │          │      
+│      │          │
 │      │          └─im
 │      │             ├─handler  # 处理【接受字符类型消息：Chat类型、Ping类型】
 │      │             │  │  MsgHandler.java
 │      │             │  │  MsgHandlerFactory.java
-│      │             │  │  
+│      │             │  │
 │      │             │  ├─filter
 │      │             │  │      ExculdeMineChannelContextFilter.java
-│      │             │  │      
+│      │             │  │
 │      │             │  └─impl
 │      │             │          ChatMsgHandler.java
 │      │             │          PingMsgHandler.java
-│      │             │          
+│      │             │
 │      │             ├─message
 │      │             │      ChatImMess.java
 │      │             │      ChatOutMess.java
-│      │             │      
+│      │             │
 │      │             ├─server
 │      │             │      ImServerStarter.java  # 1.启动tio服务（绑定端口），并调用-消息处理器
 │      │             │      ImWsMsgHandler.java   # 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型
-│      │             │      
+│      │             │
 │      │             └─vo
 │      │                     ImMess.java
 │      │                     ImTo.java
 │      │                     ImUser.java
-│      │                  
+│      │
 │      └─resources
-│          │  application.yml 
-│          │    
+│          │  application.yml
+│          │
 │          ├─static
 │          │  └─res
 │          │      ├─js  # 自己编写 js 文件
 │          │      │      chat.js
 │          │      │      im.js
-│          │      │      
+│          │      │
 │          │      ├─layui   # 引入的 js 文件
 │          │         │
 │          │         ├─css
 │          │         │  │  layui.css
 │          │         │  │  layui.mobile.css
-│          │         │  │  
+│          │         │  │
 │          │         │  └─modules
-│          │         │      │          
+│          │         │      │
 │          │         │      └─layim
 │          │         │          │  layim.css
-│          │         │          │  
+│          │         │          │
 │          │         │          ├─html
 │          │         │          │      chatlog.html
 │          │         │          │      find.html
 │          │         │          │      getmsg.json
 │          │         │          │      msgbox.html
-│          │         │          │      
+│          │         │          │
 │          │         │          ├─mobile
 │          │         │          │      layim.css
-│          │         │          │      
+│          │         │          │
 │          │         │          ├─skin
 │          │         │          │      1.jpg
 │          │         │          │      2.jpg
@@ -85,7 +86,7 @@ blog
 │          │         │          │      4.jpg
 │          │         │          │      5.jpg
 │          │         │          │      logo.jpg
-│          │         │          │      
+│          │         │          │
 │          │         │          └─voice
 │          │         │                  default.mp3
 │          │         │                  default.wav
@@ -99,8 +100,10 @@ blog
 │          │         layout.ftl
 ```
 
-### 4.1 集成 WebSocket-tio 环境
+## 4.1 集成 WebSocket-tio 环境
+
 - `pom.xml` ：项目依赖，【tio：网络群聊】
+
 ```xml
 <dependencies>
   <!--websocket-tio：网络群聊-->
@@ -112,17 +115,22 @@ blog
   </dependency>
 </dependencies>
 ```
+
 - `static/res/layui/lay/modules/layim.js` ：js文件，【拷贝 `layim.js` -> `static/res/layui/lay/modules/`】
 - `static/res/layui/css/modules/layim/...` ：css文件，【拷贝 `layim/...` -> `static/res/layui/css/modules/`】
 
-### 4.2 配置 WebSocket-tio 环境
+## 4.2 配置 WebSocket-tio 环境
+
 - `application.yml` ：配置文件
+
 ```yaml
 im:
   server:
     port: 9326
 ```
+
 - `ImServerConfig.java` ：配置类，【执行入口类】
+
 ```java
 /**
  * 执行入口类 -> 1.启动tio服务（绑定端口），并调用-消息处理器
@@ -153,7 +161,9 @@ public class ImServerConfig {
     }
 }
 ```
+
 - `ImServerStarter.java` ：配置类，【1.启动tio服务（绑定端口），并调用-消息处理器】
+
 ```java
 /**
  * 1.启动tio服务（绑定端口），并调用-消息处理器
@@ -186,7 +196,9 @@ public class ImServerStarter {
     }
 }
 ```
+
 - `ImWsMsgHandler.java` ：配置类，【2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】】
+
 ```java
 /**
  * 2.判断-消息处理器-类别【接受字符类型消息：Chat类型、Ping类型】
@@ -258,8 +270,10 @@ public class ImWsMsgHandler implements IWsMsgHandler {
 }
 ```
 
-### 4.3 使用 WebSocket-tio 环境
+## 4.3 使用 WebSocket-tio 环境
+
 - `ChatController.java` ：控制层
+
 ```java
 @RestController
 @RequestMapping("/chat")
@@ -290,7 +304,9 @@ public class ChatController extends BaseController {
     }
 }
 ```
+
 - `ChatService.java` ：业务层接口
+
 ```java
 public interface ChatService {
     ImUser getCurrentUser();
@@ -300,7 +316,9 @@ public interface ChatService {
     List<Object> getGroupHistoryMsg(int count);
 }
 ```
+
 - `ChatServiceImpl.java` ：业务层实现
+
 ```java
 @Slf4j
 @Service("chatService")
@@ -351,8 +369,10 @@ public class ChatServiceImpl implements ChatService {
 }
 ```
 
-### 4.3 编写 chat.js、im.js 文件
+## 4.3 编写 chat.js、im.js 文件
+
 - `chat.js` ：js文件，【layim 聊天窗口（chat.js 调用 im.js 方法）】
+
 ```javascript
 /**
  * layim 聊天窗口（chat.js 调用 im.js 方法）
@@ -384,7 +404,9 @@ layui.use('layim', function (layim) {
 });
 
 ```
+
 - `im.js` ：js文件，【layim 聊天窗口（chat.js 调用 im.js 方法）】
+
 ```javascript
 /**
  * layim 聊天窗口（chat.js 调用 im.js 方法）
@@ -523,8 +545,10 @@ tio.ws = function ($, layim) {
 }
 ```
 
-### 4.4 使用 chat.js、im.js 文件
+## 4.4 使用 chat.js、im.js 文件
+
 - `layout.ftl` ：模板引擎，【引入 im.js、chat.js】
+
 ```injectedfreemarker
 <#macro layout title>
   <!DOCTYPE html>
@@ -543,7 +567,7 @@ tio.ws = function ($, layim) {
     <script src="/res/js/jquery.min.js"></script>
     <script src="/res/js/sockjs.js"></script>
     <script src="/res/js/stomp.js"></script>
-    <script src="/res/js/im.js"></script>   
+    <script src="/res/js/im.js"></script>
     <script src="/res/js/chat.js"></script>
   </head>
   <body>

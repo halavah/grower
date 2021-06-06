@@ -1,4 +1,5 @@
-## 3. 集成 RabbitMQ 保证 ES 随文章增删改查-实时更新
+# Part03-集成RabbitMQ保证ES随文章增删改查-实时更新
+
 ```text
 blog
 │  pom.xml
@@ -7,20 +8,20 @@ blog
 │  └─main
 │      ├─java
 │      │   └─org
-│      │      └─myslayers   
+│      │      └─myslayers
 │      │          ├─config
 │      │          │      RabbitConfig.java
 │      │          │
 │      │          ├─controller
 │      │          │      BaseController.java
 │      │          │      PostController.java
-│      │          │  
+│      │          │
 │      │          ├─service
 │      │          │  │   SearchService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         SearchServiceImpl.java
-│      │          │ 
+│      │          │
 │      │          └─search
 │      │             └─amqp
 │      │                    MqMessageHandler.java
@@ -30,8 +31,10 @@ blog
 │          │  application.yml
 ```
 
-### 3.1 集成 RabbitMQ 环境
+## 3.1 集成 RabbitMQ 环境
+
 - `pom.xml` ：项目依赖，【RabbitMQ 消息同步】
+
 ```xml
 <dependencies>
   <!--rabbitmq：消息同步-->
@@ -42,7 +45,9 @@ blog
   </dependency>
 </dependencies>
 ```
+
 - `application.yml` ：配置文件，【RabbitMQ 消息同步】
+
 ```yaml
 spring:
   rabbitmq:
@@ -52,8 +57,10 @@ spring:
     port: 5672
 ```
 
-### 3.2 配置 RabbitMQ 环境
+## 3.2 配置 RabbitMQ 环境
+
 - `RabbitConfig.java` ：配置类，【创建队列、交换机，并把它们通过 es_bind_key 进行绑定】
+
 ```java
 /**
  * RabbitConfig：配置类
@@ -84,7 +91,9 @@ public class RabbitConfig {
     }
 }
 ```
+
 - `PostMqIndexMessage.java` ：实体类，供 -> 【/post/submit、/post/delete】 -> 使用 convertAndSend 【 交换机，路由密钥，发送的消息（操作的文章、操作的类型) 】
+
 ```java
 /**
  * PostMqIndexMessage：实体类
@@ -106,7 +115,9 @@ public class PostMqIndexMessage implements Serializable {
 
 }
 ```
+
 - `MqMessageHandler.java` ：执行类，【执行操作的逻辑】
+
 ```java
 /**
  * RabbitMQ：执行操作的逻辑
@@ -143,7 +154,9 @@ public class MqMessageHandler {
     }
 }
 ```
+
 - `SearchServiceImpl.java` ：业务层实现，【创建/更新文章】、删除文章
+
 ```java
 @Slf4j
 @Service
@@ -154,7 +167,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     PostService postService;
-    
+
     /**
      * ES：createOrUpdateIndex 创建/更新文章
      */
@@ -185,8 +198,10 @@ public class SearchServiceImpl implements SearchService {
 }
 ```
 
-### 3.3 使用 RabbitMQ 保证 ES 随文章增删改查-实时更新
+## 3.3 使用 RabbitMQ 保证 ES 随文章增删改查-实时更新
+
 - `PostController.java` ：控制层，【消息同步，通知消息给 RabbitMQ，告知 ES【更新文章或添加文章】、【删除文章】】
+
 ```java
 @Controller
 public class PostController extends BaseController {

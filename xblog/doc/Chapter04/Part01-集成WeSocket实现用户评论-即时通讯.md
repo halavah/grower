@@ -1,4 +1,5 @@
-## 1. 集成 WeSocket 实现用户评论-即时通讯
+# Part01-集成WeSocket实现用户评论-即时通讯
+
 ```text
 blog
 │  pom.xml
@@ -14,10 +15,10 @@ blog
 │      │          ├─controller
 │      │          │      BaseController.java
 │      │          │      PostController.java
-│      │          │  
+│      │          │
 │      │          ├─service
 │      │          │  │   WsService.java
-│      │          │  │  
+│      │          │  │
 │      │          │  └─impl
 │      │          │         WsServiceImpl.java
 │      │
@@ -27,8 +28,10 @@ blog
 │          │         layout.ftl
 ```
 
-### 1.1 集成 WebSocket 环境
+## 1.1 集成 WebSocket 环境
+
 - `pom.xml` ：项目依赖，【websocket 通讯】
+
 ```xml
 <dependencies>
   <!--websocket-->
@@ -39,8 +42,10 @@ blog
 </dependencies>
 ```
 
-### 1.2 配置 WebSocket 环境
+## 1.2 配置 WebSocket 环境
+
 - `WsConfig.java` ：配置类，【点对点通讯，订阅通道/user/、/topic/，访问地址/websocket】
+
 ```java
 /**
  * WebSocket 配置类：点对点
@@ -63,7 +68,9 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
     }
 }
 ```
+
 - `layout.ftl` ：模板引擎，【引入 sockjs.js、stomp.js】
+
 ```injectedfreemarker
 <#macro layout title>
   <!DOCTYPE html>
@@ -87,8 +94,10 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
 </#macro>
 ```
 
-### 1.3 使用 WebSocket 通讯
+## 1.3 使用 WebSocket 通讯
+
 - `PostController.java` ：控制层，【即时通知作者（websocket）】
+
 ```java
 @Controller
 public class PostController extends BaseController {
@@ -164,7 +173,9 @@ public class PostController extends BaseController {
     }
 }
 ```
+
 - `WsServiceImpl.java` ：业务层实现，【使用 Spring 自带的【消息模板】，向 ToUserId 发生消息，url 为 /user/20/messCount/ 】
+
 ```java
 @Service
 public class WsServiceImpl implements WsService {
@@ -189,7 +200,9 @@ public class WsServiceImpl implements WsService {
     }
 }
 ```
+
 - `layout.ftl` ：模板引擎
+
 ```injectedfreemarker
 <#--宏：1.macro定义脚本，名为layout，参数为title-->
 <#macro layout title>
@@ -287,8 +300,10 @@ public class WsServiceImpl implements WsService {
 </#macro>
 ```
 
-### 1.4 其他：用户中心-批量将未读改为已读
+## 1.4 其他：用户中心-批量将未读改为已读
+
 - `UserController.java` ：控制层，【批量处理，将全部消息的【状态：未读 0】改为【状态：已读 1】，并【批量修改 状态为已读 1】】
+
 ```java
 @Controller
 public class UserController extends BaseController {
@@ -316,7 +331,9 @@ public class UserController extends BaseController {
     }
 }
 ```
+
 - `UserMessageServiceImpl.java` ：业务层实现，【批量处理】
+
 ```java
 @Service
 public class UserMessageServiceImpl extends ServiceImpl<UserMessageMapper, UserMessage> implements UserMessageService {
@@ -332,7 +349,9 @@ public class UserMessageServiceImpl extends ServiceImpl<UserMessageMapper, UserM
     }
 }
 ```
+
 - `UserMessageMapper.java` ：数据层接口，【开启事务】
+
 ```java
 public interface UserMessageMapper extends BaseMapper<UserMessage> {
 
@@ -340,7 +359,9 @@ public interface UserMessageMapper extends BaseMapper<UserMessage> {
     void updateToReaded(@Param(Constants.WRAPPER) QueryWrapper<UserMessage> wrapper);
 }
 ```
+
 - `UserMessageMapper.xml` ：数据层实现，【SQL 命令】
+
 ```xml
 <update id="updateToReaded">
   UPDATE m_user_message
