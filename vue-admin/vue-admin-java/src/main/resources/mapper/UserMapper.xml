@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.myslayers.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="org.myslayers.entity.User">
+    <!--@mbg.generated-->
+    <!--@Table sys_user-->
+    <id column="id" property="id" />
+    <result column="username" property="username" />
+    <result column="password" property="password" />
+    <result column="email" property="email" />
+    <result column="mobile" property="mobile" />
+    <result column="avatar" property="avatar" />
+    <result column="status" property="status" />
+    <result column="modified" property="modified" />
+    <result column="created" property="created" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, username, `password`, email, mobile, avatar, `status`, modified, created
+  </sql>
+</mapper>
