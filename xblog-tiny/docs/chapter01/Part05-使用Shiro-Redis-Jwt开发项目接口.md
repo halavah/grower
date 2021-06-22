@@ -1,4 +1,4 @@
-# 5. 集成 Shiro-Redis、Jwt 开发项目接口
+# Part05-使用Shiro-Redis-Jwt开发项目接口
 
 ```text
 blog-tiny
@@ -19,7 +19,7 @@ public class PostController extends BaseController {
 
     @Autowired
     PostService PostService;
-    
+
     /**
      * 【查询】全部文章
      */

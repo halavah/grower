@@ -1,9 +1,9 @@
-# 2. 集成 Shiro-Redis、Jwt 实现会话共享(一)
+# Part02-集成Shiro-Redis-Jwt实现会话共享(一)
 
 ```text
 blog-tiny
 │  pom.xml
-│      
+│
 └─src
     └─main
         ├─java
@@ -11,20 +11,20 @@ blog-tiny
         │      └─org.myslayers
         │          ├─config
         │          │      ShiroConfig.java
-        │          │      
+        │          │
         │          ├─shiro
         │          │      AccountProfile.java
         │          │      AccountRealm.java
         │          │      JwtFilter.java
         │          │      JwtToken.java
-        │          │      
+        │          │
         │          └─utils
         │                  JwtUtils.java
-        │                      
+        │
         └─resources
             │  application-win.yml
             │  application.yml
-            │  
+            │
             └─META-INF
                     spring-devtools.properties
 ```
@@ -146,7 +146,7 @@ public class ShiroConfig {
 - 采用 Jwt 作为跨域身份验证解决方案，原理如下：![1.png](../assets/1.png)
 
 - `JwtFilter.java` ：Filter，【继承 Shiro 内置的 AuthenticatingFilter】
-  
+
 ```java
 /**
  * Filter：继承 Shiro 内置的 AuthenticatingFilter
@@ -230,7 +230,7 @@ public class JwtFilter extends AuthenticatingFilter {
 ```
 
 - `JwtUtils.java` ：生成和校验 jwt 的工具类：【来自 application.yml 配置文件】
- 
+
 ```java
 /**
  * 生成和校验 jwt 的工具类：【来自 application.yml 配置文件】
@@ -416,7 +416,7 @@ public class AccountProfile implements Serializable {
 
 ```java
 public abstract class AuthenticatingFilter extends AuthenticationFilter {
-    
+
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         AuthenticationToken token = this.createToken(request, response);
         if (token == null) {
@@ -433,5 +433,5 @@ public abstract class AuthenticatingFilter extends AuthenticationFilter {
             }
         }
     }
-}    
+}
 ```

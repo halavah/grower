@@ -1,130 +1,27 @@
-# 2. 路由规则-权限拦截-用户登录-状态管理-全局拦截-公共组件
+# Part02-实现用户登录-页面渲染、路由规则、状态管理、全局响应拦截、全局前置守卫
 
 ```text
 blog-tiny-vue
-│      
+│
 └─src
     │  App.vue
-    │  axios.js                   #                      2.5 编写【全局拦截】
-    │  main.js                    # 2.2 使用【权限拦截】    2.5 使用【全局拦截】      
-    │  permission.js              # 2.2 编写【权限拦截】
+    │  axios.js                   # 2.4 用户登录 - 全局响应拦截
+    │  main.js
+    │  permission.js              # 2.5 用户登录 - 全局前置守卫
     │
     ├─router
-    │      index.js               # 2.1 路由规则
-    │      
+    │      index.js               # 2.2 用户登录 - 路由规则
+    │
     ├─store
-    │      index.js               # 2.4 状态管理，【用途一：将 token、userInfo 存储到 vuex 中供其他组件调用；用途二：将其存储到 localStorage 中供下次打开浏览器使用】
-    │      
+    │      index.js               # 2.3 用户登录 - 状态管理
+    │
     └─views
-            Login.vue             # 2.3 用户登录
-            PostDetail.vue
-            PostEdit.vue
-            PostList.vue
+            Login.vue             # 2.1 用户登录 - 页面渲染
 ```
 
-## 2.1 路由规则
+## 2.1 用户登录 - 页面渲染
 
-- `/router/index.js` ：路由规则
-
-```javascript
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Login from "@/views/Login";
-import PostList from "@/views/PostList";
-import PostDetail from "@/views/PostDetail";
-import PostEdit from "@/views/PostEdit";
-
-Vue.use(VueRouter);
-
-const routes = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/',
-    name: 'Index',
-    redirect: {name: "PostList"}   /*重定向至 Blogs 组件*/
-  },
-  {
-    path: '/post/list',
-    name: 'PostList',
-    component: PostList           /*主页【查看全部文章】*/
-  },
-  {
-    path: '/post/add',
-    name: 'PostAdd',
-    component: PostEdit,          /*发表【新建一篇文章】*/
-    meta: {
-      requireAuth: true           /*对应【权限拦截】自定义规则*/
-    }
-  },
-  {
-    path: '/post/:postId',
-    name: 'PostDetail',
-    component: PostDetail         /*详情【查看某篇文章】*/
-  },
-  {
-    path: '/post/:postId/edit',
-    name: 'PostEdit',
-    component: PostEdit,          /*编辑【编辑某篇文章】*/
-    meta: {
-      requireAuth: true           /*对应【权限拦截】自定义规则*/
-    }
-  }
-];
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
-
-export default router
-```
-
-## 2.2 权限拦截
-
-- `permission.js` ：编写【权限拦截】，【对应 `/router/index.js` 路由规则】
-
-```javascript
-import router from "./router";
-
-//权限拦截：根据【/router/index.js】中的路由规则，是否需要进行【权限验证：登录】
-router.beforeEach((to, from, next) => {
-
-  //判断该路由是否需要登录权限
-  if (to.matched.some(record => record.meta.requireAuth)) {
-    const token = localStorage.getItem("token")
-    console.log(token)
-    //判断当前的token是否存在
-    if (token) {
-      if (to.path === '/login') {
-
-      } else {
-        next()
-      }
-    } else {
-      next({
-        path: '/login'
-      })
-    }
-  } else {
-    next()
-  }
-})
-```
-
-- `main.js` ：使用【权限拦截】，【直接将编写好的 permission.js 导入 main.js】
-
-```javascript
-import "./permission" /*权限拦截*/
-```
-
-## 2.3 用户登录
-
-- `/views/Login.vue` ：用户登录
+- `/views/Login.vue` ：页面渲染
 
 ```vue
 <template>
@@ -264,7 +161,69 @@ body > .el-container {
 </style>
 ```
 
-## 2.4 状态管理
+## 2.2 用户登录 - 路由规则
+
+- `/router/index.js` ：路由规则
+
+```javascript
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Login from "@/views/Login";
+import PostList from "@/views/PostList";
+import PostDetail from "@/views/PostDetail";
+import PostEdit from "@/views/PostEdit";
+
+Vue.use(VueRouter);
+
+const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/',
+    name: 'Index',
+    redirect: {name: "PostList"}   /*重定向至 Blogs 组件*/
+  },
+  {
+    path: '/post/list',
+    name: 'PostList',
+    component: PostList           /*主页【查看全部文章】*/
+  },
+  {
+    path: '/post/add',
+    name: 'PostAdd',
+    component: PostEdit,          /*发表【新建一篇文章】*/
+    meta: {
+      requireAuth: true           /*对应【权限拦截】自定义规则*/
+    }
+  },
+  {
+    path: '/post/:postId',
+    name: 'PostDetail',
+    component: PostDetail         /*详情【查看某篇文章】*/
+  },
+  {
+    path: '/post/:postId/edit',
+    name: 'PostEdit',
+    component: PostEdit,          /*编辑【编辑某篇文章】*/
+    meta: {
+      requireAuth: true           /*对应【权限拦截】自定义规则*/
+    }
+  }
+];
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
+
+export default router
+```
+
+## 2.3 用户登录 - 状态管理
 
 - `/store/index.js` ：状态管理，【用途一：将 token、userInfo 存储到 vuex 中供其他组件调用；用途二：将其存储到 localStorage 中供下次打开浏览器使用】
 
@@ -357,9 +316,9 @@ export default new Vuex.Store({
 })
 ```
 
-## 2.5 全局拦截
+## 2.4 用户登录 - 全局响应拦截
 
-- `axios.js` ：编写【全局拦截】，【对应 `GlobalExceptionHandler.java` 全局异常】
+- `axios.js` ：编写【全局响应拦截】，【对应 `GlobalExceptionHandler.java` 全局异常】
 
 ```javascript
 import axios from 'axios'
@@ -411,8 +370,46 @@ axios.interceptors.response.use(
 )
 ```
 
-- `main.js` ：使用【全局拦截】，【直接将编写好的 axios.js 导入 main.js】
+- `main.js` ：使用【全局响应拦截】，【直接将编写好的 axios.js 导入 main.js】
 
 ```javascript
 import "./axios" /*axios全局拦截：前置拦截、后置拦截*/
+```
+
+## 2.5 用户登录 - 全局前置守卫
+
+- `permission.js` ：编写【全局前置守卫】，【对应 `/router/index.js` 路由规则】
+
+```javascript
+import router from "./router";
+
+//权限拦截：根据【/router/index.js】中的路由规则，是否需要进行【权限验证：登录】
+router.beforeEach((to, from, next) => {
+
+  //判断该路由是否需要登录权限
+  if (to.matched.some(record => record.meta.requireAuth)) {
+    const token = localStorage.getItem("token")
+    console.log(token)
+    //判断当前的token是否存在
+    if (token) {
+      if (to.path === '/login') {
+
+      } else {
+        next()
+      }
+    } else {
+      next({
+        path: '/login'
+      })
+    }
+  } else {
+    next()
+  }
+})
+```
+
+- `main.js` ：使用【全局前置守卫】，【直接将编写好的 permission.js 导入 main.js】
+
+```javascript
+import "./permission" /*全局前置守卫*/
 ```

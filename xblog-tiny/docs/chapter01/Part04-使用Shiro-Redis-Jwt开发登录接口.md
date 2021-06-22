@@ -1,4 +1,4 @@
-# 4. 集成 Shiro-Redis、Jwt 开发登录接口
+# Part04-使用Shiro-Redis-Jwt开发登录接口
 
 ```text
 blog-tiny
@@ -9,7 +9,7 @@ blog-tiny
         │      └─org.myslayers
         │          ├─controller
         │          │      UserController.java   # 登录接口
-        │          │      
+        │          │
         │          └─utils
         │                 ValidationUtil.java  # 工具类
 ```
@@ -159,7 +159,7 @@ public class UserController extends BaseController {
 
     @Autowired
     JwtUtils jwtUtils;
-    
+
     /*--------------------------------------1.用户登录/登出------------------------------------>*/
 
     @ResponseBody
@@ -168,7 +168,7 @@ public class UserController extends BaseController {
         //使用Map对象接收一个json对象
         String username = map.get("username");
         String password = map.get("password");
-        
+
         //判断输入是否为空
         if (StrUtil.isEmpty(username) || StrUtil.isBlank(password)) {
             return Result.fail("账号或密码不能为空");

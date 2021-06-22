@@ -1,12 +1,12 @@
-# 3. 公共组件-博客列表-博客发表-博客编辑-博客详情
+# Part03-实现博客页面-公共组件、博客列表、博客发表、博客编辑、博客详情
 
 ```text
 blog-tiny-vue
-│      
+│
 └─src
     ├─components
     │      Header.vue             # 2.1 公共组件
-    │      
+    │
     └─views
             Login.vue
             PostDetail.vue        # 2.4 博客详情
@@ -14,7 +14,7 @@ blog-tiny-vue
             PostList.vue          # 2.2 博客列表
 ```
 
-## 3.1 公共组件
+## 3.1 博客页面 - 公共组件
 
 - `/components/Header.vue` ：编写【公共组件】
 
@@ -104,7 +104,7 @@ export default {
 </style>
 ```
 
-## 3.2 博客列表
+## 3.2 博客页面 - 博客列表
 
 - `/views/PostList.vue` ：博客列表
 
@@ -172,7 +172,7 @@ export default {
 </style>
 ```
 
-## 3.3 博客发表 / 博客编辑
+## 3.3 博客页面 - 博客发表 / 博客编辑
 
 - 基于 Vue 的 markdown 编辑器（编写）：mavon-editor
 
@@ -193,15 +193,15 @@ b.配置
     import mavonEditor from 'mavon-editor'          # 添加该行
     import 'mavon-editor/dist/css/index.css'        # 添加该行
     import axios from 'axios'
-    
+
     import "./axios" /*axios全局拦截：前置拦截、后置拦截*/
-    
+
     Vue.config.productionTip = false;
-    
+
     Vue.use(Element);
     Vue.prototype.$axios = axios;
     Vue.use(mavonEditor);                           # 添加该行
-    
+
     new Vue({
       router,
       store,
@@ -317,7 +317,7 @@ export default {
 </style>
 ```
 
-## 3.4 博客详情
+## 3.4 博客页面 - 博客详情
 
 - 基于 Vue 的 markdown 编辑器（解析）：markdown-it、github-markdown-css
 
@@ -341,11 +341,11 @@ c.使用
         </div>
       </div>
     </template>
-    
+
     <script>
     /*配置【解析md样式】*/
     import 'github-markdown-css'
-    
+
     export default {
       //页面一开始渲染时，调用mounted()方法（回写操作）
       mounted() {
@@ -357,18 +357,18 @@ c.使用
           const post = res.data.data
           _this.post.id = post.id
           _this.post.title = post.title
-    
+
           /*配置【解析md文档】*/
           var MardownIt = require("markdown-it")
           var md = new MardownIt()
           var result = md.render(post.content)
           _this.post.content = result
-    
+
           _this.editButton = (post.userId === _this.$store.getters.GET_USERINFO.id)
         })
       }
     }
-    </script>  
+    </script>
 ```
 
 - `/views/PostDetail.vue` ：博客详情

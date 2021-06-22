@@ -1,9 +1,9 @@
-# 1. 集成 MP 完成项目初始化
+# Part01-集成MP完成项目初始化
 
 ```text
 blog-tiny
 │  pom.xml
-│      
+│
 └─src
     └─main
         ├─java
@@ -11,45 +11,45 @@ blog-tiny
         │      └─org.myslayers
         │          │  Application.java
         │          │  CodeGenerator.java
-        │          │  
+        │          │
         │          ├─common
         │          │  └─lang
         │          │          Result.java
-        │          │          
+        │          │
         │          ├─config
         │          │      MyBatisPlusConfig.java
-        │          │      
+        │          │
         │          ├─controller
         │          │      BaseController.java
         │          │      PostController.java
         │          │      UserController.java
-        │          │      
+        │          │
         │          ├─entity
         │          │      BaseEntity.java
         │          │      Post.java
         │          │      User.java
-        │          │      
+        │          │
         │          ├─mapper
         │          │      PostMapper.java
         │          │      UserMapper.java
-        │          │      
+        │          │
         │          └─service
         │              │  PostService.java
         │              │  UserService.java
-        │              │  
+        │              │
         │              └─impl
         │                      PostServiceImpl.java
         │                      UserServiceImpl.java
-        │                      
+        │
         └─resources
             │  application-win.yml
             │  application.yml
             │  spy.properties
-            │  
+            │
             ├─mapper
             │      PostMapper.xml
             │      UserMapper.xml
-            │      
+            │
             ├─static
             └─templates
 ```

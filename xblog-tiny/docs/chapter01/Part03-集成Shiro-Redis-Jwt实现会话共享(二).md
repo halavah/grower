@@ -1,4 +1,4 @@
-# 3. 集成 Shiro-Redis、Jwt 实现会话共享(二)
+# Part03-集成Shiro-Redis-Jwt实现会话共享(二)
 
 ```text
 blog-tiny
@@ -7,20 +7,20 @@ blog-tiny
         ├─java
         │  └─org
         │      └─org.myslayers
-        │          │ 
+        │          │
         │          ├─common
         │          │  ├─exception
         │          │  │       GlobalExceptionHandler.java.java  # 全局异常
-        │          │  │      
+        │          │  │
         │          │  └─lang
         │          │          Result.java   # 统一封装返回结果
         │          │
         │          ├─config
-        │          │      CorsConfig.java.java  # 跨越问题      
-        │          │   
+        │          │      CorsConfig.java.java  # 跨越问题
+        │          │
         │          ├─entity
         │          │      User.java # 表单校验
-        │          │      
+        │          │
         │          ├─shiro
         │          │      JwtFilter.java  # 跨越问题
 ```
@@ -294,7 +294,7 @@ public class CorsConfig implements WebMvcConfigurer {
  */
 @Component
 public class JwtFilter extends AuthenticatingFilter {
-    
+
     /**
      * preHandle：拦截器的前置拦截，【前后端项目，除了需要跨域全局配置之外，拦截器中也需要提供跨域支持。这样，拦截器才不会在进入 Controller 之前就被限制了】
      */

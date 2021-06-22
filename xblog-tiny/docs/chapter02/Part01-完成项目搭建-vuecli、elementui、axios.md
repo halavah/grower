@@ -1,4 +1,4 @@
-# 1. 使用 VueCli-ElementUi-Axios 完成项目搭建
+# Part01-完成项目搭建-vuecli、elementui、axios
 
 ```text
 blog-tiny-vue
@@ -8,35 +8,35 @@ blog-tiny-vue
 │  package-lock.json
 │  package.json
 │  README.md
-│ 
+│
 ├─node_modules
-│ 
+│
 ├─public
 │      favicon.ico
 │      index.html
-│      
+│
 └─src
     │  App.vue
     │  main.js
-    │  
+    │
     ├─assets
     │      logo.png
-    │      
+    │
     ├─components
     │      HelloWorld.vue
-    │      
+    │
     ├─router
     │      index.js
-    │      
+    │
     ├─store
     │      index.js
-    │      
+    │
     └─views
             About.vue
             Home.vue
 ```
 
-## 1.1 使用 VueCli 完成项目初始化
+## 1.1 使用 vuecli 完成项目搭建
 
 - 初始化项目，命令如下：
 
@@ -57,7 +57,7 @@ d.相关配置
     保存为新预设：暂不设置
 ```
 
-## 1.2 使用 ElementUi 完成项目初始化
+## 1.2 使用 elementui 完成项目搭建
 
 - 初始化项目，命令如下：
 
@@ -75,19 +75,19 @@ b.配置
     import store from './store'
     import Element from 'element-ui'                # 添加该行
     import "element-ui/lib/theme-chalk/index.css"   # 添加该行
-    
+
     Vue.config.productionTip = false;
-    
+
     Vue.use(Element);                               # 添加该行
-    
+
     new Vue({
       router,
       store,
       render: h => h(App)
-    }).$mount('#app');  
+    }).$mount('#app');
 ```
 
-## 1.3 使用 Axios 完成项目初始化
+## 1.3 使用 axios 完成项目搭建
 
 - 初始化项目，命令如下：
 
@@ -106,12 +106,12 @@ b.配置
     import Element from 'element-ui'
     import "element-ui/lib/theme-chalk/index.css"
     import axios from 'axios'                       # 添加该行
-    
+
     Vue.config.productionTip = false;
-    
+
     Vue.use(Element);
     Vue.prototype.$axios = axios                    # 添加该行
-    
+
     new Vue({
       router,
       store,
