@@ -1,4 +1,4 @@
-package org.myslayers.service.impl;
+package org.myslayers.service;
 
 import org.myslayers.entity.RoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;

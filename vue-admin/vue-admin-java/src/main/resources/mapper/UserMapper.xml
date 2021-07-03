@@ -18,4 +18,19 @@
     <!--@mbg.generated-->
     id, username, `password`, email, mobile, avatar, `status`, modified, created
   </sql>
+
+  <select id="getNavMenuIds" resultType="java.lang.Long">
+    SELECT DISTINCT rm.menu_id
+    FROM sys_user_role ur
+    LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
+    WHERE ur.user_id = #{userId}
+  </select>
+
+  <select id="listByMenuId" resultType="org.myslayers.entity.User">
+    SELECT DISTINCT su.*
+    FROM sys_user_role ur
+    LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
+    LEFT JOIN sys_user su ON ur.user_id = su.id
+    WHERE rm.menu_id = #{menuId}
+  </select>
 </mapper>

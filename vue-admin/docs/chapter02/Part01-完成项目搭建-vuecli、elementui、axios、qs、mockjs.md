@@ -110,6 +110,54 @@ b.配置
 ```text
 a.安装
     yarn add qs
+b.配置
+    cd src/views/Login.vue
+    ------------------------------------------------------------
+    import qs from 'qs'
+
+    // ruleLoginForm：json 数据
+    ruleLoginForm: {
+      username: 'admin',
+      password: '123456',
+      code: '',
+      token: '',
+    },
+
+    submitForm(ruleLoginForm) {
+      this.$refs[ruleLoginForm].validate((valid) => {
+        if (valid) {
+          // 1.Post请求：获取jwt并存放到vuex
+          this.$axios.post('/login?' + qs.stringify(this.ruleLoginForm)).then((res) => { // qs：将 json 数据转化为 form 数据
+            // const jwt = res.headers['authorization']
+            const jwt = res.data.data.token
+            console.log('jwt: ', jwt)
+            this.$store.commit('SET_TOKEN', jwt)
+
+            // 2.Get请求：获取userInfo并存放到vuex
+            this.$axios.get('/sys/userInfo').then((res) => {
+              this.$store.commit('SET_USERINFO', res.data.data)
+            })
+
+            // 3.跳转主页
+            this.$router.push('/')
+          })
+        } else {
+          return false
+        }
+      })
+    }
+ c.说明
+    // 原因：Captcha 过滤器，需要从 request 中获取 key、code，因此必须将 json 数据转化为 form 数据
+    String key = req.getParameter("key");
+    String code = req.getParameter("code");
+    if (StringUtils.isBlank(code) || StringUtils.isBlank(key)) {
+      throw new CaptchaException("验证码错误！");
+    }
+    if (!code.equals(redisUtil.hget(Const.CAPTCHA_KEY, key))) {
+      throw new CaptchaException("验证码错误！");
+    }
+    // Redis：【Const.CAPTCHA_KEY】对应的键值对【key】-【code】
+    redisUtil.hdel(Const.CAPTCHA_KEY, key);
 ```
 
 ## 1.5 使用 mockjs 完成项目搭建

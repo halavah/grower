@@ -11,7 +11,7 @@ let Result = {
 // ***************登录/登出/验证码*****************
 
 // 登录
-Mock.mock('/login', 'post', () => {
+Mock.mock('/doLogin', 'post', () => {
   // 此处token并不是真实从【res.headers['authorization']】获取的jwt，只是为了【测试携带token的/login请求】
   Result.data = {
     token: Mock.Random.string(32),
@@ -20,15 +20,15 @@ Mock.mock('/login', 'post', () => {
 })
 
 // 登出
-Mock.mock('/logout', 'post', () => {
+Mock.mock('/doLogout', 'post', () => {
   return Result
 })
 
 // 验证码
 Mock.mock('/captcha', 'get', () => {
   Result.data = {
-    token: Mock.Random.string(32),
-    captchaImg: Mock.Random.dataImage('120x60', 'p7n5w'),
+    key: Mock.Random.string(32),
+    codeBase64Image: Mock.Random.dataImage('120x60', 'p7n5w'),
   }
   return Result
 })

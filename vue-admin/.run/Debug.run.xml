@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Debug" type="JavascriptDebugType" uri="http://localhost:8080/" useFirstLineBreakpoints="true">
+    <mapping url="webpack:///src" local-file="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>

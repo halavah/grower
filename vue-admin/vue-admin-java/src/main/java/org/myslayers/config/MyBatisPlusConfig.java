@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * MP配置类
+ * MP 配置类
  */
 @Configuration
 @EnableTransactionManagement

@@ -13,6 +13,19 @@ spring:
   freemarker:
     checkTemplateLocation: false
 
+  security:
+    user:
+      roles: admin
+      name: myslayers
+      password: 123456
+
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password: myslayers
+
+myslayers:
   jwt:
     secret: f4e2e52034348f86b67cde581c0f9eb5
     expire: 604800

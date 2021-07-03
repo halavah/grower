@@ -30,7 +30,7 @@
           maxlength="5"
           style="width: 262px; float: left"
         ></el-input>
-        <el-image :src="captchaImg" class="captchaImg" @click="getCaptcha"></el-image>
+        <el-image :src="codeBase64Image" class="codeBase64Image" @click="getCaptcha"></el-image>
       </el-form-item>
 
       <!-- 【Checkbox 多选框：基础用法】 -->
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import qs from 'qs'
+
 export default {
   name: 'Login',
 
@@ -53,8 +55,8 @@ export default {
       ruleLoginForm: {
         username: 'admin',
         password: '123456',
-        code: '11111',
-        token: '',
+        code: '',
+        key: '',
       },
       ruleLogin: {
         username: [
@@ -86,7 +88,7 @@ export default {
         ],
       },
       checked: true,
-      captchaImg: null,
+      codeBase64Image: null,
     }
   },
 
@@ -98,19 +100,18 @@ export default {
     submitForm(ruleLoginForm) {
       this.$refs[ruleLoginForm].validate((valid) => {
         if (valid) {
-          // 1.Post请求：获取jwt并存放到vuex
-          this.$axios.post('/login', this.ruleLoginForm).then((res) => {
-            // const jwt = res.headers['authorization']
-            const jwt = res.data.data.token
-            console.log('jwt: ', jwt)
+          this.$axios.post('/doLogin?' + qs.stringify(this.ruleLoginForm)).then((res) => {
+            // 1.Post请求：获取jwt并存放到vuex
+            const jwt = res.headers['authorization']
             this.$store.commit('SET_TOKEN', jwt)
-            // 2.Get请求：获取userInfo并存放到vuex
-            this.$axios.get('/sys/userInfo').then((res) => {
-              this.$store.commit('SET_USERINFO', res.data.data)
-            })
+
+            // // 2.Get请求：获取userInfo并存放到vuex
+            // this.$axios.get('/sys/userInfo').then((res) => {
+            //   this.$store.commit('SET_USERINFO', res.data.data)
+            // })
 
             // 3.跳转主页
-            this.$router.push('/')
+            // this.$router.push('/')
           })
         } else {
           return false
@@ -124,8 +125,8 @@ export default {
 
     getCaptcha() {
       this.$axios.get('/captcha').then((res) => {
-        this.ruleLoginForm.token = res.data.data.token
-        this.captchaImg = res.data.data.captchaImg
+        this.ruleLoginForm.key = res.data.data.key
+        this.codeBase64Image = res.data.data.codeBase64Image
         this.ruleLoginForm.code = ''
       })
     },
@@ -155,7 +156,7 @@ export default {
   margin: 0px 0px 15px 0px;
 }
 
-.captchaImg {
+.codeBase64Image {
   width: 80px;
   float: left;
   margin-left: 8px;

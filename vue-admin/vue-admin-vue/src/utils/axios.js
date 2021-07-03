@@ -6,7 +6,7 @@ import router from '../router'
 import store from '../store'
 
 // 开启baseURL，即使Mock数据为8080端口也会进行拦截，因此测试Mcok数据时关闭此baseURL
-// axios.defaults.baseURL = "http://localhost:8080"
+axios.defaults.baseURL = 'http://localhost:8765'
 
 // 创建统一的 axios 对象
 const handle = axios.create({

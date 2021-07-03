@@ -11,7 +11,7 @@ import 'mavon-editor/dist/css/index.css'
 
 import axios from 'axios'
 
-import './utils/mock' /* 模拟数据（测试URL） */
+// import './utils/mock' /* 模拟数据（测试URL） */
 import './utils/axios' /* 全局响应拦截（状态码） */
 import './utils/guard' /* 全局前置守卫（路由规则） */
 import './utils/perm' /* 全局权限按钮（隐藏按钮） */
