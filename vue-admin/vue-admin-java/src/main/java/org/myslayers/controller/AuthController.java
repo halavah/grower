@@ -6,6 +6,7 @@ import org.myslayers.common.lang.Const;
 import org.myslayers.common.lang.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sun.misc.BASE64Encoder;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-public class AuthController extends BaseController{
+public class AuthController extends BaseController {
     @Autowired
     Producer producer;
     
@@ -26,13 +27,22 @@ public class AuthController extends BaseController{
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/test")
     public Result test() {
-        return Result.success("操作成功！", userService.list());
+        return Result.success("获取/test成功！", userService.list());
+    }
+    
+    @PreAuthorize("hasAuthority('sys:menu:list')")
+    @GetMapping("/test2")
+    public Result test2() {
+        return Result.success("获取/test2成功！", roleService.list());
     }
     
     @PreAuthorize("hasAuthority('sys:user:list')")
-    @GetMapping("/test2")
-    public Result test2() {
-        return Result.success("操作成功！", roleService.list());
+    @GetMapping("/test3")
+    public Result pass() {
+        String passBefore = "123456";
+        String passAfter = new BCryptPasswordEncoder().encode(passBefore);
+        boolean flag = new BCryptPasswordEncoder().matches(passBefore, passAfter);
+        return Result.success("获取/test3成功！加密前：" + passBefore + "加密后：" + passAfter, "正确性" +  flag);
     }
     
     /*--------------------------------------1.权限接口------------------------------------>*/
@@ -49,26 +59,22 @@ public class AuthController extends BaseController{
         // Redis：利用哈希表，将【key】-【code】存储到【Const.CAPTCHA_KEY】中
         redisUtil.hset(Const.CAPTCHA_KEY, key, code, 120);
         
-        // 2.通过 IO 输出 codeImage
+        // 2.通过 IO 输出 codeImag
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         BufferedImage image = producer.createImage(code);
         ImageIO.write(image, "jpg", outputStream);
         
-        // 3.codeImage 经 BASE64 后生成 codeBase64Image
         String str = "data:image/jpeg;base64,";
         BASE64Encoder encoder = new BASE64Encoder();
         String codeBase64Image = str + encoder.encode(outputStream.toByteArray());
         
         return Result.success(
-            "操作成功！",
+            "获取/captcha成功！",
             MapUtil.builder()
                 .put("key", key)
+                .put("code", code)
                 .put("codeBase64Image", codeBase64Image)
                 .build()
         );
     }
-    
-    // /doLogin：SpringSecurity 提供
-    
-    // /doLogout：SpringSecurity 提供
 }

@@ -8,20 +8,32 @@ import router from '@/router'
 router.beforeEach((to, from, next) => {
   let hasRoute = store.state.menus.hasRoutes
   let token = store.state.token
+
+  // 访问/login，直接访问
   if (to.path == '/login') {
     next()
-  } else if (!token) {
-    next({ path: '/login' })
-  } else if (token && !hasRoute) {
-    initMenu(router, store)
-    store.commit('SET_HAS_ROUTES', true)
-    next()
+  } else {
+    // 未登录状态，返回
+    if (typeof token === 'undefined' || token === null || token === '') {
+      next({ path: '/login' })
+    }
+
+    // 刷新页面时，hasRoute 变量恢复为 false，即不调用 initMenu；点击某个连接时，hasRoute 变量仍为 true，即调用 initMenu
+    if (token && !hasRoute) {
+      initMenu(router, store)
+      store.commit('SET_HAS_ROUTES', true)
+      next()
+    }
+
+    // 访问 非/login，且 拥有 token，直接访问
+    if (token && to.path != '/login') {
+      next()
+    }
   }
-  next()
 })
 
 // 初始【路由列表】
-export const initMenu = (router, store) => {
+const initMenu = (router, store) => {
   if (store.state.menus.menuList.length > 0) {
     return null
   }
@@ -42,7 +54,7 @@ export const initMenu = (router, store) => {
 }
 
 // 绑定【动态路由】
-export const formatRoutes = (res) => {
+const formatRoutes = (res) => {
   // 1.获取当前路由列表
   let nowRoutes = router.options.routes
   // 2.遍历【res.data.data.nav】，并依次将其加入路由列表
@@ -62,7 +74,7 @@ export const formatRoutes = (res) => {
 }
 
 // 处理【格式化路由】
-export const menuToRoute = (menu) => {
+const menuToRoute = (menu) => {
   if (menu.component) {
     let route = {
       path: menu.path,
@@ -77,3 +89,5 @@ export const menuToRoute = (menu) => {
   }
   return null
 }
+
+export default router

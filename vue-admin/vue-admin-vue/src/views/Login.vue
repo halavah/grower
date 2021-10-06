@@ -30,7 +30,11 @@
           maxlength="5"
           style="width: 262px; float: left"
         ></el-input>
-        <el-image :src="codeBase64Image" class="codeBase64Image" @click="getCaptcha"></el-image>
+        <el-image
+          :src="ruleLoginForm.codeBase64Image"
+          class="codeBase64Image"
+          @click="getCaptcha"
+        ></el-image>
       </el-form-item>
 
       <!-- 【Checkbox 多选框：基础用法】 -->
@@ -57,6 +61,7 @@ export default {
         password: '123456',
         code: '',
         key: '',
+        codeBase64Image: '',
       },
       ruleLogin: {
         username: [
@@ -105,13 +110,13 @@ export default {
             const jwt = res.headers['authorization']
             this.$store.commit('SET_TOKEN', jwt)
 
-            // // 2.Get请求：获取userInfo并存放到vuex
-            // this.$axios.get('/sys/userInfo').then((res) => {
-            //   this.$store.commit('SET_USERINFO', res.data.data)
-            // })
+            // 2.Get请求：获取userInfo并存放到vuex
+            this.$axios.get('/sys/user/info').then((res) => {
+              this.$store.commit('SET_USERINFO', res.data.data)
 
-            // 3.跳转主页
-            // this.$router.push('/')
+              // 3.跳转主页
+              this.$router.push('/')
+            })
           })
         } else {
           return false
@@ -126,8 +131,10 @@ export default {
     getCaptcha() {
       this.$axios.get('/captcha').then((res) => {
         this.ruleLoginForm.key = res.data.data.key
-        this.codeBase64Image = res.data.data.codeBase64Image
+        this.ruleLoginForm.codeBase64Image = res.data.data.codeBase64Image
         this.ruleLoginForm.code = ''
+        // 方便填写 验证码
+        this.ruleLoginForm.code = res.data.data.code
       })
     },
   },

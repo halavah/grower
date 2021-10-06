@@ -36,7 +36,7 @@ Mock.mock('/captcha', 'get', () => {
 // *******************用户信息********************
 
 // 用户信息
-Mock.mock('/sys/userInfo', 'get', () => {
+Mock.mock('/sys/user/info', 'get', () => {
   Result.data = {
     id: '1',
     username: 'admin',

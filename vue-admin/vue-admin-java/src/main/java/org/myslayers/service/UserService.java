@@ -9,11 +9,11 @@ public interface UserService extends IService<User> {
     
     String getUserAuthorityInfo(Integer userId);
     
-    public void clearUserAuthorityInfoByUserName(String username);
+    void clearUserAuthorityInfoByUserName(String username);
     
-    public void clearUserAuthorityInfoByRoleId(Integer roleId);
+    void clearUserAuthorityInfoByRoleId(Integer roleId);
     
-    public void clearUserAuthorityInfoByMenuId(Integer menuId);
+    void clearUserAuthorityInfoByMenuId(Integer menuId);
 }
 
 

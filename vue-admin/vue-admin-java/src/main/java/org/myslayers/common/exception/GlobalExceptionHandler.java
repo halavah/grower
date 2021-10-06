@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     // ShiroException：Shiro抛出的异常，比如用户权限、用户登录
     // 无
 
-    // MethodArgumentNotValidException：处理实体校验的异常
+    // MethodArgumentNotValidException：实体校验的异常
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result handler(MethodArgumentNotValidException e) {
@@ -45,4 +45,5 @@ public class GlobalExceptionHandler {
         log.error("运行时异常：----------------{}", e.getMessage());
         return Result.fail(e.getMessage());
     }
+    
 }

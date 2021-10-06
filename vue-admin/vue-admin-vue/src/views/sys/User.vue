@@ -5,7 +5,7 @@
       <el-form-item>
         <el-input
           v-model="formInline.name"
-          placeholder="请输入名称"
+          placeholder="请输入昵称"
           clearable
           size="mini"
         ></el-input>
@@ -19,8 +19,8 @@
       <el-form-item>
         <el-popconfirm title="确定批量删除吗？？" @confirm="deleteSomeUser">
           <el-button slot="reference" type="danger" size="mini" :disabled="deleteSomeStatus"
-            >批量删除</el-button
-          >
+            >批量删除
+          </el-button>
         </el-popconfirm>
       </el-form-item>
     </el-form>
@@ -48,13 +48,9 @@
 
       <el-table-column prop="role" label="角色" width="200">
         <template v-slot="scope">
-          <el-tag
-            v-for="(item, index) in scope.row.roleIds"
-            :key="index"
-            size="small"
-            type="info"
-            >{{ item.name }}</el-tag
-          >
+          <el-tag v-for="(item, index) in scope.row.roles" :key="index" size="small" type="info"
+            >{{ item.name }}
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -71,16 +67,16 @@
             type="warning"
             size="mini"
             @click="updatePassUser(scope.row.id, scope.row.username)"
-            >重置密码</el-button
-          >
+            >重置密码
+          </el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="success" size="mini" @click="updateUserRole(scope.row.id)"
-            >关联表（用户-角色）</el-button
-          >
+            >关联表（用户-角色）
+          </el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="primary" size="mini" @click="updateOneUser(scope.row.id)"
-            >编辑该行</el-button
-          >
+            >编辑该行
+          </el-button>
           <el-divider direction="vertical"></el-divider>
           <span>
             <el-popconfirm title="是否删除当前行内容？" @confirm="deleteOneUser(scope.row.id)">
@@ -129,11 +125,11 @@
 
         <el-form-item>
           <el-button type="primary" size="mini" @click="submitUserForm('ruleUserForm')"
-            >提交</el-button
-          >
+            >提交
+          </el-button>
           <el-button type="success" size="mini" @click="resetUserForm('ruleUserForm')"
-            >重置</el-button
-          >
+            >重置
+          </el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -250,7 +246,7 @@ export default {
           type: 'success',
           center: true,
           onClose: () => {
-            this.getRoleList()
+            this.queryAllUser()
           },
         })
       })
@@ -312,7 +308,7 @@ export default {
     deleteOneUser(id) {
       let ids = []
       ids.push(id)
-      this.$axios.post('/sys/user/delete/' + ids).then((res) => {
+      this.$axios.post('/sys/user/delete', ids).then((res) => {
         /* 【Message 消息提示：可关闭】 */
         this.$message({
           showClose: true,

@@ -10,12 +10,12 @@
     <!-- 2.【Table 表格：树形数据与懒加载】 -->
     <el-table :data="tableMenuData" row-key="id" border stripe size="small" default-expand-all>
       <el-table-column prop="title" label="标题" sortable width="180px"></el-table-column>
-      <el-table-column prop="path" label="路径" width="120px"> </el-table-column>
+      <el-table-column prop="path" label="路径" width="120px"></el-table-column>
       <el-table-column prop="icon" label="图标" width="160px"></el-table-column>
       <el-table-column prop="perms" label="权限" width="160px"></el-table-column>
-      <el-table-column prop="component" label="组件" width="100px"> </el-table-column>
+      <el-table-column prop="component" label="组件" width="100px"></el-table-column>
 
-      <el-table-column prop="sorted" label="排列" width="70px"> </el-table-column>
+      <el-table-column prop="sorted" label="排列" width="70px"></el-table-column>
       <el-table-column prop="type" label="类型" width="85px">
         <!-- 【Table 表格：插槽slot】 -->
         <template v-slot="scope">
@@ -39,8 +39,8 @@
         <template v-slot="scope">
           <!-- 【Button 按钮：基础用法】 -->
           <el-button type="primary" size="mini" @click="updateOneMenu(scope.row.id)"
-            >编辑该行</el-button
-          >
+            >编辑该行
+          </el-button>
           <!-- 【Divider 分割线：垂直分割】-->
           <el-divider direction="vertical"></el-divider>
           <!-- 【Popconfirm 气泡确认框：基础用法】 -->
@@ -69,7 +69,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="名称" prop="name" label-width="100px">
+        <el-form-item label="标题" prop="name" label-width="100px">
           <!-- 【Input 输入框：基础用法】 -->
           <el-input v-model="ruleMenuForm.title" placeholder="请输入菜单标题"></el-input>
         </el-form-item>
@@ -114,11 +114,11 @@
         <el-form-item>
           <!-- 【Button 按钮：基础用法】 -->
           <el-button type="primary" size="mini" @click="submitMenuForm('ruleMenuForm')"
-            >提交</el-button
-          >
+            >提交
+          </el-button>
           <el-button type="success" size="mini" @click="resetMenuForm('ruleMenuForm')"
-            >重置</el-button
-          >
+            >重置
+          </el-button>
         </el-form-item>
       </el-form>
     </el-dialog>

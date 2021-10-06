@@ -36,11 +36,11 @@ public class Result implements Serializable {
     }
     
     public static Result fail(int code, String msg, Object data) {
+        
         Result result = new Result();
         result.code = code;
         result.msg = msg;
-        result.data = data;
-        return result;
+        result.data = data; return result;
     }
     
     public static Result fail(String msg) {

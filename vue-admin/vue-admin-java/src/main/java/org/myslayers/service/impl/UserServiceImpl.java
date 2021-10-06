@@ -31,7 +31,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     UserMapper userMapper;
     
     /**
-     * 根据 username 获取 User
+     * 获取 User 用户信息：根据 username 获取 User
      */
     @Override
     public User getByUsername(String username) {
@@ -39,7 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
     
     /**
-     * 根据 userId 获取 角色编码code、菜单权限perms
+     * 获取 Authority 权限信息：根据 userId 获取 角色编码code、菜单权限perms
      */
     @Override
     public String getUserAuthorityInfo(Integer userId) {

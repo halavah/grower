@@ -19,8 +19,8 @@
       <el-form-item>
         <el-popconfirm title="确定批量删除吗？？" @confirm="deleteSomeRole">
           <el-button slot="reference" type="danger" size="mini" :disabled="deleteSomeStatus"
-            >批量删除</el-button
-          >
+            >批量删除
+          </el-button>
         </el-popconfirm>
       </el-form-item>
     </el-form>
@@ -43,13 +43,9 @@
 
       <el-table-column prop="menu" label="菜单" width="200">
         <template v-slot="scope">
-          <el-tag
-            v-for="(item, index) in scope.row.menuIds"
-            :key="index"
-            size="small"
-            type="info"
-            >{{ item.name }}</el-tag
-          >
+          <el-tag v-for="(item, index) in scope.row.menus" :key="index" size="small" type="info"
+            >{{ item.title }}
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -63,12 +59,12 @@
       <el-table-column label="操作">
         <template v-slot="scope">
           <el-button type="success" size="mini" @click="updateRoleMenu(scope.row.id)"
-            >关联表（角色-菜单）</el-button
-          >
+            >关联表（角色-菜单）
+          </el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="primary" size="mini" @click="updateOneRole(scope.row.id)"
-            >编辑该行</el-button
-          >
+            >编辑该行
+          </el-button>
           <el-divider direction="vertical"></el-divider>
           <span>
             <el-popconfirm title="是否删除当前行内容？" @confirm="deleteOneRole(scope.row.id)">
@@ -114,11 +110,11 @@
 
         <el-form-item>
           <el-button type="primary" size="mini" @click="submitRoleForm('ruleRoleForm')"
-            >提交</el-button
-          >
+            >提交
+          </el-button>
           <el-button type="success" size="mini" @click="resetRoleForm('ruleRoleForm')"
-            >重置</el-button
-          >
+            >重置
+          </el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -272,7 +268,7 @@ export default {
     deleteOneRole(id) {
       let ids = []
       ids.push(id)
-      this.$axios.post('/sys/menu/delete/' + ids).then((res) => {
+      this.$axios.post('/sys/role/delete', ids).then((res) => {
         /* 【Message 消息提示：可关闭】 */
         this.$message({
           showClose: true,

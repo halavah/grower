@@ -14,11 +14,19 @@ const routes = [
   {
     path: '/',
     name: 'Index',
+    meta: {
+      icon: '',
+      title: '系统概况',
+    },
     component: Index,
     children: [
       {
         path: '/user/center',
         name: 'userCenter',
+        meta: {
+          icon: '',
+          title: '个人中心',
+        },
         component: () => import('@/views/user/Center'),
       },
       // {
