@@ -16,10 +16,6 @@
   - `vue 2.x、vue-cli、vue-router、vuex、vue-axios` ：网页开发
   - `element-ui 2.x` ：桌面组件
   - `mavonEditor、markdown-it、github-markdown-css` ：编写md文档、解析md文档、解析md样式
-  
-### 项目文档
-
-- https://github.com/halavah/grower/tree/master/xblog-tiny/docs 
 
 ### 项目说明
 
