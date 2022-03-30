@@ -20,19 +20,19 @@
 ### 项目文档
 
 - Chapter 01
-  - [Part01-集成MP完成项目初始化.md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter01/Part01-集成MP完成项目初始化.md)
-  - [Part02-集成Shiro-Redis-Jwt实现会话共享(一).md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter01/Part02-集成Shiro-Redis-Jwt实现会话共享(一).md)
-  - [Part03-集成Shiro-Redis-Jwt实现会话共享(二).md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter01/Part03-集成Shiro-Redis-Jwt实现会话共享(二).md)
-  - [Part04-使用Shiro-Redis-Jwt开发登录接口.md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter01/Part04-使用Shiro-Redis-Jwt开发登录接口.md)
-  - [Part05-使用Shiro-Redis-Jwt开发项目接口.md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter01/Part05-使用Shiro-Redis-Jwt开发项目接口.md)
+  - [Part01-集成MP完成项目初始化.md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter01/Part01-集成MP完成项目初始化.md)
+  - [Part02-集成Shiro-Redis-Jwt实现会话共享(一).md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter01/Part02-集成Shiro-Redis-Jwt实现会话共享(一).md)
+  - [Part03-集成Shiro-Redis-Jwt实现会话共享(二).md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter01/Part03-集成Shiro-Redis-Jwt实现会话共享(二).md)
+  - [Part04-使用Shiro-Redis-Jwt开发登录接口.md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter01/Part04-使用Shiro-Redis-Jwt开发登录接口.md)
+  - [Part05-使用Shiro-Redis-Jwt开发项目接口.md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter01/Part05-使用Shiro-Redis-Jwt开发项目接口.md)
 - Chapter 02
-  - [Part01-使用VueCli-ElementUi-Axios完成项目搭建.md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter02/Part01-使用VueCli-ElementUi-Axios完成项目搭建.md)
-  - [Part02-路由规则-权限拦截-用户登录-状态管理-全局拦截.md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter02/Part02-路由规则-权限拦截-用户登录-状态管理-全局拦截.md)
-  - [Part03-公共组件-博客列表-博客发表-博客编辑-博客详情.md](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/chapter02/Part03-公共组件-博客列表-博客发表-博客编辑-博客详情.md)
+  - [Part01-使用VueCli-ElementUi-Axios完成项目搭建.md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter02/Part01-使用VueCli-ElementUi-Axios完成项目搭建.md)
+  - [Part02-路由规则-权限拦截-用户登录-状态管理-全局拦截.md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter02/Part02-路由规则-权限拦截-用户登录-状态管理-全局拦截.md)
+  - [Part03-公共组件-博客列表-博客发表-博客编辑-博客详情.md](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/chapter02/Part03-公共组件-博客列表-博客发表-博客编辑-博客详情.md)
 - SQL
-  - [xblog_tiny.sql](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/sql/xblog_tiny.sql)
-  - [MySQL_5_7_25-2021_04_06_22_51_20-xblog_tiny.sql](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/sql/MySQL_5_7_25-2021_04_06_22_51_20-xblog_tiny.sql)
-  - [MySQL_5_7_25-2021_04_13_14_01_26-xblog_tiny.sql](https://github.com/halavah/blog/tree/master/xblog-tiny/doc/sql/MySQL_5_7_25-2021_04_13_14_01_26-xblog_tiny.sql)
+  - [xblog_tiny.sql](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/sql/xblog_tiny.sql)
+  - [MySQL_5_7_25-2021_04_06_22_51_20-xblog_tiny.sql](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/sql/MySQL_5_7_25-2021_04_06_22_51_20-xblog_tiny.sql)
+  - [MySQL_5_7_25-2021_04_13_14_01_26-xblog_tiny.sql](https://github.com/halavah/grower/tree/master/xblog-tiny/doc/sql/MySQL_5_7_25-2021_04_13_14_01_26-xblog_tiny.sql)
   
 ### 项目说明
 
@@ -45,7 +45,3 @@
   - 测试账户：admin
   - 测试密码：123456
   
-### 项目鸣谢
-
-- 项目原作者：[MarkerHub](https://github.com/MarkerHub/)
-- 项目原地址：[vueblog](https://github.com/MarkerHub/vueblog)
