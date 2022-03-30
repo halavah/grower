@@ -1,5 +1,6 @@
 package org.myslayers.config.security;
 
+
 import org.myslayers.config.security.auth.UserDetailServiceImpl;
 import org.myslayers.config.security.captcha.CaptchaFilter;
 import org.myslayers.config.security.captcha.LoginFailureHandler;
@@ -66,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Bean
     PasswordEncoder bCryptPasswordEncoder() {
-        //return NoOpPasswordEncoder.getInstance();
+//        return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
     
@@ -81,6 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 责任链：单个HttpSecurity
      */
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 开启 cors
         http.cors()
