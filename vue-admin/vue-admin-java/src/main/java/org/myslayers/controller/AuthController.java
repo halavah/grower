@@ -77,4 +77,11 @@ public class AuthController extends BaseController {
                 .build()
         );
     }
+
+    public static void main(String[] args) {
+        String passBefore = "123456";
+        String passAfter = new BCryptPasswordEncoder().encode(passBefore);
+        boolean flag = new BCryptPasswordEncoder().matches(passBefore, passAfter);
+        System.out.println("加密后：" + passAfter);
+    }
 }

@@ -22,3 +22,10 @@
 - 访问网址：<http://localhost:8080/>
 - 测试账户：11111@qq.com
 - 测试密码：123456
+
+### 部分效果
+
+- ![用户注册](https://cdn.jsdelivr.net/gh/halavah/PicGo@master/project/xblog/01.用户注册.png)
+- ![查看帖子](https://cdn.jsdelivr.net/gh/halavah/PicGo@master/project/xblog/05.查看帖子.png)
+- ![我的提问](https://cdn.jsdelivr.net/gh/halavah/PicGo@master/project/xblog/08.我的提问.png)
+- ![评论消息](https://cdn.jsdelivr.net/gh/halavah/PicGo@master/project/xblog/10.评论消息.png)
