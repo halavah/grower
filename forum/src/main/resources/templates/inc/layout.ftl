@@ -16,6 +16,10 @@
     <script src="/res/js/jquery.min.js"></script>
     <script src="/res/js/sockjs.js"></script>
     <script src="/res/js/stomp.js"></script>
+
+    <#--导入顺序：im.js 一定要在 chat.js 前-->
+    <script src="/res/js/im.js"></script>
+    <script src="/res/js/chat.js"></script>
   </head>
   <body>
 
@@ -31,6 +35,7 @@
   <#--【四、页脚】-->
   <#include "/inc/footer.ftl"/>
 
+  <#--一、登录状态前、登录状态后-->
   <script>
     <#-----------------方式一：利用shiro来实现【登录状态】---------------------->
     <#--未登录的状态-->
@@ -91,43 +96,44 @@
     }).use('fly');
   </script>
 
+  <#--二、评论消息的即时通讯-->
   <script>
     <#--使用ws实现【评论消息的即时通讯】-->
-    <#--$(function () {-->
-    <#--  var elemUser = $('.fly-nav-user');-->
-    <#--  if (layui.cache.user.uid !== -1 && elemUser[0]) { //根据layui使用，layui.cache.user.uid !== -1 时，表示【用户登录成功】-->
-    <#--    var socket = new SockJS("/websocket") //注册一个端点：websocket的访问地址-->
-    <#--    stompClient = Stomp.over(socket);-->
-    <#--    stompClient.connect({}, function (frame) {-->
-    <#--      //subscribe订阅消息-->
-    <#--      stompClient.subscribe("/user/" + ${profile.id} + "/messCount", function (res) {-->
-    <#--        console.log(res);-->
-    <#--        showTips(res.body);   //消息的显示：弹窗-->
-    <#--      })-->
-    <#--    });-->
+    $(function () {
+      var elemUser = $('.fly-nav-user');
+      if (layui.cache.user.uid !== -1 && elemUser[0]) { //根据layui使用，layui.cache.user.uid !== -1 时，表示【用户登录成功】
+        var socket = new SockJS("/websocket") //注册一个端点：websocket的访问地址
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+          //subscribe订阅消息
+          stompClient.subscribe("/user/" + ${profile.id} + "/messCount", function (res) {
+            console.log(res);
+            showTips(res.body);   //消息的显示：弹窗
+          })
+        });
 
-    <#--  }-->
-    <#--});-->
+      }
+    });
 
-    // //消息的显示：弹窗，【将/res/mods/index.js中的消息弹窗 -> 复制到此处，供ws使用】
-    // function showTips(count) {
-    //   var msg = $('<a class="fly-nav-msg" href="javascript:;">' + count + '</a>');
-    //   var elemUser = $('.fly-nav-user');
-    //   elemUser.append(msg);
-    //   //click，点击跳转【用户中心 /user/mess】
-    //   msg.on('click', function () {
-    //     location.href = "/user/mess";
-    //   });
-    //   //tips，提示【你有X条未读消息】
-    //   layer.tips('你有 ' + count + ' 条未读消息', msg, {
-    //     tips: 3
-    //     , tipsMore: true
-    //     , fixed: true
-    //   });
-    //   msg.on('mouseenter', function () {
-    //     layer.closeAll('tips');
-    //   })
-    // }
+    //消息的显示：弹窗，【将/res/mods/index.js中的消息弹窗 -> 复制到此处，供ws使用】
+    function showTips(count) {
+      var msg = $('<a class="fly-nav-msg" href="javascript:;">' + count + '</a>');
+      var elemUser = $('.fly-nav-user');
+      elemUser.append(msg);
+      //click，点击跳转【用户中心 /user/mess】
+      msg.on('click', function () {
+        location.href = "/user/mess";
+      });
+      //tips，提示【你有X条未读消息】
+      layer.tips('你有 ' + count + ' 条未读消息', msg, {
+        tips: 3
+        , tipsMore: true
+        , fixed: true
+      });
+      msg.on('mouseenter', function () {
+        layer.closeAll('tips');
+      })
+    }
   </script>
 
   </body>

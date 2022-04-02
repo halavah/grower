@@ -1,6 +1,6 @@
 <template>
   <div>
-    <strong>权限管理系统</strong>
+    <strong>在线权限管理系统</strong>
 
     <div class="header-avatar">
       <!-- 【Dropdown 下拉菜单：基础用法】 -->

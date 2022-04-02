@@ -21,7 +21,7 @@
     <div class="fly-panel fly-panel-user" pad20>
       <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg"
            style="margin-top: 15px;">
-<#--        <button class="layui-btn layui-btn-danger" id="LAY_delallmsg">清空全部消息</button>-->
+        <button class="layui-btn layui-btn-danger" id="LAY_delallmsg">清空全部消息</button>
         <div id="LAY_minemsg" style="margin-top: 10px;">
           <ul class="mine-msg">
             <#--我的消息的【消息的类型】：0代表系统消息、1代表评论的文章、2代表评论的评论-->
@@ -40,8 +40,8 @@
                 </blockquote>
                 <p>
                   <span>${timeAgo(mess.created)}</span>
-<#--                  <a class="layui-btn layui-btn-small layui-btn-danger fly-delete"-->
-<#--                     href="javascript:;">删除</a>-->
+                  <a class="layui-btn layui-btn-small layui-btn-danger fly-delete"
+                     href="javascript:;">删除</a>
                 </p>
               </li>
             </#list>

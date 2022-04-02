@@ -4,13 +4,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.myslayers.service.CategoryService;
+import org.myslayers.service.ChatService;
 import org.myslayers.service.CommentService;
 import org.myslayers.service.PostService;
+import org.myslayers.service.SearchService;
 import org.myslayers.service.UserCollectionService;
 import org.myslayers.service.UserMessageService;
 import org.myslayers.service.UserService;
 import org.myslayers.service.WsService;
 import org.myslayers.shiro.AccountProfile;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -43,6 +46,15 @@ public class BaseController {
 
     @Autowired
     WsService wsService;
+
+    @Autowired
+    SearchService searchService;
+
+    @Autowired
+    AmqpTemplate amqpTemplate;
+
+    @Autowired
+    ChatService chatService;
 
     /**
      * 首页 -> 默认分页的基本信息

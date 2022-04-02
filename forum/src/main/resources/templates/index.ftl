@@ -18,7 +18,7 @@
         <div class="fly-panel">
           <#--1.1.1 fly-panel-title-->
           <div class="fly-panel-title fly-filter">
-            <a>置顶文章</a>
+            <a>置顶</a>
           </div>
           <#--1.1.2 消息列表-->
           <ul class="fly-list">
@@ -35,18 +35,18 @@
         <div class="fly-panel" style="margin-bottom: 0;">
           <#--1.2.1 fly-panel-title-->
           <div class="fly-panel-title fly-filter">
-            <a href="" class="layui-this">全部文章</a>
-<#--            <span class="fly-mid"></span>-->
-<#--            <a href="">未结</a>-->
-<#--            <span class="fly-mid"></span>-->
-<#--            <a href="">已结</a>-->
-<#--            <span class="fly-mid"></span>-->
-<#--            <a href="">精华</a>-->
-<#--            <span class="fly-filter-right layui-hide-xs">-->
-<#--              <a href="" class="layui-this">最新文章</a>-->
-<#--              <span class="fly-mid"></span>-->
-<#--              <a href="">热议文章</a>-->
-<#--            </span>-->
+            <a href="" class="layui-this">综合</a>
+            <span class="fly-mid"></span>
+            <a href="">未结</a>
+            <span class="fly-mid"></span>
+            <a href="">已结</a>
+            <span class="fly-mid"></span>
+            <a href="">精华</a>
+            <span class="fly-filter-right layui-hide-xs">
+              <a href="" class="layui-this">按最新</a>
+              <span class="fly-mid"></span>
+              <a href="">按热议</a>
+            </span>
           </div>
 
           <#--1.2.2 消息列表-->

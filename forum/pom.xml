@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.1.2.RELEASE</version>
-    <relativePath/>
-    <!-- lookup parent from repository -->
+    <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.myslayers</groupId>
   <artifactId>forum</artifactId>
@@ -107,38 +107,40 @@
       <version>0.1</version>
     </dependency>
 
-    <!--websocket-->
+    <!--websocket：消息即时提醒-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-websocket</artifactId>
     </dependency>
 
-    <!--        &lt;!&ndash; es 6.4.3版本 &ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.springframework.boot</groupId>-->
-    <!--            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
-    <!--            <version>2.1.1.RELEASE</version>-->
-    <!--        </dependency>-->
+    <!--elasticsearch-7.6.2：搜索引擎 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+      <version>2.1.1.RELEASE</version>
+    </dependency>
 
-    <!--        &lt;!&ndash;整合rabbitmq&ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.springframework.boot</groupId>-->
-    <!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
-    <!--            <version>2.1.2.RELEASE</version>-->
-    <!--        </dependency>-->
+    <!--rabbitmq：消息同步-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-amqp</artifactId>
+      <version>2.1.2.RELEASE</version>
+    </dependency>
 
-    <!--        <dependency>-->
-    <!--            <groupId>org.modelmapper</groupId>-->
-    <!--            <artifactId>modelmapper</artifactId>-->
-    <!--            <version>1.1.0</version>-->
-    <!--        </dependency>-->
+    <!--modelmapper：Model和DTO模型类的转换-->
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>1.1.1</version>
+    </dependency>
 
-    <!--        &lt;!&ndash; tio &ndash;&gt;-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.t-io</groupId>-->
-    <!--            <artifactId>tio-websocket-server</artifactId>-->
-    <!--            <version>3.2.5.v20190101-RELEASE</version>-->
-    <!--        </dependency>-->
+    <!--tio-websocket：网络群聊-->
+    <!--参考：https://www.layui.com/layim/-->
+    <dependency>
+      <groupId>org.t-io</groupId>
+      <artifactId>tio-websocket-server</artifactId>
+      <version>3.2.5.v20190101-RELEASE</version>
+    </dependency>
 
     <!--Devtools-->
     <dependency>

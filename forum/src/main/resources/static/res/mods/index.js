@@ -537,17 +537,25 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'],
       $('.fly-search').on('click', function () {
         layer.open({
           type: 1
-          , title: false
-          , closeBtn: false
+          ,
+          title: false
+          ,
+          closeBtn: false
           //,shade: [0.1, '#fff']
-          , shadeClose: true
-          , maxWidth: 10000
-          , skin: 'fly-layer-search'
-          , content: ['<form action="http://cn.bing.com/search">'
+          ,
+          shadeClose: true
+          ,
+          maxWidth: 10000
+          ,
+          skin: 'fly-layer-search'
+          ,
+          content: [
+            '<form action="/search">' //将http://cn.bing.com/search 更改为 /search
             ,
             '<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">'
             , '</form>'].join('')
-          , success: function (layero) {
+          ,
+          success: function (layero) {
             var input = layero.find('input');
             input.focus();
 
@@ -556,7 +564,9 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'],
               if (val.replace(/\s/g, '') === '') {
                 return false;
               }
-              input.val('site:layui.com ' + input.val());
+
+              //关闭默认跳转搜索链接，发现跳转接口为“https://cn.bing.com/search?q=xxx”
+              // input.val('site:layui.com ' + input.val());
             });
           }
         })

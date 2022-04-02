@@ -10,16 +10,18 @@
             <a href="/category/${item.id}">${item.name}</a>
           </li>
         </#list>
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+      <!-- 用户登入后显示 -->
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/index#index">我发表的贴</a></li>
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/index#collection">我收藏的贴</a></li>
     </ul>
 
     <div class="fly-column-right layui-hide-xs">
-      <a href="/user/index#index" class="layui-btn layui-btn-primary">已发表的提问</a>
-      <a href="/user/index#index" class="layui-btn layui-btn-primary">已收藏的提问</a>
-      <a href="post/edit" class="layui-btn">新建一个提问</a>
+      <span class="fly-search"><i class="layui-icon"></i></span>
+      <a href="post/edit" class="layui-btn">发表新帖</a>
     </div>
-
-<#--    <div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">-->
-<#--      <a href="post/edit" class="layui-btn">发表新帖</a>-->
-<#--    </div>-->
+    <div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+      <a href="post/edit" class="layui-btn">发表新帖</a>
+    </div>
   </div>
 </div>

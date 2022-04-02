@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import org.myslayers.entity.Post;
 import org.myslayers.mapper.PostMapper;
 import org.myslayers.service.PostService;
@@ -14,10 +17,6 @@ import org.myslayers.utils.RedisUtil;
 import org.myslayers.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
@@ -55,7 +54,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public void initWeekRank() {
         //1.获取【近7天文章】
         List<Post> posts = this.list(new QueryWrapper<Post>()
-            .gt("created", DateUtil.offsetDay(new Date(), -100))  //根据created时间，对最近7天内的文章进行筛选
+            .gt("created", DateUtil.offsetDay(new Date(), -6))  //根据created时间，对最近7天内的文章进行筛选
             .select("id, title, user_id, comment_count, view_count, created") //对文章的属性进行筛选，加快查询速率
         );
 
@@ -69,7 +68,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
             //2.过期expire——|day:rank:20210202--0208|，让【近7天文章】的key过期： 7-（当前时间-创建时间）= 过期时间
             long expireTime =
-                (100 - DateUtil.between(new Date(), post.getCreated(), DateUnit.DAY)) * 24 * 60 * 60;
+                (7 - DateUtil.between(new Date(), post.getCreated(), DateUnit.DAY)) * 24 * 60 * 60;
             redisUtil.expire(zKey, expireTime);
 
             //3.缓存——|day:rank:post:1~16|，缓存【近7天文章】的一些基本信息，例如文章id，标题title，评论数量，作者信息...方便访问【近7天文章】时，直接redis，而非MySQL
@@ -152,6 +151,3 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         redisUtil.hset(hKey, "post-viewCount", postVo.getViewCount());
     }
 }
-
-
-

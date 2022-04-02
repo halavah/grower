@@ -27,7 +27,7 @@
                  lay-verify="email" autocomplete="off" class="layui-input"
                  value="halavah@126.com">
          </div>
-         <div class="layui-form-mid layui-word-aux">输入您的注册邮箱</div>
+         <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
         </div>
 
         <#--2.昵称-->
@@ -38,7 +38,6 @@
                  lay-verify="required" autocomplete="off" class="layui-input"
                  value="halavah">
          </div>
-         <div class="layui-form-mid layui-word-aux">输入您的注册昵称</div>
         </div>
 
         <#--3.密码-->
@@ -49,7 +48,7 @@
                  lay-verify="required" autocomplete="off" class="layui-input"
                  value="123456">
          </div>
-         <div class="layui-form-mid layui-word-aux">密码长度要求6到16个字符</div>
+         <div class="layui-form-mid layui-word-aux">6到16个字符</div>
         </div>
 
         <#--4.确认密码-->
@@ -60,7 +59,6 @@
                  lay-verify="required" autocomplete="off" class="layui-input"
                  value="123456">
          </div>
-         <div class="layui-form-mid layui-word-aux">请您再次输入密码</div>
         </div>
 
         <#--5.图片验证码-->
@@ -68,7 +66,7 @@
          <label for="L_vercode" class="layui-form-label">验证码</label>
          <div class="layui-input-inline">
           <input type="text" id="L_vercode" name="vercode" required lay-verify="required"
-                 placeholder="请输入右方验证码" autocomplete="off" class="layui-input">
+                 placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
          </div>
           <#--图片验证码-->
          <div class="">

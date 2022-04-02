@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController extends BaseController {
 
+    /*--------------------------------------首页index--------------------------------------->*/
+
     /**
      * 首页index
      */
@@ -28,5 +30,23 @@ public class IndexController extends BaseController {
         req.setAttribute("currentCategoryId", 0);
 
         return "index";
+    }
+
+    /*--------------------------------------搜索search--------------------------------------->*/
+
+    /**
+     * 搜索 Elasticsearch
+     */
+    @GetMapping("/search")
+    public String search(String q) {
+        //使用自定义es的search方法，进行查询
+        IPage pageData = searchService.search(getPage(), q);
+
+        //关键词：${q}
+        req.setAttribute("q", q);
+        //搜索结果：${pageData.total}、${pageData.records}
+        req.setAttribute("pageData", pageData);
+
+        return "search";
     }
 }

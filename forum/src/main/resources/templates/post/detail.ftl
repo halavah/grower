@@ -2,7 +2,7 @@
 <#include "/inc/layout.ftl" />
 
 <#--【三、填充（导航栏 + 页脚）】-->
-<@layout "博客详情">
+<@layout "帖子详情">
 
   <#--【二、分类】-->
   <#include "/inc/header-panel.ftl" />
@@ -27,16 +27,16 @@
 
             <div class="fly-admin-box" data-id="${post.id}">
                 <#--发布者删除-->
-                <#if post.userId == profile.id>
+                <#if post.userId == profile.id  &&  profile.id != 1>
                   <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
                 </#if>
 
                 <#--管理员操作-->
                 <@shiro.hasRole name="admin">
-                  <span class="layui-btn layui-btn-xs jie-admin" type="set" field="delete" rank="1">删除</span>
+                  <span class="layui-btn layui-btn-xs jie-admin" type="set" field="delete" rank="1" reload="true" >删除</span>
                     <#if post.level == 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span></#if>
-                    <#if post.level gt 0><span class="-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span></#if>
-                    <#if !post.recommend><span class="layuilayui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span></#if>
+                    <#if post.level gt 0><span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span></#if>
+                    <#if !post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span></#if>
                     <#if post.recommend><span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span></#if>
                 </@shiro.hasRole>
             </div>
@@ -69,7 +69,6 @@
               <#--未登录状态下，【缺少span块引起的显示问题】，作用：空占位，美化样式-->
               <span class="jie-admin" type=""></span>
             </div>
-
           </div>
 
           <#--1.1.4 文章内容-->

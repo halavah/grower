@@ -15,7 +15,7 @@
             <li class="layui-this">
               <#--通过post是否为null，来判断该页面是【发表文章 还是 编辑文章】-->
               <#if post == null>
-                发表提问<#else>编辑提问
+                发表文章<#else>编辑文章
               </#if>
             </li>
           </ul>

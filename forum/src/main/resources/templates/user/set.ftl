@@ -21,9 +21,14 @@
   <div class="fly-panel fly-panel-user" pad20>
    <div class="layui-tab layui-tab-brief" lay-filter="user">
     <ul class="layui-tab-title" id="LAY_mine">
-     <li class="layui-this" lay-id="info">用户信息</li>
-<#--     <li lay-id="avatar">头像</li>-->
-     <li lay-id="pass">用户密码</li>
+     <li class="layui-this" lay-id="info">我的资料</li>
+     <li lay-id="avatar">头像</li>
+     <li lay-id="pass">密码</li>
+
+     <@shiro.hasRole name="admin">
+      <li lay-id="es">全局搜索</li>
+     </@shiro.hasRole>
+
     </ul>
     <div class="layui-tab-content" style="padding: 20px 0;">
      <#--1.更新资料-->
@@ -76,19 +81,19 @@
      </div>
 
      <#--2.更新头像-->
-<#--     <div class="layui-form layui-form-pane layui-tab-item">-->
-<#--      <div class="layui-form-item">-->
-<#--       <div class="avatar-add">-->
-<#--        <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>-->
-<#--        <button type="button" class="upload-img layui-btn">-->
-<#--         <i class="layui-icon">&#xe67c;</i>上传头像-->
-<#--        </button>-->
-<#--        &lt;#&ndash;默认头像&ndash;&gt;-->
-<#--        <img src="<@shiro.principal property="avatar"/>">-->
-<#--        <span class="loading"></span>-->
-<#--       </div>-->
-<#--      </div>-->
-<#--     </div>-->
+     <div class="layui-form layui-form-pane layui-tab-item">
+      <div class="layui-form-item">
+       <div class="avatar-add">
+        <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过2048KB</p>
+        <button type="button" class="layui-btn upload-img">
+         <i class="layui-icon">&#xe67c;</i>上传头像
+        </button>
+        <#--默认头像-->
+        <img src="<@shiro.principal property="avatar" />">
+        <span class="loading"></span>
+       </div>
+      </div>
+     </div>
 
      <#--3.更新密码-->
      <div class="layui-form layui-form-pane layui-tab-item">
@@ -126,6 +131,17 @@
        </div>
       </form>
      </div>
+
+     <#--4.同步ES数据-->
+     <@shiro.hasRole name="admin">
+      <div class="layui-form layui-form-pane layui-tab-item">
+       <form action="/admin/initEsData" method="post">
+        <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit alert="true">同步数据
+        </button>
+       </form>
+      </div>
+     </@shiro.hasRole>
+
     </div>
    </div>
   </div>

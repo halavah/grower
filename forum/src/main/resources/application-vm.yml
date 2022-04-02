@@ -1,0 +1,33 @@
+# DataSource Config
+spring:
+  datasource:
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://192.168.2.128:3306/xblog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 123456
+
+  freemarker:
+    settings:
+      classic_compatible: true
+      datetime_format: yyyy-MM-dd HH:mm
+      number_format: 0.##
+    cache: true  # 清除缓存实现热部署，部署环境，建议开启 true（默认）
+
+  redis:
+    host: 192.168.2.128
+    port: 6379
+    password:
+
+  data:
+    elasticsearch:
+      cluster-name: docker-cluster
+      cluster-nodes: 192.168.2.128:9300
+      repositories:
+        enabled: true
+
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 192.168.2.128
+    port: 5672

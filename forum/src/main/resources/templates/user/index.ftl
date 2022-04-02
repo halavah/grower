@@ -21,8 +21,8 @@
     <div class="fly-panel fly-panel-user" pad20>
       <div class="layui-tab layui-tab-brief" lay-filter="user">
         <ul class="layui-tab-title" id="LAY_mine">
-          <li data-type="mine-jie" lay-id="index" class="layui-this">已发表的提问</li>
-          <li data-type="collection" data-url="/collection/find/" lay-id="collection">已收藏的提问</li>
+          <li data-type="mine-jie" lay-id="index" class="layui-this">我发表的帖</li>
+          <li data-type="collection" data-url="/collection/find/" lay-id="collection">我收藏的帖</li>
         </ul>
 
         <div class="layui-tab-content" style="padding: 20px 0;">

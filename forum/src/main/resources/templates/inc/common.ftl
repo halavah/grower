@@ -59,16 +59,16 @@
 <#macro centerLeft level>
  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
   <li class="layui-nav-item <#if level == 0> layui-this</#if>">
-   <a href="/user/home"><i class="layui-icon">&#xe609;</i>用户主页</a>
+   <a href="/user/home"><i class="layui-icon">&#xe609;</i>我的主页</a>
   </li>
   <li class="layui-nav-item <#if level == 1> layui-this</#if>">
-   <a href="/user/index"><i class="layui-icon">&#xe612;</i>我的提问</a>
+   <a href="/user/index"><i class="layui-icon">&#xe612;</i>用户中心</a>
   </li>
   <li class="layui-nav-item <#if level == 2> layui-this</#if>">
-   <a href="/user/set"><i class="layui-icon">&#xe620;</i>个人中心</a>
+   <a href="/user/set"><i class="layui-icon">&#xe620;</i>基本设置</a>
   </li>
   <li class="layui-nav-item <#if level == 3> layui-this</#if>">
-   <a href="/user/mess"><i class="layui-icon">&#xe611;</i>评论消息</a>
+   <a href="/user/mess"><i class="layui-icon">&#xe611;</i>我的消息</a>
   </li>
  </ul>
 </#macro>

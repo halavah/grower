@@ -30,8 +30,8 @@
           <a class="fly-nav-avatar" href="javascript:;">
             <#--当前用户【username】-->
             <cite class="layui-hide-xs"><@shiro.principal property="username"/></cite>
-            <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：独立开发者"></i>
-            <i class="layui-badge fly-badge-vip layui-hide-xs">超级会员</i>
+            <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+            <i class="layui-badge fly-badge-vip layui-hide-xs">SVIP</i>
             <#--当前用户【avatar】-->
             <img src="<@shiro.principal property="avatar" />">
           </a>
@@ -39,19 +39,19 @@
           <dl class="layui-nav-child">
             <#--我的主页-->
             <dd>
-              <a href="/user/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>用户主页</a>
+              <a href="/user/home"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
             </dd>
             <#--用户中心-->
             <dd>
-              <a href="/user/index"><i class="layui-icon">&#xe770;</i>我的提问</a>
+              <a href="/user/index"><i class="layui-icon">&#xe770;</i>用户中心</a>
             </dd>
             <#--基本设置-->
             <dd>
-              <a href="/user/set"><i class="layui-icon">&#xe620;</i>个人中心</a>
+              <a href="/user/set"><i class="layui-icon">&#xe620;</i>基本设置</a>
             </dd>
             <#--我的消息-->
             <dd>
-              <a href="/user/mess"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>评论消息</a>
+              <a href="/user/mess"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
             </dd>
             <hr style="margin: 5px 0;">
             <#--退出登录-->
