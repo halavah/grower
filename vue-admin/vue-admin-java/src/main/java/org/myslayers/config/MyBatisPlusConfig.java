@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @MapperScan("org.myslayers.mapper")
 public class MyBatisPlusConfig {
-    
+
     /**
      * 新的分页插件,一缓和二缓遵循mybatis的规则,
      * 需要设置 MybatisConfiguration#useDeprecatedExecutor = false
@@ -32,7 +32,7 @@ public class MyBatisPlusConfig {
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         return interceptor;
     }
-    
+
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
         return configuration -> configuration.setUseDeprecatedExecutor(false);
